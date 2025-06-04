@@ -37,10 +37,10 @@ class BingoPopupMenu extends StatelessWidget {
                 if (bingoCardNames.isNotEmpty) const Divider(),
                 ...bingoCardNames.map((name) {
                   return TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       hideOverlay();
-                      setCurrentSelectedBingoCard(name);
-                      bingoCardControllerRef.of(context).loadBoard();
+                      await setCurrentSelectedBingoCard(name);
+                      bingoCardControllerRef.of(context).loadBoard(name);
                     },
                     child: Text('- $name'),
                   );

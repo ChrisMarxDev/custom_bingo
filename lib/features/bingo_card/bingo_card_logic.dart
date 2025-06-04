@@ -20,14 +20,16 @@ class BingoCardController extends BeaconController {
     loadBoard();
   }
 
-  final int gridSize = 5; // Hardcoded for now
-  final gridItems = Beacon.writable<List<List<BingoItem>>>([]);
-  final lastChangeDateTime = Beacon.writable<DateTime?>(null);
-  final isEditing = Beacon.writable<bool>(true);
-  final hasToggledOnce = Beacon.writable<bool>(false);
+  late final gridItems = Beacon.writable<List<List<BingoItem>>>([]);
+  late final lastChangeDateTime = Beacon.writable<DateTime?>(null);
+  late final isEditing = Beacon.writable<bool>(true);
+  late final hasToggledOnce = Beacon.writable<bool>(false);
+  late final gridSize = Beacon.derived<int>(() {
+    return gridItems.value.length;
+  });
 
-  Future<void> loadBoard() async {
-    final name = currentSelectedBingoCardName.value;
+  Future<void> loadBoard([String? selectedBingoCardName]) async {
+    final name = selectedBingoCardName ?? currentSelectedBingoCardName.value;
     if (name == null) {
       return;
     }

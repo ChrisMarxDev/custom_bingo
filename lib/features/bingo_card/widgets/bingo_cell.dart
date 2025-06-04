@@ -77,7 +77,7 @@ class _BingoCellState extends State<BingoCell> {
       // backgroundColor = Colors.blue.withOpacity(0.3);
     }
     if (isDone) {
-      backgroundColor = Colors.black;
+      backgroundColor = Colors.black.withValues(alpha: 0.8);
     }
     return CompositedTransformTarget(
       link: _layerLink,

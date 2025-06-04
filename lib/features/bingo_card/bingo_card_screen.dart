@@ -1,4 +1,5 @@
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -35,7 +36,7 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     if (!mounted) return;
 
     final controller = bingoCardControllerRef.of(context);
-    final gridSize = controller.gridSize;
+    final gridSize = controller.gridSize.value;
     final screenSize = MediaQuery.sizeOf(context);
 
     final viewWidth = screenSize.width;
@@ -82,7 +83,7 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     final controller = bingoCardControllerRef.of(context);
     final gridItems = controller.gridItems
         .watch(context); // This should work with flutter_state_beacon
-    final gridSize = controller.gridSize;
+    final gridSize = controller.gridSize.watch(context);
 
     final size = MediaQuery.sizeOf(context);
     const cellWidth = _cellSize;
@@ -143,20 +144,18 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
                           //   child: EditingHint(),
                           // ),
                           // SizedBox(height: 16),
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                            ),
-                            child: Text(
-                              'Press long to mark a field as checked',
-                              style: context.p1.copyWith(color: Colors.white),
-                            ),
+                          ToggleHint(),
+                          SizedBox(height: 16),
+                          SizedBox(
+                            width: gridSize * cellWidth,
+                            child: EditingHint(),
                           ),
                           SizedBox(height: 16),
-                          EditingHint(),
+                          Text(
+                            currentSelectedBingoCardName.watch(context) ??
+                                'Bingo Card',
+                            style: context.h2,
+                          ),
                           SizedBox(height: 16),
                           ...List.generate(gridSize, (rowIndex) {
                             return Row(
@@ -168,8 +167,10 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
                                       width: cellWidth, height: cellHeight);
                                 }
                                 final item = gridItems[rowIndex][colIndex];
-                                final isMiddleItem =
-                                    gridSize ~/ 2 == rowIndex &&
+
+                                final isMiddleItem = gridSize % 2 == 0
+                                    ? false
+                                    : gridSize ~/ 2 == rowIndex &&
                                         gridSize ~/ 2 == colIndex;
                                 return BingoCell(
                                   item: item,
@@ -201,6 +202,40 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
   }
 }
 
+class ToggleHint extends StatelessWidget {
+  const ToggleHint({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = bingoCardControllerRef.of(context);
+    final hasToggledOnce = controller.hasToggledOnce.watch(context);
+
+    return AnimatedOpacity(
+      opacity: hasToggledOnce ? 0.0 : 1.0,
+      duration: const Duration(milliseconds: 300),
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        child: hasToggledOnce
+            ? SizedBox()
+            : Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                child: Text(
+                  'Press long to mark a field as checked',
+                  style: context.p1.copyWith(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+      ),
+    );
+  }
+}
+
 class LastChange extends StatelessWidget {
   const LastChange({
     required this.lastChangeDateTime,
@@ -222,7 +257,7 @@ class LastChange extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Text(
         text,
-        style: context.h5,
+        style: context.h5.copyWith(fontWeight: FontWeight.w700),
       ),
     );
   }
@@ -316,52 +351,42 @@ class _EditingHintState extends State<EditingHint> {
     final isEditing = controller.isEditing.watch(context);
 
     final show = isEditing;
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 300),
-      opacity: show ? 1.0 : 0.0,
-      child: AnimatedSize(
+    return Center(
+      child: AnimatedOpacity(
         duration: const Duration(milliseconds: 300),
-        child: show
-            ? Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: context.p1.copyWith(color: Colors.white),
-                        children: [
-                          TextSpan(text: 'Press the lock icon '),
-                          WidgetSpan(
-                            child: Icon(
-                              PhosphorIcons.lockKeyOpen(),
-                              color: Colors.white,
-                              size: context.p1.fontSize,
-                            ),
+        opacity: show ? 1.0 : 0.0,
+        child: AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          child: show
+              ? Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: context.p1.copyWith(color: Colors.white),
+                      children: [
+                        TextSpan(text: 'Press the lock icon '),
+                        WidgetSpan(
+                          child: Icon(
+                            PhosphorIcons.lockKeyOpen(),
+                            color: Colors.white,
+                            size: context.p1.fontSize,
                           ),
-                          TextSpan(
-                              text:
-                                  ' to make make the fields not editable anymore.'),
-                        ],
-                      ),
-                      maxLines: 4,
+                        ),
+                        TextSpan(
+                            text:
+                                ' to make make the fields not editable anymore.'),
+                      ],
                     ),
-                    // IconButton(
-                    //   onPressed: () {
-                    //     setState(() {
-                    //       // hide = !hide;
-                    //     });
-                    //   },
-                    //   icon: Icon(PhosphorIcons.x(), color: Colors.white),
-                    // ),
-                  ],
-                ),
-              )
-            : SizedBox(),
+                    maxLines: 4,
+                  ),
+                )
+              : SizedBox(),
+        ),
       ),
     );
   }
