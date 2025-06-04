@@ -17,7 +17,7 @@ const Color kGrey55 = Color(0xFFe9e9e9);
 const Color kGrey6 = Color(0xFFf5f5f5);
 const Color kGrey7 = Color.fromRGBO(250, 250, 250, 1);
 
-const kPrimary = Color(0xFF048200);
+const kGreen = Color(0xff008000);
 const kRed = Color(0xffF6511D);
 const kYellow = Color(0xffFFB400);
 const kBlue = Color(0xFF3D57E0);
@@ -61,26 +61,17 @@ final kColorExpanded = [
   const Color(0xff00CED1), // Dark Turquoise
 ];
 
-const kMeshColor2 = Color(0xff79CC31);
-const kMeshColor2_5 = Color(0xff39A416);
-const kMeshColor3 = Color(0xff0B5D1E);
-const kMeshColor4 = Color(0xff008000);
-
-const kDarkBlack = Color(0xff063704);
-const kMeshColors = [kPrimary, kMeshColor2, kMeshColor3, kMeshColor4];
-const kMeshColorsDark = [kPrimary, kMeshColor2_5, kMeshColor3, kMeshColor4];
+const kDarkBlack = Color(0xff000000);
 
 const kBackgroundColorLight = Color(0xffF8FFF8);
 const kDividerColor = Color(0xffE2F4E1);
-
-final lowOpacityPrimary = kPrimary.withValues(alpha: 0.07);
 
 ThemeData getThemeData({bool isDarkMode = false}) {
   // final offWhite = primary.blend(kWhite, 0.9);
   final bg = isDarkMode ? kGrey1 : kBackgroundColorLight;
 
   const kTextColor = kDarkBlack;
-  const primary = kPrimary;
+  const primary = kDarkBlack;
   const onPrimary = kWhite;
   const secondary = kYellow;
   const onSecondary = kTextColor;
@@ -138,7 +129,7 @@ ThemeData getThemeData({bool isDarkMode = false}) {
       shape: RoundedRectangleBorder(
         borderRadius: kBorderRadius,
         side: BorderSide(
-          color: kPrimary.blend(kWhite, 0.7),
+          color: Colors.black,
           strokeAlign: BorderSide.strokeAlignInside,
         ),
       ),
@@ -456,7 +447,7 @@ extension ThemeExtension on BuildContext {
 
   double get baseSpacing => kBaseSpacing;
 
-  Color get success => kPrimary;
+  Color get success => kGreen;
 
   Color get error => kRed;
 }

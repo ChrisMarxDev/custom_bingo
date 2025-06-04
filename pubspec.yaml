@@ -30,6 +30,7 @@ dependencies:
   flutter_confetti: ^0.5.1
   package_info_plus: ^8.3.0
   screenshot: ^3.0.0
+  phosphor_flutter: ^2.1.0
 
 dev_dependencies:
   build_runner: ^2.4.15
