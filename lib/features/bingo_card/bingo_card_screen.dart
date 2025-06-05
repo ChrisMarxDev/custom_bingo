@@ -1,15 +1,16 @@
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/common/services/share_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
+import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'dart:math' as math;
 
-import 'bingo_card_logic.dart';
-import 'widgets/bingo_cell.dart';
 
-const double _cellSize = 128.0;
+// const double _cellSize = 128.0; // Removed as it's in BingoCardContent or should be passed
 
 class BingoCardScreen extends StatefulWidget {
   const BingoCardScreen({super.key});
@@ -43,8 +44,10 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     final viewHeight = screenSize.height;
 
     // Dimensions of the actual bingo grid content (excluding padding)
-    final contentWidth = gridSize * _cellSize;
-    final contentHeight = gridSize * _cellSize;
+    final contentWidth =
+        gridSize * 128.0; // Assuming _cellSize was 128.0 for EditingHint width
+    final contentHeight =
+        gridSize * 128.0; // Assuming _cellSize was 128.0 for EditingHint width
 
     const paddingValue = 24.0; // From Container's EdgeInsets.all(24)
     final totalContentWidthWithPadding = contentWidth + 2 * paddingValue;
@@ -84,10 +87,11 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     final gridItems = controller.gridItems
         .watch(context); // This should work with flutter_state_beacon
     final gridSize = controller.gridSize.watch(context);
+    final currentBingoName = currentSelectedBingoCardName.watch(context);
 
     final size = MediaQuery.sizeOf(context);
-    const cellWidth = _cellSize;
-    const cellHeight = _cellSize; // Square cells
+    // const cellWidth = _cellSize; // Will be handled by BingoCardContent
+    // const cellHeight = _cellSize; // Square cells
 
     final lastChangeDateTime = controller.lastChangeDateTime.watch(context);
 
@@ -144,46 +148,20 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
                           //   child: EditingHint(),
                           // ),
                           // SizedBox(height: 16),
-                          ToggleHint(),
+
+                          BingoCardContent(
+                            gridItems: gridItems,
+                            lastChangeDateTime: lastChangeDateTime,
+                            currentSelectedBingoCardName: currentBingoName,
+                          ),
                           SizedBox(height: 16),
                           SizedBox(
-                            width: gridSize * cellWidth,
+                            width: gridSize *
+                                128.0, // Assuming _cellSize was 128.0 for EditingHint width
                             child: EditingHint(),
                           ),
                           SizedBox(height: 16),
-                          Text(
-                            currentSelectedBingoCardName.watch(context) ??
-                                'Bingo Card',
-                            style: context.h2,
-                          ),
-                          SizedBox(height: 16),
-                          ...List.generate(gridSize, (rowIndex) {
-                            return Row(
-                              children: List.generate(gridSize, (colIndex) {
-                                if (rowIndex >= gridItems.length ||
-                                    colIndex >= gridItems[rowIndex].length) {
-                                  // Should not happen if grid is initialized correctly
-                                  return SizedBox(
-                                      width: cellWidth, height: cellHeight);
-                                }
-                                final item = gridItems[rowIndex][colIndex];
-
-                                final isMiddleItem = gridSize % 2 == 0
-                                    ? false
-                                    : gridSize ~/ 2 == rowIndex &&
-                                        gridSize ~/ 2 == colIndex;
-                                return BingoCell(
-                                  item: item,
-                                  isMiddleItem: isMiddleItem,
-                                  cellWidth: cellWidth,
-                                  cellHeight: cellHeight,
-                                );
-                              }),
-                            );
-                          }),
-                          SizedBox(height: 16),
-
-                          LastChange(lastChangeDateTime: lastChangeDateTime),
+                          ToggleHint(),
                         ],
                       ),
                     ],
@@ -236,33 +214,6 @@ class ToggleHint extends StatelessWidget {
   }
 }
 
-class LastChange extends StatelessWidget {
-  const LastChange({
-    required this.lastChangeDateTime,
-    super.key,
-  });
-
-  final DateTime? lastChangeDateTime;
-
-  @override
-  Widget build(BuildContext context) {
-    final date =
-        '${lastChangeDateTime?.toLocal().day}.${lastChangeDateTime?.toLocal().month}.${lastChangeDateTime?.toLocal().year}';
-    final time =
-        '${lastChangeDateTime?.toLocal().hour}:${lastChangeDateTime?.toLocal().minute}';
-    final text = lastChangeDateTime == null
-        ? 'Last change: Never'
-        : 'Last change: $date $time';
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Text(
-        text,
-        style: context.h5.copyWith(fontWeight: FontWeight.w700),
-      ),
-    );
-  }
-}
-
 class Actions extends StatelessWidget {
   const Actions({
     required this.transformationController,
@@ -275,30 +226,100 @@ class Actions extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = bingoCardControllerRef.of(context);
     final isEditing = controller.isEditing.watch(context);
+    final screenSize = MediaQuery.sizeOf(context);
+    final viewCenter = Offset(screenSize.width / 2, screenSize.height / 2);
 
     return Center(
       child: Container(
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: Colors.white),
         ),
         child: IntrinsicHeight(
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
+                onPressed: () async {
+                  final confirmed = await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Delete Card'),
+                            content: Text(
+                                'Are you sure you want to delete this card?'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, false),
+                                  child: Text('Cancel')),
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: Text('Delete')),
+                            ],
+                          ));
+                  if (confirmed) {
+                    final name = currentSelectedBingoCardName.value;
+                    if (name != null) {
+                      await deleteBingoCard(name);
+                      await deleteBingoCardName(name);
+                      await setCurrentSelectedBingoCard(null);
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => NewCardScreen()),
+                          (route) => false);
+                    }
+                  }
+                },
+                icon: Icon(PhosphorIcons.trash(), color: Colors.red),
+              ),
+              VerticalDivider(
+                color: Colors.white,
+                thickness: 1,
+                indent: 8,
+                endIndent: 8,
+                width: 8,
+              ),
+              IconButton(
                 onPressed: () {
-                  transformationController.value = Matrix4.identity();
+                  // Zoom out
+                  const double scaleFactor = 1 / 1.2;
+                  final Matrix4 newMatrix = Matrix4.identity()
+                    ..translate(viewCenter.dx, viewCenter.dy)
+                    ..scale(scaleFactor, scaleFactor)
+                    ..translate(-viewCenter.dx, -viewCenter.dy);
+                  transformationController.value =
+                      newMatrix * transformationController.value;
                 },
                 icon: Icon(PhosphorIcons.magnifyingGlassMinus(),
                     color: Colors.white),
               ),
               IconButton(
                 onPressed: () {
-                  transformationController.value = Matrix4.identity();
+                  // Zoom in
+                  const double scaleFactor = 1.2;
+                  final Matrix4 newMatrix = Matrix4.identity()
+                    ..translate(viewCenter.dx, viewCenter.dy)
+                    ..scale(scaleFactor, scaleFactor)
+                    ..translate(-viewCenter.dx, -viewCenter.dy);
+                  transformationController.value =
+                      newMatrix * transformationController.value;
                 },
                 icon: Icon(PhosphorIcons.magnifyingGlassPlus(),
                     color: Colors.white),
+              ),
+              VerticalDivider(
+                color: Colors.white,
+                thickness: 1,
+                indent: 8,
+                endIndent: 8,
+                width: 8,
+              ),
+              IconButton(
+                onPressed: () {
+                  shareCardPopup(context);
+                },
+                icon: Icon(PhosphorIcons.share(), color: Colors.white),
               ),
               VerticalDivider(
                 color: Colors.white,
@@ -317,17 +338,6 @@ class Actions extends StatelessWidget {
                         ? PhosphorIcons.lockOpen()
                         : PhosphorIcons.lock(PhosphorIconsStyle.fill),
                     color: Colors.white),
-              ),
-              VerticalDivider(
-                color: Colors.white,
-                thickness: 1,
-                indent: 8,
-                endIndent: 8,
-                width: 8,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(PhosphorIcons.share(), color: Colors.white),
               ),
             ],
           ),

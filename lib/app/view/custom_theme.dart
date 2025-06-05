@@ -63,8 +63,7 @@ final kColorExpanded = [
 
 const kDarkBlack = Color(0xff000000);
 
-const kBackgroundColorLight = Color(0xffF8FFF8);
-const kDividerColor = Color(0xffE2F4E1);
+const kBackgroundColorLight = Color(0xffffffff);
 
 ThemeData getThemeData({bool isDarkMode = false}) {
   // final offWhite = primary.blend(kWhite, 0.9);
@@ -278,7 +277,7 @@ ThemeData getThemeData({bool isDarkMode = false}) {
       space: 1,
       endIndent: 0,
       indent: 0,
-      color: kDividerColor,
+      color: kGrey5,
     ),
     dataTableTheme: DataTableThemeData(
       dataTextStyle: const TextStyle(),

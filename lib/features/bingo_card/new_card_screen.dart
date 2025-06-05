@@ -1,3 +1,4 @@
+import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/common/widgets/animated_number.dart';
 import 'package:custom_bingo/common/widgets/async_elevated_button.dart';
@@ -30,7 +31,7 @@ class _NewCardScreenState extends State<NewCardScreen> {
     final hasName = _nameController.text.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create New Bingo Grid'),
+        title: Text('Create New Bingo Grid', style: context.h2),
         actions: [
           BingoPopupMenu(),
           SizedBox(width: 16),
@@ -55,11 +56,6 @@ class _NewCardScreenState extends State<NewCardScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              Text(
-                'Grid Size',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
               AnimatedNumberSelector(
                 value: _gridSize,
                 minValue: 2, // Assuming a minimum grid size

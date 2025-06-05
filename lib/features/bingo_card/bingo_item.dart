@@ -23,9 +23,11 @@ class BingoCardState with BingoCardStateMappable {
     required this.name,
     required this.gridItems,
     required this.lastChangeDateTime,
+    this.isEditing,
   });
 
   final String name;
   final List<List<BingoItem>> gridItems;
   final DateTime? lastChangeDateTime;
+  final bool? isEditing;
 }

@@ -16,6 +16,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.light,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      debugShowCheckedModeBanner: false,
       home: hasBingoCard ? const BingoCardScreen() : const NewCardScreen(),
     );
   }

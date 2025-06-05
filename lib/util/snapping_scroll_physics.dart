@@ -79,6 +79,7 @@ class SnappingScrollPhysics extends ScrollPhysics {
       return super.createBallisticSimulation(position, velocity);
     }
 
+    // ignore: deprecated_member_use
     final tolerance = this.tolerance;
     final target = _getTargetPixels(position, tolerance, velocity);
 

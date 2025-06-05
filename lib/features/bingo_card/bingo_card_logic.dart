@@ -1,7 +1,6 @@
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_beacon/state_beacon.dart';
-import 'package:uuid/uuid.dart';
 
 import 'bingo_item.dart';
 
@@ -14,6 +13,36 @@ final bingoGridNamesBeacon = Beacon.writable<List<String>>(
 final currentSelectedBingoCardName = Beacon.writable<String?>(
   getCurrentSelectedBingoCardName(),
 );
+
+// 	1.	📱 Phone comes out during vows
+// 2.	🥂 Champagne gets spilled
+// 3.	😢 Tears during a speech
+// 4.	🎩 Someone makes a dramatic entrance
+// 5.	💃 Kids take over the dance floor
+// 6.	🍻 Impromptu toast from a guest
+// 7.	👏 Crowd claps too early
+// 8.	🎶 DJ plays a throwback hit
+// 9.	📷 Someone takes a group photo and no one looks at the same camera
+final exampleGridItems = [
+  [
+    BingoItem(id: '1', text: '📱 Phone comes out during vows'),
+    BingoItem(id: '2', text: '🥂 Champagne gets spilled'),
+    BingoItem(id: '3', text: '😢 Tears during a speech'),
+  ],
+  [
+    BingoItem(id: '4', text: '🎩 Someone makes a dramatic entrance'),
+    BingoItem(id: '5', text: '💃 Kids take over the dance floor'),
+    BingoItem(id: '6', text: '🍻 Impromptu toast from a guest'),
+  ],
+  [
+    BingoItem(id: '7', text: '👏 Crowd claps too early'),
+    BingoItem(id: '8', text: '🎶 DJ plays a throwback hit'),
+    BingoItem(
+        id: '9',
+        text:
+            '📷 Someone takes a group photo and no one looks at the same camera'),
+  ],
+];
 
 class BingoCardController extends BeaconController {
   BingoCardController() {
@@ -35,6 +64,8 @@ class BingoCardController extends BeaconController {
     }
     final bingoCard = loadBingoCard(sharedPrefsBeacon.value, name);
     gridItems.value = bingoCard?.gridItems ?? [];
+    // gridItems.value = exampleGridItems;
+    isEditing.value = bingoCard?.isEditing ?? true;
     lastChangeDateTime.value = bingoCard?.lastChangeDateTime ?? DateTime.now();
   }
 
@@ -101,14 +132,23 @@ BingoCardState? loadBingoCard(
   return BingoCardStateMapper.fromJson(json);
 }
 
+Future<void> deleteBingoCard(String name) async {
+  final sharedPreferences = sharedPrefsBeacon.value;
+  await sharedPreferences.remove('bingo_card_$name');
+}
+
 String? getCurrentSelectedBingoCardName() {
   final sharedPreferences = sharedPrefsBeacon.value;
   return sharedPreferences.getString('current_selected_bingo_card');
 }
 
-Future<void> setCurrentSelectedBingoCard(String name) async {
+Future<void> setCurrentSelectedBingoCard(String? name) async {
   final sharedPreferences = sharedPrefsBeacon.value;
-  await sharedPreferences.setString('current_selected_bingo_card', name);
+  if (name == null) {
+    await sharedPreferences.remove('current_selected_bingo_card');
+  } else {
+    await sharedPreferences.setString('current_selected_bingo_card', name);
+  }
   currentSelectedBingoCardName.value = name;
 }
 
@@ -126,5 +166,11 @@ Future<void> setBingoCardNames(List<String> names) async {
 Future<void> addBingoCardName(String name) async {
   final names = List<String>.from(getBingoCardNames());
   names.add(name);
+  await setBingoCardNames(names);
+}
+
+Future<void> deleteBingoCardName(String name) async {
+  final names = List<String>.from(getBingoCardNames());
+  names.remove(name);
   await setBingoCardNames(names);
 }

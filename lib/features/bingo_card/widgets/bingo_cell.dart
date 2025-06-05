@@ -1,5 +1,3 @@
-import 'package:custom_bingo/app/view/custom_theme.dart';
-import 'package:custom_bingo/features/bingo_card/widgets/bingo_cell_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
@@ -39,7 +37,6 @@ class _BingoCellState extends State<BingoCell> {
   late final FocusNode focusNode;
   final LayerLink _layerLink = LayerLink();
   late final TextEditingController _textEditingController;
-  OverlayEntry? _overlayEntry;
 
   @override
   void initState() {

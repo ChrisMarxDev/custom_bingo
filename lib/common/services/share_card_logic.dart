@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
-Future<void> shareRecipePopup(BuildContext context) async {
-  // return shareRecipe(context, recipe);
+Future<void> shareCardPopup(BuildContext context) async {
   await showDialog<void>(
     context: context,
     builder: (context) => RecipeSharingDialog(),
@@ -25,15 +24,11 @@ class RecipeSharingDialog extends StatefulWidget {
 
 class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
   late final ScreenshotController screenshotController;
-  late final TransformationController transformationController;
 
   @override
   void initState() {
     super.initState();
     screenshotController = ScreenshotController();
-    transformationController = TransformationController(
-      Matrix4.identity()..scale(0.9),
-    );
   }
 
   @override
@@ -55,16 +50,18 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: InteractiveViewer(
-                    alignment: Alignment.topCenter,
-                    boundaryMargin: const EdgeInsets.all(24),
-                    transformationController: transformationController,
-                    // minScale: 0.6, // allow zooming out to 10% of fit
-                    // maxScale: 2, // allow zooming in
+                  child: SingleChildScrollView(
                     child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
                       child: Screenshot(
                         controller: screenshotController,
-                        child: RecipeSharingWidget2(),
+                        child: ColoredBox(
+                          color: context.background,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: BingoCardContentWrapper(),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -272,35 +269,3 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
 //     );
 //   }
 // }
-
-class RecipeSharingWidget2 extends StatelessWidget {
-  const RecipeSharingWidget2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: ColoredBox(
-        color: context.background,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: const BoxDecoration(),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      children: [],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

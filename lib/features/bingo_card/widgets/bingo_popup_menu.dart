@@ -1,5 +1,5 @@
-import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
+import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +41,10 @@ class BingoPopupMenu extends StatelessWidget {
                       hideOverlay();
                       await setCurrentSelectedBingoCard(name);
                       bingoCardControllerRef.of(context).loadBoard(name);
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => BingoCardScreen()),
+                          (route) => false);
                     },
                     child: Text('- $name'),
                   );

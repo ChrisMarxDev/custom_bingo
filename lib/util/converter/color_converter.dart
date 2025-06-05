@@ -11,6 +11,7 @@ Color colorFromHex(String hex) {
 }
 
 String colorToHex(Color color) {
+  // ignore: deprecated_member_use
   return color.value.toRadixString(16).substring(2).toUpperCase();
 }
 

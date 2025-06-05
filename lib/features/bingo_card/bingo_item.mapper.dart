@@ -151,12 +151,16 @@ class BingoCardStateMapper extends ClassMapperBase<BingoCardState> {
       v.lastChangeDateTime;
   static const Field<BingoCardState, DateTime> _f$lastChangeDateTime =
       Field('lastChangeDateTime', _$lastChangeDateTime);
+  static bool? _$isEditing(BingoCardState v) => v.isEditing;
+  static const Field<BingoCardState, bool> _f$isEditing =
+      Field('isEditing', _$isEditing, opt: true);
 
   @override
   final MappableFields<BingoCardState> fields = const {
     #name: _f$name,
     #gridItems: _f$gridItems,
     #lastChangeDateTime: _f$lastChangeDateTime,
+    #isEditing: _f$isEditing,
   };
   @override
   final bool ignoreNull = true;
@@ -165,7 +169,8 @@ class BingoCardStateMapper extends ClassMapperBase<BingoCardState> {
     return BingoCardState(
         name: data.dec(_f$name),
         gridItems: data.dec(_f$gridItems),
-        lastChangeDateTime: data.dec(_f$lastChangeDateTime));
+        lastChangeDateTime: data.dec(_f$lastChangeDateTime),
+        isEditing: data.dec(_f$isEditing));
   }
 
   @override
@@ -227,7 +232,8 @@ abstract class BingoCardStateCopyWith<$R, $In extends BingoCardState, $Out>
   $R call(
       {String? name,
       List<List<BingoItem>>? gridItems,
-      DateTime? lastChangeDateTime});
+      DateTime? lastChangeDateTime,
+      bool? isEditing});
   BingoCardStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -249,18 +255,22 @@ class _BingoCardStateCopyWithImpl<$R, $Out>
   $R call(
           {String? name,
           List<List<BingoItem>>? gridItems,
-          Object? lastChangeDateTime = $none}) =>
+          Object? lastChangeDateTime = $none,
+          Object? isEditing = $none}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (gridItems != null) #gridItems: gridItems,
-        if (lastChangeDateTime != $none) #lastChangeDateTime: lastChangeDateTime
+        if (lastChangeDateTime != $none)
+          #lastChangeDateTime: lastChangeDateTime,
+        if (isEditing != $none) #isEditing: isEditing
       }));
   @override
   BingoCardState $make(CopyWithData data) => BingoCardState(
       name: data.get(#name, or: $value.name),
       gridItems: data.get(#gridItems, or: $value.gridItems),
       lastChangeDateTime:
-          data.get(#lastChangeDateTime, or: $value.lastChangeDateTime));
+          data.get(#lastChangeDateTime, or: $value.lastChangeDateTime),
+      isEditing: data.get(#isEditing, or: $value.isEditing));
 
   @override
   BingoCardStateCopyWith<$R2, BingoCardState, $Out2> $chain<$R2, $Out2>(
