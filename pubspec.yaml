@@ -18,7 +18,7 @@ dependencies:
   go_router: ^14.8.1
   google_fonts: ^6.2.1
   intl: any
-  logger: ^2.5.0
+  logger: ^2.6.1
   shared_preferences: ^2.5.3
   state_beacon: ^1.0.0
   drops: ^0.0.5
