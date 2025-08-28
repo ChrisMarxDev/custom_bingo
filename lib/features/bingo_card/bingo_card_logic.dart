@@ -2,6 +2,7 @@ import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/util/extensions/list_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_beacon/state_beacon.dart';
+import 'package:uuid/uuid.dart';
 
 import 'bingo_item.dart';
 
@@ -129,8 +130,9 @@ class BingoCardController extends BeaconController {
     // check for free space
     // check if grid is odd and if the center element is empty
 
+    final isOdd = itemsPerRow % 2 == 1;
     final centerItem = grid.getCenterOrNull()?.getCenterOrNull();
-    final hasCenter = centerItem?.text.isNotEmpty ?? false;
+    final hasCenter = isOdd && (centerItem?.text.isEmpty ?? true);
 
     if (hasCenter) {
       allItems.remove(centerItem);
@@ -142,8 +144,8 @@ class BingoCardController extends BeaconController {
     for (var i = 0; i < itemsPerRow; i += 1) {
       final row = <BingoItem>[];
       for (var j = 0; j < itemsPerRow; j += 1) {
-        if (i == centerIndex && j == centerIndex && centerItem != null) {
-          row.add(centerItem);
+        if (i == centerIndex && j == centerIndex && hasCenter) {
+          row.add(BingoItem(id: Uuid().v4(), text: ''));
           continue;
         } else {
           row.add(allItems.removeAt(0));

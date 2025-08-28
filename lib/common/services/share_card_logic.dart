@@ -40,6 +40,12 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
+            Text(
+              'Share the bingo card',
+              textAlign: TextAlign.center,
+              style: context.h3,
+            ),
+            const SizedBox(height: 16),
             Expanded(
               child: Container(
                 margin: const EdgeInsets.all(8),
@@ -55,17 +61,28 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
                       scrollDirection: Axis.horizontal,
                       child: Screenshot(
                         controller: screenshotController,
-                        child: ColoredBox(
-                          color: context.background,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: BingoCardContentWrapper(),
+                        child: IgnorePointer(
+                          child: ColoredBox(
+                            color: context.background,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: BingoCardContentWrapper(),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Share the whole bingo card above as image. You can also directly print the image.',
+                textAlign: TextAlign.center,
+                style: context.p2.copyWith(color: kGrey3),
               ),
             ),
             const SizedBox(height: 16),

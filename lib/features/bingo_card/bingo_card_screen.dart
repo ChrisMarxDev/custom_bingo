@@ -2,6 +2,7 @@
 
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/share_card_logic.dart';
+import 'package:custom_bingo/common/widgets/inherited_provider.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
@@ -14,6 +15,11 @@ import 'dart:math' as math;
 
 // const double _cellSize = 128.0; // Removed as it's in BingoCardContent or should be passed
 
+class ShouldAnimate {
+  final bool shouldAnimate;
+
+  ShouldAnimate({this.shouldAnimate = true});
+}
 class BingoCardScreen extends StatefulWidget {
   const BingoCardScreen({super.key});
 
@@ -99,84 +105,88 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
 
     // InteractiveViewer creates its own controller if not provided.
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          BingoPopupMenu(),
-          // Button to reset the view of the InteractiveViewer
-          // IconButton(
-          //   icon: const Icon(Icons.center_focus_strong),
-          //   tooltip: 'Reset View',
-          //   onPressed: () {
-          //     // _transformationController.value = Matrix4.identity();
-          //     _centerView();
-          //   },
-          // ),
-          SizedBox(width: 16),
-        ],
-      ),
-      body: Stack(
-        children: [
-          InteractiveViewer.builder(
-              transformationController: _transformationController,
-              boundaryMargin: EdgeInsets.only(
-                bottom: size.height * 0.7,
-                top: size.height * 0.5,
-                left: size.width * 0.6,
-                right: size.width * 0.6,
-              ),
-              // alignment: Alignment.topCenter,
-              minScale: 0.2,
-              maxScale: 2.0,
-              builder: (context, child) {
-                return Container(
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    left: 24,
-                    right: 24,
-                    bottom: 48,
-                  ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   child: EditingHint(),
-                          // ),
-                          // SizedBox(height: 16),
+    return InheritedProvider<ShouldAnimate>(
+      value: ShouldAnimate(shouldAnimate: true),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            BingoPopupMenu(),
+            // Button to reset the view of the InteractiveViewer
+            // IconButton(
+            //   icon: const Icon(Icons.center_focus_strong),
+            //   tooltip: 'Reset View',
+            //   onPressed: () {
+            //     // _transformationController.value = Matrix4.identity();
+            //     _centerView();
+            //   },
+            // ),
+            SizedBox(width: 16),
+          ],
+        ),
+        body: Stack(
+          children: [
+            InteractiveViewer.builder(
+                transformationController: _transformationController,
+                boundaryMargin: EdgeInsets.only(
+                  bottom: size.height * 0.7,
+                  top: size.height * 0.5,
+                  left: size.width * 0.6,
+                  right: size.width * 0.6,
+                ),
+                // alignment: Alignment.topCenter,
+                minScale: 0.2,
+                maxScale: 2.0,
+                builder: (context, child) {
+                  return Container(
+                    padding: const EdgeInsets.only(
+                      top: 24,
+                      left: 24,
+                      right: 24,
+                      bottom: 48,
+                    ),
+                    child: Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // SizedBox(
+                            //   width: MediaQuery.of(context).size.width,
+                            //   child: EditingHint(),
+                            // ),
+                            // SizedBox(height: 16),
 
-                          BingoCardContent(
-                            gridItems: gridItems,
-                            lastChangeDateTime: lastChangeDateTime,
-                            currentSelectedBingoCardName: currentBingoName,
-                          ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: gridSize *
-                                128.0, // Assuming _cellSize was 128.0 for EditingHint width
-                            child: EditingHint(),
-                          ),
-                          SizedBox(height: 16),
-                          ToggleHint(),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }),
-          Positioned(
-            bottom: 42 + MediaQuery.of(context).padding.bottom,
-            left: 16,
-            right: 16,
-            child: Actions(transformationController: _transformationController),
-          ),
-        ],
+                            BingoCardContent(
+                              gridItems: gridItems,
+                              lastChangeDateTime: lastChangeDateTime,
+                              currentSelectedBingoCardName: currentBingoName,
+                            ),
+                            SizedBox(height: 16),
+                            SizedBox(
+                              width: gridSize *
+                                  128.0, // Assuming _cellSize was 128.0 for EditingHint width
+                              child: EditingHint(),
+                            ),
+                            SizedBox(height: 16),
+                            ToggleHint(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            Positioned(
+              bottom: 42 + MediaQuery.of(context).padding.bottom,
+              left: 16,
+              right: 16,
+              child:
+                  Actions(transformationController: _transformationController),
+            ),
+          ],
+        ),
       ),
     );
   }

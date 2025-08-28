@@ -38,7 +38,8 @@ extension ListExtension<T> on List<T> {
     if (length % 2 == 0) {
       return null;
     }
-    return this[(length.toDouble() / 2.0).floor() + 1];
+    final centerIndex = (length.toDouble() / 2.0).floor();
+    return this[centerIndex];
   }
 
   T? getIndexOrNull(int index) {

@@ -1,4 +1,6 @@
 import 'package:animated_to/animated_to.dart';
+import 'package:custom_bingo/common/widgets/inherited_provider.dart';
+import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
@@ -67,6 +69,8 @@ class _BingoCellState extends State<BingoCell> {
     final controller = bingoCardControllerRef.of(context);
     final isEditing = controller.isEditing.watch(context);
     final isDone = widget.item.isDone;
+    final shouldAnimate =
+        context.maybeReadProvided<ShouldAnimate>()?.shouldAnimate ?? false;
     Color borderColor = Colors.black;
 
     Color backgroundColor = Colors.transparent;
@@ -77,7 +81,7 @@ class _BingoCellState extends State<BingoCell> {
       backgroundColor = Colors.black.withValues(alpha: 0.8);
     }
     return AnimatedTo.spring(
-      globalKey: GlobalObjectKey(widget.item.id),
+      globalKey: shouldAnimate ? GlobalObjectKey(widget.item.id) : GlobalKey(),
       child: RawBingoCell(
           widget: widget,
           borderColor: borderColor,
@@ -115,7 +119,8 @@ class RawBingoCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       width: widget.cellWidth,
       height: widget.cellHeight,
       decoration: BoxDecoration(
