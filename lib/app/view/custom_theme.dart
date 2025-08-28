@@ -210,7 +210,7 @@ ThemeData getThemeData({bool isDarkMode = false}) {
         }),
       ),
     ),
-    dialogTheme: DialogTheme(shape: kCardShape, backgroundColor: bg),
+    dialogTheme: DialogThemeData(shape: kCardShape, backgroundColor: bg),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
         textStyle: WidgetStateProperty.all<TextStyle>(

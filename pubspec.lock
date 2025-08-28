@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.3"
+  animated_to:
+    dependency: "direct main"
+    description:
+      name: animated_to
+      sha256: f13ecf8204a232599f1958f3925b72572e8744b2c5a4f31197da5220c0801e93
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
   ansicolor:
     dependency: transitive
     description:
@@ -881,6 +889,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
+  springster:
+    dependency: transitive
+    description:
+      name: springster
+      sha256: "32b374f6d3c8827e862c0e8622254e7bd2817eefc1b009add98121e6c8f8dad9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+1"
   sprintf:
     dependency: transitive
     description:

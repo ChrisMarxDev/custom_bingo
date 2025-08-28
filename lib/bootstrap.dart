@@ -8,9 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_beacon/state_beacon.dart';
+import 'package:userorient_flutter/userorient_flutter.dart';
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  UserOrient.configure(
+    apiKey: 'bdd8a7b8-04dc-4780-862f-d052f74e86e1',
+    languageCode: 'en',
+  );
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

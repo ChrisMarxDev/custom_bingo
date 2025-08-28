@@ -1,4 +1,5 @@
 import 'package:custom_bingo/common/services/shared_prefs.dart';
+import 'package:custom_bingo/util/extensions/list_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_beacon/state_beacon.dart';
 
@@ -115,6 +116,15 @@ class BingoCardController extends BeaconController {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void shuffleCard() {
+    final items = gridItems.value.expand((row) => row).toList();
+    items.shuffle();
+    final newGrid = items.chunkedBy(gridSize.value);
+    gridItems.value = newGrid;
+    lastChangeDateTime.value = DateTime.now();
+    _saveBingoCard();
   }
 }
 

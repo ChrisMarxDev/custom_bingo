@@ -1,14 +1,16 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/share_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'dart:math' as math;
-
 
 // const double _cellSize = 128.0; // Removed as it's in BingoCardContent or should be passed
 
@@ -190,25 +192,12 @@ class ToggleHint extends StatelessWidget {
     final controller = bingoCardControllerRef.of(context);
     final hasToggledOnce = controller.hasToggledOnce.watch(context);
 
-    return AnimatedOpacity(
-      opacity: hasToggledOnce ? 0.0 : 1.0,
-      duration: const Duration(milliseconds: 300),
-      child: AnimatedSize(
-        duration: const Duration(milliseconds: 300),
-        child: hasToggledOnce
-            ? SizedBox()
-            : Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                child: Text(
-                  'Press long to mark a field as checked',
-                  style: context.p1.copyWith(color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+    return HintWidget(
+      show: !hasToggledOnce,
+      child: Text(
+        'Press long to mark a field as checked',
+        style: context.p1.copyWith(color: Colors.white),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -253,7 +242,7 @@ class Actions extends StatelessWidget {
                                   onPressed: () =>
                                       Navigator.pop(context, false),
                                   child: Text('Cancel')),
-                              TextButton(
+                              FilledButton(
                                   onPressed: () => Navigator.pop(context, true),
                                   child: Text('Delete')),
                             ],
@@ -273,13 +262,7 @@ class Actions extends StatelessWidget {
                 },
                 icon: Icon(PhosphorIcons.trash(), color: Colors.red),
               ),
-              VerticalDivider(
-                color: Colors.white,
-                thickness: 1,
-                indent: 8,
-                endIndent: 8,
-                width: 8,
-              ),
+              ButtonDivider(),
               IconButton(
                 onPressed: () {
                   // Zoom out
@@ -308,26 +291,21 @@ class Actions extends StatelessWidget {
                 icon: Icon(PhosphorIcons.magnifyingGlassPlus(),
                     color: Colors.white),
               ),
-              VerticalDivider(
-                color: Colors.white,
-                thickness: 1,
-                indent: 8,
-                endIndent: 8,
-                width: 8,
-              ),
+              ButtonDivider(),
               IconButton(
                 onPressed: () {
                   shareCardPopup(context);
                 },
                 icon: Icon(PhosphorIcons.share(), color: Colors.white),
               ),
-              VerticalDivider(
-                color: Colors.white,
-                thickness: 1,
-                indent: 8,
-                endIndent: 8,
-                width: 8,
+              ButtonDivider(),
+              IconButton(
+                onPressed: () {
+                  shuffleCard(context);
+                },
+                icon: Icon(PhosphorIcons.shuffle(), color: Colors.white),
               ),
+              ButtonDivider(),
               IconButton(
                 onPressed: () {
                   final controller = bingoCardControllerRef.of(context);
@@ -343,6 +321,43 @@ class Actions extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> shuffleCard(BuildContext context) async {
+    final confirmed = await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Shuffle Card'),
+              content: Text('Are you sure you want to shuffle this card?'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text('Cancel')),
+                FilledButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text('Shuffle')),
+              ],
+            ));
+    if (!confirmed) return;
+    final controller = bingoCardControllerRef.of(context);
+    controller.shuffleCard();
+  }
+}
+
+class ButtonDivider extends StatelessWidget {
+  const ButtonDivider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return VerticalDivider(
+      color: Colors.white,
+      thickness: 1,
+      indent: 8,
+      endIndent: 8,
+      width: 2,
     );
   }
 }
@@ -362,40 +377,25 @@ class _EditingHintState extends State<EditingHint> {
 
     final show = isEditing;
     return Center(
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 300),
-        opacity: show ? 1.0 : 0.0,
-        child: AnimatedSize(
-          duration: const Duration(milliseconds: 300),
-          child: show
-              ? Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: context.p1.copyWith(color: Colors.white),
-                      children: [
-                        TextSpan(text: 'Press the lock icon '),
-                        WidgetSpan(
-                          child: Icon(
-                            PhosphorIcons.lockKeyOpen(),
-                            color: Colors.white,
-                            size: context.p1.fontSize,
-                          ),
-                        ),
-                        TextSpan(
-                            text:
-                                ' to make make the fields not editable anymore.'),
-                      ],
-                    ),
-                    maxLines: 4,
-                  ),
-                )
-              : SizedBox(),
+      child: HintWidget(
+        show: show,
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: context.p1.copyWith(color: Colors.white),
+            children: [
+              TextSpan(text: 'Press the lock icon '),
+              WidgetSpan(
+                child: Icon(
+                  PhosphorIcons.lockKeyOpen(),
+                  color: Colors.white,
+                  size: context.p1.fontSize,
+                ),
+              ),
+              TextSpan(text: ' to make make the fields not editable anymore.'),
+            ],
+          ),
+          maxLines: 4,
         ),
       ),
     );
