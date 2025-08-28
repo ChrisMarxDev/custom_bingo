@@ -119,10 +119,40 @@ class BingoCardController extends BeaconController {
   }
 
   void shuffleCard() {
-    final items = gridItems.value.expand((row) => row).toList();
-    items.shuffle();
-    final newGrid = items.chunkedBy(gridSize.value);
-    gridItems.value = newGrid;
+    final grid = gridItems.value;
+    final allItems = grid.expand((row) => row).toList();
+    allItems.shuffle();
+    final itemsPerRow = gridSize.value;
+
+    List<List<BingoItem>> newGrid;
+
+    // check for free space
+    // check if grid is odd and if the center element is empty
+
+    final centerItem = grid.getCenterOrNull()?.getCenterOrNull();
+    final hasCenter = centerItem?.text.isNotEmpty ?? false;
+
+    if (hasCenter) {
+      allItems.remove(centerItem);
+    }
+
+    final centerIndex = itemsPerRow ~/ 2;
+
+    final result = <List<BingoItem>>[];
+    for (var i = 0; i < itemsPerRow; i += 1) {
+      final row = <BingoItem>[];
+      for (var j = 0; j < itemsPerRow; j += 1) {
+        if (i == centerIndex && j == centerIndex && centerItem != null) {
+          row.add(centerItem);
+          continue;
+        } else {
+          row.add(allItems.removeAt(0));
+        }
+      }
+      result.add(row);
+    }
+
+    gridItems.value = result;
     lastChangeDateTime.value = DateTime.now();
     _saveBingoCard();
   }

@@ -34,6 +34,13 @@ extension ListExtension<T> on List<T> {
     return result;
   }
 
+  T? getCenterOrNull() {
+    if (length % 2 == 0) {
+      return null;
+    }
+    return this[(length.toDouble() / 2.0).floor() + 1];
+  }
+
   T? getIndexOrNull(int index) {
     if (index < 0 || index >= length) {
       return null;

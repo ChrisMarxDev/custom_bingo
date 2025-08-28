@@ -10,3 +10,22 @@ tasks:
     cmds:
       - echo "{{.GREETING}}"
     silent: true
+  
+  build_android:
+    cmds:
+      - flutter build appbundle --release --flavor production -t lib/main_production.dart
+    silent: true
+  
+  build_ios:
+    cmds:
+      - flutter build ios --release --flavor production
+    silent: true
+  
+  launch_icons:
+    cmds:
+      - flutter pub run flutter_launcher_icons
+  
+  native_splash:
+    cmds:
+      - flutter pub run flutter_native_splash:create
+  
