@@ -2,7 +2,7 @@ import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
-import 'package:custom_bingo/l10n/l10n.dart';
+import 'package:custom_bingo/l10n/arb/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {

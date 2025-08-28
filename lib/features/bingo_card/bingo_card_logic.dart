@@ -105,6 +105,7 @@ class BingoCardController extends BeaconController {
     await saveBingoCard(
         sharedPreferences,
         BingoCardState(
+          isEditing: isEditing.value,
           name: currentSelectedBingoCardName.value ?? '',
           gridItems: gridItems.value,
           lastChangeDateTime: lastChangeDateTime.value,

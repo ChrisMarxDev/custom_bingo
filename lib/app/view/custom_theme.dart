@@ -121,7 +121,7 @@ ThemeData getThemeData({bool isDarkMode = false}) {
 
       // surface: offWhite,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: bg,
       elevation: 0,
       margin: EdgeInsets.zero,
