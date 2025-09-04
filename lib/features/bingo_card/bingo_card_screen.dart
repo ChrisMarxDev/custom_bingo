@@ -20,6 +20,7 @@ class ShouldAnimate {
 
   ShouldAnimate({this.shouldAnimate = true});
 }
+
 class BingoCardScreen extends StatefulWidget {
   const BingoCardScreen({super.key});
 

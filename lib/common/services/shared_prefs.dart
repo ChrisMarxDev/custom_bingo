@@ -12,4 +12,12 @@ extension SharedPrefs on SharedPreferences {
   void setDateTime(String key, DateTime value) {
     setString(key, value.toIso8601String());
   }
+
+  String getStringOrWriteDefault(String key, String Function() defaultValue) {
+    final value = getString(key);
+    if (value != null) return value;
+    final newDefaultValue = defaultValue();
+    setString(key, newDefaultValue);
+    return newDefaultValue;
+  }
 }

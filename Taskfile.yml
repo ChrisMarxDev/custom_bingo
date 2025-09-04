@@ -13,13 +13,11 @@ tasks:
   
   build_android:
     cmds:
-      - flutter build appbundle --release --flavor production -t lib/main_production.dart
-    silent: true
+      - flutter build aab --release --flavor production -t lib/main_production.dart
   
   build_ios:
     cmds:
-      - flutter build ios --release --flavor production
-    silent: true
+      - flutter build ios -t lib/main_production.dart --flavor production --config-only --release
   
   launch_icons:
     cmds:

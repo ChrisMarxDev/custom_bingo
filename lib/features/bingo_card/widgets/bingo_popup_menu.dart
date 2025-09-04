@@ -19,7 +19,7 @@ class BingoPopupMenu extends StatelessWidget {
       targetAnchor: Alignment.bottomRight,
       popupMenuBuilder: (BuildContext context, void Function() hideOverlay) {
         return Container(
-          constraints: const BoxConstraints(maxWidth: 200, maxHeight: 600),
+          constraints: const BoxConstraints(maxWidth: 260, maxHeight: 600),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,6 +73,7 @@ class BingoPopupMenu extends StatelessWidget {
                     ],
                   ),
                 ),
+                KoFiButton(),
               ],
             ),
           ),
