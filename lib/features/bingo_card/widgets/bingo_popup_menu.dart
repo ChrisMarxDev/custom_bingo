@@ -1,7 +1,10 @@
+import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/settings/settings.dart';
+import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +17,20 @@ class BingoPopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final bingoCardNames = bingoGridNamesBeacon.watch(context);
     return PopupMenu(
-      child: const Icon(Icons.more_vert),
+      child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.all(8),
+          child: const Icon(Icons.more_vert)),
       followerAnchor: Alignment.topRight,
       targetAnchor: Alignment.bottomRight,
       popupMenuBuilder: (BuildContext context, void Function() hideOverlay) {
@@ -63,7 +79,7 @@ class BingoPopupMenu extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     hideOverlay();
-                    openBoard(context);
+                    openUserOrient(context);
                   },
                   child: Row(
                     children: [
@@ -74,6 +90,18 @@ class BingoPopupMenu extends StatelessWidget {
                   ),
                 ),
                 KoFiButton(),
+                if (kDebugMode)
+                  TextButton(
+                    onPressed: () {
+                      sharedPrefsBeacon.value.clear();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => NewCardScreen()),
+                      );
+                      hideOverlay();
+                    },
+                    child: const Text('Clear Settings'),
+                  ),
               ],
             ),
           ),

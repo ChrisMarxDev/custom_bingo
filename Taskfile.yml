@@ -26,4 +26,6 @@ tasks:
   native_splash:
     cmds:
       - flutter pub run flutter_native_splash:create
+
+# --flavor production -t lib/main_production.dart --build-name=1.0.$PROJECT_BUILD_NUMBER --build-number=$PROJECT_BUILD_NUMBER
   

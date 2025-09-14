@@ -5,6 +5,10 @@ extension IntExtension on int {
       (Match m) => '${m[1]}$separator',
     );
   }
+
+  bool isMiddleOf(int other) {
+    return this == (other / 2).floor();
+  }
 }
 
 extension DoubleExtension on double {

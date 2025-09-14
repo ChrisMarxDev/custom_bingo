@@ -111,23 +111,6 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
-            BingoPopupMenu(),
-            // Button to reset the view of the InteractiveViewer
-            // IconButton(
-            //   icon: const Icon(Icons.center_focus_strong),
-            //   tooltip: 'Reset View',
-            //   onPressed: () {
-            //     // _transformationController.value = Matrix4.identity();
-            //     _centerView();
-            //   },
-            // ),
-            SizedBox(width: 16),
-          ],
-        ),
         body: Stack(
           children: [
             InteractiveViewer.builder(
@@ -159,20 +142,12 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
                             //   child: EditingHint(),
                             // ),
                             // SizedBox(height: 16),
-
                             BingoCardContent(
                               gridItems: gridItems,
                               lastChangeDateTime: lastChangeDateTime,
                               currentSelectedBingoCardName: currentBingoName,
                             ),
                             SizedBox(height: 16),
-                            SizedBox(
-                              width: gridSize *
-                                  128.0, // Assuming _cellSize was 128.0 for EditingHint width
-                              child: EditingHint(),
-                            ),
-                            SizedBox(height: 16),
-                            ToggleHint(),
                           ],
                         ),
                       ],
@@ -180,11 +155,20 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
                   );
                 }),
             Positioned(
+                top: kToolbarHeight + 8, right: 8, child: BingoPopupMenu()),
+            Positioned(
               bottom: 42 + MediaQuery.of(context).padding.bottom,
               left: 16,
               right: 16,
-              child:
+              child: Column(
+                children: [
+                  EditingHint(),
+                  SizedBox(height: 8),
+                  ToggleHint(),
+                  SizedBox(height: 8),
                   Actions(transformationController: _transformationController),
+                ],
+              ),
             ),
           ],
         ),
@@ -200,15 +184,11 @@ class ToggleHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = bingoCardControllerRef.of(context);
-    final hasToggledOnce = controller.hasToggledOnce.watch(context);
-
     return HintWidget(
-      show: !hasToggledOnce,
+      hintId: toggleHintId,
       child: Text(
         'Press long to mark a field as checked',
-        style: context.p1.copyWith(color: Colors.white),
-        textAlign: TextAlign.center,
+        style: context.p1.copyWith(color: context.textColor),
       ),
     );
   }
@@ -387,27 +367,30 @@ class _EditingHintState extends State<EditingHint> {
     final isEditing = controller.isEditing.watch(context);
 
     final show = isEditing;
-    return Center(
-      child: HintWidget(
-        show: show,
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            style: context.p1.copyWith(color: Colors.white),
-            children: [
-              TextSpan(text: 'Press the lock icon '),
-              WidgetSpan(
-                child: Icon(
-                  PhosphorIcons.lockKeyOpen(),
-                  color: Colors.white,
-                  size: context.p1.fontSize,
-                ),
+    return HintWidget(
+      hintId: editingHintId,
+      show: show,
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: context.p1.copyWith(color: context.textColor),
+          children: [
+            TextSpan(
+              text: 'Press the lock icon ',
+            ),
+            WidgetSpan(
+              child: Icon(
+                PhosphorIcons.lockKeyOpen(),
+                color: Colors.black,
+                size: context.p1.fontSize,
               ),
-              TextSpan(text: ' to make make the fields not editable anymore.'),
-            ],
-          ),
-          maxLines: 4,
+            ),
+            TextSpan(
+              text: ' to make make the fields not editable anymore.',
+            )
+          ],
         ),
+        maxLines: 4,
       ),
     );
   }

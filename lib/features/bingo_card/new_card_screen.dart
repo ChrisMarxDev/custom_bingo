@@ -123,6 +123,8 @@ class _AnimatedGridPreviewState extends State<AnimatedGridPreview> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 0.4;
+    final hasCenter = widget.gridSize % 2 != 0;
+    final totalItems = widget.gridSize * widget.gridSize;
     return Center(
       child: SizedBox(
         width: width,
@@ -130,15 +132,17 @@ class _AnimatedGridPreviewState extends State<AnimatedGridPreview> {
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.gridSize * widget.gridSize,
+          itemCount: totalItems,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: widget.gridSize,
           ),
           itemBuilder: (BuildContext context, int index) {
+            final isMiddle = hasCenter && index == totalItems ~/ 2;
             return Container(
-              width: 8,
-              height: 8,
               decoration: BoxDecoration(
+                color: isMiddle
+                    ? Colors.black.withValues(alpha: 0.1)
+                    : Colors.white,
                 border: Border.all(
                     color: Colors.black,
                     strokeAlign: BorderSide.strokeAlignCenter),

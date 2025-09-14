@@ -4,10 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:userorient_flutter/userorient_flutter.dart';
 
-void openBoard(BuildContext context) {
+void openUserOrient(BuildContext context) {
   UserOrient.setUser(
     uniqueIdentifier: userIdBeacon.value,
-    fullName: 'Anonymous',
   );
 
   UserOrient.openBoard(context);

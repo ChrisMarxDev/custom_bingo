@@ -1,4 +1,5 @@
 import 'package:custom_bingo/common/services/shared_prefs.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
 import 'package:custom_bingo/util/extensions/list_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_beacon/state_beacon.dart';
@@ -54,10 +55,12 @@ class BingoCardController extends BeaconController {
   late final gridItems = Beacon.writable<List<List<BingoItem>>>([]);
   late final lastChangeDateTime = Beacon.writable<DateTime?>(null);
   late final isEditing = Beacon.writable<bool>(true);
-  late final hasToggledOnce = Beacon.writable<bool>(false);
+  // late final hasToggledOnce = Beacon.writable<bool>(false);
   late final gridSize = Beacon.derived<int>(() {
     return gridItems.value.length;
   });
+
+  late final hasBingoTime = Beacon.writable<DateTime?>(null);
 
   Future<void> loadBoard([String? selectedBingoCardName]) async {
     final name = selectedBingoCardName ?? currentSelectedBingoCardName.value;
@@ -98,8 +101,22 @@ class BingoCardController extends BeaconController {
       }).toList();
     }).toList();
     gridItems.value = newGrid;
-    hasToggledOnce.value = true;
+    // hasToggledOnce.value = true;
+    if (showHintBeacon(toggleHintId).value) {
+      setShowHint(toggleHintId);
+    }
+
     _saveBingoCard();
+  }
+
+  bool checkForBingo() {
+    final grid = gridItems.value;
+    bool bingo = false;
+
+    // final allItems = grid.expand((row) => row).toList();
+    // final hasBingo = allItems.any((item) => item.isDone);
+    // return hasBingo;
+    return bingo;
   }
 
   void _saveBingoCard() async {
