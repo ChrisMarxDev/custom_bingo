@@ -251,10 +251,15 @@ class BingoCardController extends BeaconController {
       final row = <BingoItem>[];
       for (var j = 0; j < itemsPerRow; j += 1) {
         if (i == centerIndex && j == centerIndex && hasCenter) {
-          row.add(BingoItem(id: Uuid().v4(), text: ''));
+          row.add(BingoItem(
+            id: Uuid().v4(),
+            text: '',
+          ));
           continue;
         } else {
-          row.add(allItems.removeAt(0));
+          row.add(allItems.removeAt(0).copyWith(
+                fullfilledAt: null,
+              ));
         }
       }
       result.add(row);

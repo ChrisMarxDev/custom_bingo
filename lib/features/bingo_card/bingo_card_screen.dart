@@ -332,7 +332,8 @@ class Actions extends StatelessWidget {
         context: context,
         builder: (context) => AlertDialog(
               title: Text('Shuffle Card'),
-              content: Text('Are you sure you want to shuffle this card?'),
+              content: Text(
+                  'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.'),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context, false),
