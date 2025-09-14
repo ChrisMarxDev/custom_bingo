@@ -107,16 +107,107 @@ class BingoCardController extends BeaconController {
     }
 
     _saveBingoCard();
+    final hasBingo = checkForBingo();
+    if (hasBingo) {
+      hasBingoTime.value = DateTime.now();
+    }
   }
 
   bool checkForBingo() {
     final grid = gridItems.value;
-    bool bingo = false;
+    final rowCount = grid.length;
+    if (rowCount == 0) {
+      return false;
+    }
+    final colCount = grid.first.length;
+    if (colCount == 0) {
+      return false;
+    }
 
-    // final allItems = grid.expand((row) => row).toList();
-    // final hasBingo = allItems.any((item) => item.isDone);
-    // return hasBingo;
-    return bingo;
+    // Determine if the center cell is a joker (only for odd-sized square grids)
+    final isSquare =
+        grid.every((row) => row.length == colCount) && rowCount == colCount;
+    final hasCenter = isSquare && rowCount % 2 == 1;
+    final centerIndex = rowCount ~/ 2;
+    final isCenterJoker = hasCenter &&
+        ((grid.getCenterOrNull()?.getCenterOrNull()?.text.isEmpty) ?? false);
+
+    bool cellIsDone(int i, int j) {
+      // Guard against ragged rows
+      if (i < 0 || i >= rowCount || j < 0 || j >= grid[i].length) {
+        return false;
+      }
+      if (isCenterJoker && i == centerIndex && j == centerIndex) {
+        return true;
+      }
+      return grid[i][j].isDone;
+    }
+
+    // Check rows
+    for (var i = 0; i < rowCount; i += 1) {
+      final rowLength = grid[i].length;
+      if (rowLength == 0) continue;
+      var allDone = true;
+      for (var j = 0; j < rowLength; j += 1) {
+        if (!cellIsDone(i, j)) {
+          allDone = false;
+          break;
+        }
+      }
+      if (allDone) {
+        return true;
+      }
+    }
+
+    // Determine max usable column count across ragged rows
+    final minColCount = grid
+        .map((r) => r.length)
+        .fold<int>(colCount, (min, len) => len < min ? len : min);
+    if (minColCount == 0) {
+      return false;
+    }
+
+    // Check columns
+    for (var j = 0; j < minColCount; j += 1) {
+      var allDone = true;
+      for (var i = 0; i < rowCount; i += 1) {
+        if (!cellIsDone(i, j)) {
+          allDone = false;
+          break;
+        }
+      }
+      if (allDone) {
+        return true;
+      }
+    }
+
+    // Check diagonals only if the grid is square
+    if (isSquare) {
+      var allDonePrimary = true;
+      for (var i = 0; i < rowCount; i += 1) {
+        if (!cellIsDone(i, i)) {
+          allDonePrimary = false;
+          break;
+        }
+      }
+      if (allDonePrimary) {
+        return true;
+      }
+
+      var allDoneSecondary = true;
+      for (var i = 0; i < rowCount; i += 1) {
+        final j = rowCount - 1 - i;
+        if (!cellIsDone(i, j)) {
+          allDoneSecondary = false;
+          break;
+        }
+      }
+      if (allDoneSecondary) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   void _saveBingoCard() async {
@@ -141,8 +232,6 @@ class BingoCardController extends BeaconController {
     final allItems = grid.expand((row) => row).toList();
     allItems.shuffle();
     final itemsPerRow = gridSize.value;
-
-    List<List<BingoItem>> newGrid;
 
     // check for free space
     // check if grid is odd and if the center element is empty

@@ -9,9 +9,12 @@ import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_confetti/flutter_confetti.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'dart:math' as math;
+
+import 'package:url_launcher/url_launcher.dart';
 
 // const double _cellSize = 128.0; // Removed as it's in BingoCardContent or should be passed
 
@@ -98,6 +101,15 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     final gridSize = controller.gridSize.watch(context);
     final currentBingoName = currentSelectedBingoCardName.watch(context);
 
+    controller.hasBingoTime.observe(context, (prev, next) {
+      if (next != null) {
+        Confetti.launch(
+          context,
+          options:
+              const ConfettiOptions(particleCount: 100, spread: 70, y: 0.6),
+        );
+      }
+    });
     final size = MediaQuery.sizeOf(context);
     // const cellWidth = _cellSize; // Will be handled by BingoCardContent
     // const cellHeight = _cellSize; // Square cells

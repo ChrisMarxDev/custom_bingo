@@ -76,3 +76,9 @@ extension IterableExtension<Item> on Iterable<Item> {
     return followedBy(other);
   }
 }
+
+extension ListOfListExtension<T> on List<List<T>> {
+  List<List<T>> transpose() {
+    return map((row) => row.map((item) => item).toList()).toList();
+  }
+}
