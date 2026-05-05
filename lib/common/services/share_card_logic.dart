@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
@@ -33,6 +34,7 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       insetPadding: const EdgeInsets.all(16),
@@ -41,7 +43,7 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
         child: Column(
           children: [
             Text(
-              'Share the bingo card',
+              l10n.shareTitle,
               textAlign: TextAlign.center,
               style: context.h3,
             ),
@@ -80,7 +82,7 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Share the whole bingo card above as image. You can also directly print the image.',
+                l10n.shareDescription,
                 textAlign: TextAlign.center,
                 style: context.p2.copyWith(color: kGrey3),
               ),
@@ -93,26 +95,32 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close'),
+                  child: Text(l10n.close),
                 ),
                 const SizedBox(width: 16),
-                FilledButton(
-                  onPressed: () async {
-                    final imageData = await screenshotController.capture();
+                Builder(
+                  builder: (buttonContext) => FilledButton(
+                    onPressed: () async {
+                      final imageData = await screenshotController.capture();
 
-                    if (imageData != null) {
-                      final tempDir = await getTemporaryDirectory();
-                      final tempPath =
-                          '${tempDir.path}/recipe_share_${DateTime.now().millisecondsSinceEpoch}.png';
-                      await File(tempPath).writeAsBytes(imageData);
-                      await Share.shareXFiles(
-                        [XFile(tempPath)],
-                        subject: 'Bingo Card',
-                        text: 'Bingo Card',
-                      );
-                    }
-                  },
-                  child: const Text('Share'),
+                      if (imageData != null) {
+                        final tempDir = await getTemporaryDirectory();
+                        final tempPath =
+                            '${tempDir.path}/recipe_share_${DateTime.now().millisecondsSinceEpoch}.png';
+                        await File(tempPath).writeAsBytes(imageData);
+                        await Share.shareXFiles(
+                          [XFile(tempPath)],
+                          subject: l10n.shareSubject,
+                          text: l10n.shareSubject,
+                          // iPad needs a popover anchor or the share sheet
+                          // silently no-ops.
+                          sharePositionOrigin:
+                              _sharePositionOrigin(buttonContext),
+                        );
+                      }
+                    },
+                    child: Text(l10n.share),
+                  ),
                 ),
               ],
             ),
@@ -122,6 +130,12 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
       ),
     );
   }
+}
+
+Rect? _sharePositionOrigin(BuildContext context) {
+  final renderBox = context.findRenderObject() as RenderBox?;
+  if (renderBox == null || !renderBox.hasSize) return null;
+  return renderBox.localToGlobal(Offset.zero) & renderBox.size;
 }
 
 // class RecipeSharingWidget extends StatelessWidget {

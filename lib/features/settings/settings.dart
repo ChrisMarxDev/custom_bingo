@@ -1,4 +1,5 @@
 import 'package:custom_bingo/common/services/user_id.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +30,7 @@ class KoFiButton extends StatelessWidget {
         children: [
           SvgPicture.asset('assets/images/ko-fi.svg', height: 24),
           const SizedBox(width: 8),
-          const Text('Support me on Ko-Fi'),
+          Text(context.l10n.supportKoFi),
         ],
       ),
     );

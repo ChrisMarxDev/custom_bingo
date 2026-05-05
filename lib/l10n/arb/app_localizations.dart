@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
-import 'app_localizations_es.dart';
 
 // ignore_for_file: type=lint
 
@@ -94,15 +94,213 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
-    Locale('en'),
-    Locale('es')
+    Locale('de'),
+    Locale('en')
   ];
 
-  /// Text shown in the AppBar of the Counter Page
+  /// AppBar title of the new-card screen
   ///
   /// In en, this message translates to:
-  /// **'Counter'**
-  String get counterAppBarTitle;
+  /// **'Create New Bingo Grid'**
+  String get newCardTitle;
+
+  /// Label of the card-name text field
+  ///
+  /// In en, this message translates to:
+  /// **'Bingo Grid Name *'**
+  String get cardNameLabel;
+
+  /// Placeholder hint for the card-name text field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name for your bingo grid'**
+  String get cardNameHint;
+
+  /// Confirm button on the new-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'Create Bingo Grid'**
+  String get createCardButton;
+
+  /// Fallback title shown when a card has no name
+  ///
+  /// In en, this message translates to:
+  /// **'Bingo Card'**
+  String get defaultCardName;
+
+  /// Hint banner above the bingo grid
+  ///
+  /// In en, this message translates to:
+  /// **'Press long to mark a field as checked'**
+  String get toggleHint;
+
+  /// First half of the hint that explains the lock toggle. The lock icon is rendered between the two halves.
+  ///
+  /// In en, this message translates to:
+  /// **'Press the lock icon'**
+  String get editingHintBefore;
+
+  /// Second half of the lock-toggle hint, rendered after the lock icon.
+  ///
+  /// In en, this message translates to:
+  /// **' to make the fields not editable anymore.'**
+  String get editingHintAfter;
+
+  /// Title of the delete-card confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Card'**
+  String get deleteCardTitle;
+
+  /// Body of the delete-card confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this card?'**
+  String get deleteCardConfirm;
+
+  /// Generic cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Generic delete button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Title of the shuffle confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle Card'**
+  String get shuffleCardTitle;
+
+  /// Body of the shuffle confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.'**
+  String get shuffleCardConfirm;
+
+  /// Confirm button to shuffle the card
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle'**
+  String get shuffle;
+
+  /// Placeholder for an empty bingo cell
+  ///
+  /// In en, this message translates to:
+  /// **'Enter text…'**
+  String get cellHint;
+
+  /// Edit menu item in a cell's context menu
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// Cell context menu item: mark this cell as done
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Done'**
+  String get markDone;
+
+  /// Cell context menu item: clear the done state
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Not Done'**
+  String get markNotDone;
+
+  /// Menu item that opens the new-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'New bingo board'**
+  String get newCardMenuItem;
+
+  /// Section header in the popup menu listing saved cards
+  ///
+  /// In en, this message translates to:
+  /// **'Your Boards'**
+  String get yourCardsHeader;
+
+  /// Section header in the popup menu
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsHeader;
+
+  /// Menu item that opens the UserOrient feedback board
+  ///
+  /// In en, this message translates to:
+  /// **'Propose Features'**
+  String get proposeFeatures;
+
+  /// Label on the Ko-Fi support button
+  ///
+  /// In en, this message translates to:
+  /// **'Support me on Ko-Fi'**
+  String get supportKoFi;
+
+  /// Title of the share dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Share the bingo card'**
+  String get shareTitle;
+
+  /// Helper text under the share preview
+  ///
+  /// In en, this message translates to:
+  /// **'Share the whole bingo card above as image. You can also directly print the image.'**
+  String get shareDescription;
+
+  /// Generic close button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Confirm button that opens the system share sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// Subject/title used by the system share sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Bingo Card'**
+  String get shareSubject;
+
+  /// Title of an informational toast
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get toastInfo;
+
+  /// Title of a success toast
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get toastSuccess;
+
+  /// Title of an error toast
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get toastError;
+
+  /// Footer line shown when a card has never been edited
+  ///
+  /// In en, this message translates to:
+  /// **'Last change: Never'**
+  String get lastChangeNever;
+
+  /// Footer line showing when the card was last edited
+  ///
+  /// In en, this message translates to:
+  /// **'Last change: {date} {time}'**
+  String lastChange(String date, String time);
 }
 
 class _AppLocalizationsDelegate
@@ -116,7 +314,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+      <String>['de', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -125,10 +323,10 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
   }
 
   throw FlutterError(

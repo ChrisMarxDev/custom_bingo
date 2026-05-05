@@ -1,6 +1,7 @@
 import 'package:animated_to/animated_to.dart';
 import 'package:custom_bingo/common/widgets/inherited_provider.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
@@ -178,7 +179,7 @@ class RawBingoCell extends StatelessWidget {
                     disabledBorder: InputBorder.none,
                     focusedErrorBorder: InputBorder.none,
                     isDense: true,
-                    hintText: 'Enter text...',
+                    hintText: context.l10n.cellHint,
                   ),
                   onChanged: (newText) {
                     controller.updateItemText(widget.item.id, newText);

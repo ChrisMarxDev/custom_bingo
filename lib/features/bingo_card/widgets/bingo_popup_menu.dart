@@ -3,8 +3,8 @@ import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/settings/settings.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/foundation.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,7 @@ class BingoPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bingoCardNames = bingoGridNamesBeacon.watch(context);
+    final l10n = context.l10n;
     return PopupMenu(
       child: Container(
           decoration: BoxDecoration(
@@ -50,11 +51,11 @@ class BingoPopupMenu extends StatelessWidget {
                         (route) => false);
                     print('New bingo board selected');
                   },
-                  child: const Text('New bingo board'),
+                  child: Text(l10n.newCardMenuItem),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 8.0, top: 12.0),
-                  child: Text('Your Boards'),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 12.0),
+                  child: Text(l10n.yourCardsHeader),
                 ),
                 if (bingoCardNames.isNotEmpty) const Divider(),
                 ...bingoCardNames.map((name) {
@@ -71,9 +72,9 @@ class BingoPopupMenu extends StatelessWidget {
                     child: Text('- $name'),
                   );
                 }).toList(),
-                const Padding(
-                  padding: EdgeInsets.only(left: 8.0, top: 12.0),
-                  child: Text('Settings'),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 12.0),
+                  child: Text(l10n.settingsHeader),
                 ),
                 Divider(),
                 TextButton(
@@ -85,7 +86,7 @@ class BingoPopupMenu extends StatelessWidget {
                     children: [
                       Icon(PhosphorIcons.chat()),
                       const SizedBox(width: 8),
-                      const Text('Propose Features'),
+                      Text(l10n.proposeFeatures),
                     ],
                   ),
                 ),

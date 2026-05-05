@@ -1,11 +1,12 @@
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:drops/drops.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showNeutralToast(BuildContext context, String message) async {
   Drops.show(
     context,
-    title: 'Info',
+    title: context.l10n.toastInfo,
     subtitle: message,
     subtitleMaxLines: 3,
     icon: Icons.info,
@@ -17,7 +18,7 @@ Future<void> showNeutralToast(BuildContext context, String message) async {
 Future<void> showSuccessToast(BuildContext context, String message) async {
   Drops.show(
     context,
-    title: 'Success',
+    title: context.l10n.toastSuccess,
     subtitle: message,
     icon: Icons.check_circle,
     iconColor: context.primary,
@@ -29,7 +30,7 @@ Future<void> showSuccessToast(BuildContext context, String message) async {
 Future<void> showErrorToast(BuildContext context, String message) async {
   Drops.show(
     context,
-    title: 'Error',
+    title: context.l10n.toastError,
     subtitle: message,
     icon: Icons.error,
     isDestructive: true,

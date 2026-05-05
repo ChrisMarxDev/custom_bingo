@@ -8,13 +8,12 @@ import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_confetti/flutter_confetti.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'dart:math' as math;
-
-import 'package:url_launcher/url_launcher.dart';
 
 // const double _cellSize = 128.0; // Removed as it's in BingoCardContent or should be passed
 
@@ -199,7 +198,7 @@ class ToggleHint extends StatelessWidget {
     return HintWidget(
       hintId: toggleHintId,
       child: Text(
-        'Press long to mark a field as checked',
+        context.l10n.toggleHint,
         style: context.p1.copyWith(color: context.textColor),
       ),
     );
@@ -234,20 +233,20 @@ class Actions extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () async {
+                  final l10n = context.l10n;
                   final confirmed = await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: Text('Delete Card'),
-                            content: Text(
-                                'Are you sure you want to delete this card?'),
+                            title: Text(l10n.deleteCardTitle),
+                            content: Text(l10n.deleteCardConfirm),
                             actions: [
                               TextButton(
                                   onPressed: () =>
                                       Navigator.pop(context, false),
-                                  child: Text('Cancel')),
+                                  child: Text(l10n.cancel)),
                               FilledButton(
                                   onPressed: () => Navigator.pop(context, true),
-                                  child: Text('Delete')),
+                                  child: Text(l10n.delete)),
                             ],
                           ));
                   if (confirmed) {
@@ -328,19 +327,19 @@ class Actions extends StatelessWidget {
   }
 
   Future<void> shuffleCard(BuildContext context) async {
+    final l10n = context.l10n;
     final confirmed = await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('Shuffle Card'),
-              content: Text(
-                  'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.'),
+              title: Text(l10n.shuffleCardTitle),
+              content: Text(l10n.shuffleCardConfirm),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context, false),
-                    child: Text('Cancel')),
+                    child: Text(l10n.cancel)),
                 FilledButton(
                     onPressed: () => Navigator.pop(context, true),
-                    child: Text('Shuffle')),
+                    child: Text(l10n.shuffle)),
               ],
             ));
     if (!confirmed) return;
@@ -388,9 +387,7 @@ class _EditingHintState extends State<EditingHint> {
         text: TextSpan(
           style: context.p1.copyWith(color: context.textColor),
           children: [
-            TextSpan(
-              text: 'Press the lock icon ',
-            ),
+            TextSpan(text: context.l10n.editingHintBefore),
             WidgetSpan(
               child: Icon(
                 PhosphorIcons.lockKeyOpen(),
@@ -398,9 +395,7 @@ class _EditingHintState extends State<EditingHint> {
                 size: context.p1.fontSize,
               ),
             ),
-            TextSpan(
-              text: ' to make make the fields not editable anymore.',
-            )
+            TextSpan(text: context.l10n.editingHintAfter),
           ],
         ),
         maxLines: 4,

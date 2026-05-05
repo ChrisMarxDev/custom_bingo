@@ -6,6 +6,7 @@ import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -29,9 +30,10 @@ class _NewCardScreenState extends State<NewCardScreen> {
   @override
   Widget build(BuildContext context) {
     final hasName = _nameController.text.isNotEmpty;
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create New Bingo Grid', style: context.h2),
+        title: Text(l10n.newCardTitle, style: context.h2),
         actions: [
           BingoPopupMenu(),
           SizedBox(width: 16),
@@ -48,11 +50,11 @@ class _NewCardScreenState extends State<NewCardScreen> {
                 onChanged: (value) {
                   setState(() {});
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Bingo Grid Name *',
+                decoration: InputDecoration(
+                  labelText: l10n.cardNameLabel,
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: 'Enter a name for your bingo grid',
-                  border: OutlineInputBorder(),
+                  hintText: l10n.cardNameHint,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 24),
@@ -97,7 +99,7 @@ class _NewCardScreenState extends State<NewCardScreen> {
                               (route) => false);
                         }
                       : null,
-                  child: const Text('Create Bingo Grid'),
+                  child: Text(l10n.createCardButton),
                 ),
               ),
               const SizedBox(height: 24),

@@ -2,6 +2,7 @@ import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_cell.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:state_beacon/state_beacon.dart';
 
@@ -45,7 +46,7 @@ class BingoCardContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          currentSelectedBingoCardName ?? 'Bingo Card',
+          currentSelectedBingoCardName ?? context.l10n.defaultCardName,
           style: context.h2,
         ),
         SizedBox(height: 16),
@@ -94,8 +95,8 @@ class LastChange extends StatelessWidget {
     final time =
         '${lastChangeDateTime?.toLocal().hour}:${lastChangeDateTime?.toLocal().minute.toString().padLeft(2, '0')}';
     final text = lastChangeDateTime == null
-        ? 'Last change: Never'
-        : 'Last change: $date $time';
+        ? context.l10n.lastChangeNever
+        : context.l10n.lastChange(date, time);
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Text(

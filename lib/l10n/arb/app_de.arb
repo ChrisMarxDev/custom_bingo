@@ -1,0 +1,52 @@
+{
+    "@@locale": "de",
+
+    "newCardTitle": "Neues Bingo erstellen",
+    "cardNameLabel": "Name des Bingos *",
+    "cardNameHint": "Gib deinem Bingo einen Namen",
+    "createCardButton": "Bingo erstellen",
+    "defaultCardName": "Bingo-Karte",
+
+    "toggleHint": "Lange drücken, um ein Feld zu markieren",
+    "editingHintBefore": "Drücke auf das Schloss-Symbol",
+    "editingHintAfter": ", damit die Felder nicht mehr bearbeitbar sind.",
+
+    "deleteCardTitle": "Karte löschen",
+    "deleteCardConfirm": "Möchtest du diese Karte wirklich löschen?",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+
+    "shuffleCardTitle": "Karte mischen",
+    "shuffleCardConfirm": "Möchtest du die Karte wirklich mischen? Alle Markierungen werden danach zurückgesetzt.",
+    "shuffle": "Mischen",
+
+    "cellHint": "Text eingeben…",
+    "edit": "Bearbeiten",
+    "markDone": "Als erledigt markieren",
+    "markNotDone": "Markierung entfernen",
+
+    "newCardMenuItem": "Neues Bingo",
+    "yourCardsHeader": "Deine Bingos",
+    "settingsHeader": "Einstellungen",
+    "proposeFeatures": "Funktion vorschlagen",
+    "supportKoFi": "Auf Ko-Fi unterstützen",
+
+    "shareTitle": "Bingo-Karte teilen",
+    "shareDescription": "Teile die Bingo-Karte oben als Bild. Du kannst das Bild auch direkt drucken.",
+    "close": "Schließen",
+    "share": "Teilen",
+    "shareSubject": "Bingo-Karte",
+
+    "toastInfo": "Info",
+    "toastSuccess": "Erfolg",
+    "toastError": "Fehler",
+
+    "lastChangeNever": "Letzte Änderung: Nie",
+    "lastChange": "Letzte Änderung: {date} {time}",
+    "@lastChange": {
+        "placeholders": {
+            "date": { "type": "String" },
+            "time": { "type": "String" }
+        }
+    }
+}

@@ -1,3 +1,4 @@
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../bingo_item.dart';
 
@@ -50,8 +51,8 @@ class BingoCellOverlay extends StatelessWidget {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft,
                 ),
-                child:
-                    const Text('Edit', style: TextStyle(color: Colors.black87)),
+                child: Text(context.l10n.edit,
+                    style: const TextStyle(color: Colors.black87)),
                 onPressed: onEdit,
               ),
               const Divider(height: 1, thickness: 0.5),
@@ -61,8 +62,11 @@ class BingoCellOverlay extends StatelessWidget {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft,
                 ),
-                child: Text(item.isDone ? 'Mark Not Done' : 'Mark Done',
-                    style: TextStyle(color: Colors.black87)),
+                child: Text(
+                    item.isDone
+                        ? context.l10n.markNotDone
+                        : context.l10n.markDone,
+                    style: const TextStyle(color: Colors.black87)),
                 onPressed: onToggleDone,
               ),
               const Divider(height: 1, thickness: 0.5),
@@ -72,8 +76,8 @@ class BingoCellOverlay extends StatelessWidget {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft,
                 ),
-                child: const Text('Cancel',
-                    style: TextStyle(color: Colors.redAccent)),
+                child: Text(context.l10n.cancel,
+                    style: const TextStyle(color: Colors.redAccent)),
                 onPressed: onCancel,
               ),
             ],
