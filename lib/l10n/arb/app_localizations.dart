@@ -248,11 +248,65 @@ abstract class AppLocalizations {
   /// **'Share the bingo card'**
   String get shareTitle;
 
-  /// Helper text under the share preview
+  /// Section header above the two share options
   ///
   /// In en, this message translates to:
-  /// **'Share the whole bingo card above as image. You can also directly print the image.'**
-  String get shareDescription;
+  /// **'How would you like to share?'**
+  String get shareDialogPrompt;
+
+  /// Title of the image-share option in the share dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Share as image'**
+  String get shareImageOptionTitle;
+
+  /// Helper text explaining what 'Share as image' does
+  ///
+  /// In en, this message translates to:
+  /// **'Send a picture of your card. Anyone can see it — even without the app.'**
+  String get shareImageOptionHelper;
+
+  /// Confirm button on the image-share option
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get shareImageOptionButton;
+
+  /// Title of the play-together invite option
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends to play'**
+  String get shareInviteOptionTitle;
+
+  /// Helper text explaining what the invite link does
+  ///
+  /// In en, this message translates to:
+  /// **'Send this link to your friends who also have this app installed. They get the same card and you can play together.'**
+  String get shareInviteOptionHelper;
+
+  /// Toggle label: include the sender's marks in the invite
+  ///
+  /// In en, this message translates to:
+  /// **'Include my checkmarks'**
+  String get shareInviteIncludeMarks;
+
+  /// Helper text under the include-checkmarks toggle
+  ///
+  /// In en, this message translates to:
+  /// **'When on, your friends will see what you\'ve already crossed off.'**
+  String get shareInviteIncludeMarksHelper;
+
+  /// Confirm button on the invite-link option
+  ///
+  /// In en, this message translates to:
+  /// **'Send invite'**
+  String get shareInviteOptionButton;
+
+  /// Body text passed to the system share sheet alongside the invite link
+  ///
+  /// In en, this message translates to:
+  /// **'Play \"{name}\" with me! Open it in the app:\n{link}'**
+  String shareInviteText(String name, String link);
 
   /// Generic close button
   ///
@@ -260,17 +314,53 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get close;
 
-  /// Confirm button that opens the system share sheet
-  ///
-  /// In en, this message translates to:
-  /// **'Share'**
-  String get share;
-
   /// Subject/title used by the system share sheet
   ///
   /// In en, this message translates to:
   /// **'Bingo Card'**
   String get shareSubject;
+
+  /// Title of the import-card screen shown to the receiver
+  ///
+  /// In en, this message translates to:
+  /// **'A friend shared a bingo card with you'**
+  String get importTitle;
+
+  /// Body of the import-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add it to your cards so you can play along?'**
+  String get importBody;
+
+  /// Confirm button on the import-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my cards'**
+  String get importConfirm;
+
+  /// Cancel button on the import-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get importCancel;
+
+  /// Toast shown after silently renaming an imported card to avoid a collision
+  ///
+  /// In en, this message translates to:
+  /// **'You already had a card with this name, so I added it as \"{newName}\".'**
+  String importCollisionToast(String newName);
+
+  /// Toast shown when an invite link is malformed
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, this invite couldn\'t be opened. Ask your friend to send it again.'**
+  String get importBadLinkToast;
+
+  /// Toast shown when an invite payload uses a newer schema
+  ///
+  /// In en, this message translates to:
+  /// **'Update the app to open this invite.'**
+  String get importOutdatedAppToast;
 
   /// Title of an informational toast
   ///

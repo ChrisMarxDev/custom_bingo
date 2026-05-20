@@ -14,30 +14,34 @@ Custom Bingo — a Flutter app (iOS / Android / Web / Windows / macOS) for creat
 
 ## Common commands
 
-Three flavors exist: `development`, `staging`, `production`, each with a separate `lib/main_*.dart` entrypoint. Always pass both `--flavor` and `--target` together.
+All routine work goes through `Taskfile.yml`. Run `task --list` to see everything; the most common:
 
 ```sh
-# Run (most common: development)
-flutter run --flavor development --target lib/main_development.dart
+task dev              # launch development flavor (writes PID for hot reload)
+task staging          # launch staging
+task production       # launch production in release mode
 
-# Tests (all unit + widget tests, with coverage)
-flutter test --coverage --test-randomize-ordering-seed random
+task lint             # dart analyze + dart format --set-exit-if-changed
+task fix              # dart format + dart fix --apply
+task test             # flutter test
+task test:coverage    # tests with coverage + random ordering
 
-# Single test file
-flutter test test/app/view/app_test.dart
+task locale           # regenerate Dart from lib/l10n/arb (gen-l10n)
+task build_runner     # rerun dart_mappable codegen (*.mapper.dart)
 
-# Regenerate localization (ARB → Dart). Also runs automatically on `flutter run`.
-flutter gen-l10n --arb-dir="lib/l10n/arb"
+task build:android    # release Android App Bundle (production)
+task build:apk        # release APK for sideloading
+task build:ios        # iOS build, --config-only (Xcode archives)
 
-# Regenerate dart_mappable code (e.g. after editing bingo_item.dart)
-dart run build_runner build --delete-conflicting-outputs
-
-# Release builds (also in Taskfile.yml)
-task build_android   # flutter build aab --release --flavor production -t lib/main_production.dart
-task build_ios       # flutter build ios --release --flavor production --config-only
-task launch_icons    # regenerate launcher icons
-task native_splash   # regenerate native splash screen
+task podfix           # rm Podfile.lock + pod install --repo-update
+task clean            # flutter clean + pub get
 ```
+
+Three flavors exist (`development`, `staging`, `production`), each with `lib/main_*.dart`. The Taskfile already pairs `--flavor` with the matching `--target` — don't reinvent that.
+
+### Hot reload
+
+`task dev` writes its Flutter process PID to `/tmp/flutter.pid`. The `flutter-hot-reload` skill (`.claude/skills/flutter-hot-reload/`) wraps a script that sends `SIGUSR1` to that PID, triggering reload without `r` keypresses. Use after editing Dart code while the app is running. **Doesn't apply** to pubspec changes, native iOS/Android changes, or l10n ARB edits — those need a full restart and `task locale` respectively.
 
 ## Architecture
 

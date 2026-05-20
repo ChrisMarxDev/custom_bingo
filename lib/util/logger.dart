@@ -1,25 +1,62 @@
+import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 
-import 'package:logger/logger.dart';
+final Logger _logger = Logger('custom_bingo');
+bool _loggingConfigured = false;
 
-Logger logger = Logger(filter: CustomLogFilter());
+void configureLogging() {
+  if (_loggingConfigured) return;
+  _loggingConfigured = true;
 
-class CustomLogFilter extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) {
-    var shouldLog = false;
-    if (event.level.value >= level!.value) {
-      shouldLog = true;
+  hierarchicalLoggingEnabled = true;
+  Logger.root.level = kDebugMode ? Level.ALL : Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    final buffer = StringBuffer()
+      ..write(record.level.name.padRight(7))
+      ..write(' ')
+      ..write(record.time.toIso8601String());
+
+    if (record.loggerName.isNotEmpty) {
+      buffer
+        ..write(' [')
+        ..write(record.loggerName)
+        ..write(']');
     }
-    return shouldLog;
-  }
+
+    buffer
+      ..write(' ')
+      ..write(record.message);
+
+    if (record.error != null) {
+      buffer
+        ..write('\nerror: ')
+        ..write(record.error);
+    }
+
+    if (record.stackTrace != null) {
+      buffer
+        ..write('\n')
+        ..write(record.stackTrace);
+    }
+
+    debugPrint(buffer.toString());
+  });
+}
+
+void logD(String message) {
+  _logger.fine(message);
 }
 
 void logI(String message) {
-  logger.i(message);
+  _logger.info(message);
 }
 
-void logError(String message, [dynamic error, StackTrace? stackTrace]) {
-  logger.e(message, error: error, stackTrace: stackTrace);
+void logW(String message) {
+  _logger.warning(message);
+}
+
+void logError(String message, [Object? error, StackTrace? stackTrace]) {
+  _logger.severe(message, error, stackTrace);
 }
 
 void logE({
@@ -28,7 +65,7 @@ void logE({
   String? message,
   bool logToSentry = true,
 }) {
-  logger.e(message ?? error.toString(), error: error, stackTrace: stackTrace);
+  _logger.severe(message ?? error.toString(), error, stackTrace);
   if (logToSentry) {
     // unawaited(Sentry.captureException(error, stackTrace: stackTrace));
   }

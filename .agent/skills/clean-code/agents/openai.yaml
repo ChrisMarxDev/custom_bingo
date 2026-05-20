@@ -1,0 +1,3 @@
+"display_name": "Clean Code"
+"short_description": "Tighten Dart and Flutter code by removing verbosity and simplifying logic."
+"default_prompt": "Use $clean-code for a focused cleanup pass on recent Dart or Flutter changes."

@@ -4,6 +4,7 @@ import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/settings/settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
+import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
@@ -49,7 +50,7 @@ class BingoPopupMenu extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => NewCardScreen()),
                         (route) => false);
-                    print('New bingo board selected');
+                    logI('Selected "new bingo board" from the popup menu');
                   },
                   child: Text(l10n.newCardMenuItem),
                 ),

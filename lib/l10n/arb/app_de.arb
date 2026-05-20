@@ -32,10 +32,40 @@
     "supportKoFi": "Auf Ko-Fi unterstützen",
 
     "shareTitle": "Bingo-Karte teilen",
-    "shareDescription": "Teile die Bingo-Karte oben als Bild. Du kannst das Bild auch direkt drucken.",
+    "shareDialogPrompt": "Wie möchtest du teilen?",
+
+    "shareImageOptionTitle": "Als Bild teilen",
+    "shareImageOptionHelper": "Schicke ein Bild deiner Karte. Jeder kann es sehen, auch ohne die App.",
+    "shareImageOptionButton": "Bild teilen",
+
+    "shareInviteOptionTitle": "Freunde zum Mitspielen einladen",
+    "shareInviteOptionHelper": "Schicke diesen Link an deine Freunde, die diese App auch installiert haben. Sie bekommen die gleiche Karte und ihr könnt zusammen spielen.",
+    "shareInviteIncludeMarks": "Meine Markierungen mitsenden",
+    "shareInviteIncludeMarksHelper": "Wenn aktiv, sehen deine Freunde, was du schon abgehakt hast.",
+    "shareInviteOptionButton": "Einladung senden",
+    "shareInviteText": "Spiel „{name}\" mit mir! In der App öffnen:\n{link}",
+    "@shareInviteText": {
+        "placeholders": {
+            "name": { "type": "String" },
+            "link": { "type": "String" }
+        }
+    },
+
     "close": "Schließen",
-    "share": "Teilen",
     "shareSubject": "Bingo-Karte",
+
+    "importTitle": "Ein Freund hat dir eine Bingo-Karte geschickt",
+    "importBody": "Zu deinen Karten hinzufügen, damit ihr zusammen spielen könnt?",
+    "importConfirm": "Zu meinen Karten hinzufügen",
+    "importCancel": "Nicht jetzt",
+    "importCollisionToast": "Du hattest schon eine Karte mit diesem Namen — ich habe sie als „{newName}\" hinzugefügt.",
+    "@importCollisionToast": {
+        "placeholders": {
+            "newName": { "type": "String" }
+        }
+    },
+    "importBadLinkToast": "Diese Einladung konnte nicht geöffnet werden. Bitte deinen Freund, sie noch einmal zu schicken.",
+    "importOutdatedAppToast": "Aktualisiere die App, um diese Einladung zu öffnen.",
 
     "toastInfo": "Info",
     "toastSuccess": "Erfolg",

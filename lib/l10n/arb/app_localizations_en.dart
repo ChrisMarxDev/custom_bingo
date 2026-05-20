@@ -85,17 +85,69 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareTitle => 'Share the bingo card';
 
   @override
-  String get shareDescription =>
-      'Share the whole bingo card above as image. You can also directly print the image.';
+  String get shareDialogPrompt => 'How would you like to share?';
+
+  @override
+  String get shareImageOptionTitle => 'Share as image';
+
+  @override
+  String get shareImageOptionHelper =>
+      'Send a picture of your card. Anyone can see it — even without the app.';
+
+  @override
+  String get shareImageOptionButton => 'Share image';
+
+  @override
+  String get shareInviteOptionTitle => 'Invite friends to play';
+
+  @override
+  String get shareInviteOptionHelper =>
+      'Send this link to your friends who also have this app installed. They get the same card and you can play together.';
+
+  @override
+  String get shareInviteIncludeMarks => 'Include my checkmarks';
+
+  @override
+  String get shareInviteIncludeMarksHelper =>
+      'When on, your friends will see what you\'ve already crossed off.';
+
+  @override
+  String get shareInviteOptionButton => 'Send invite';
+
+  @override
+  String shareInviteText(String name, String link) {
+    return 'Play \"$name\" with me! Open it in the app:\n$link';
+  }
 
   @override
   String get close => 'Close';
 
   @override
-  String get share => 'Share';
+  String get shareSubject => 'Bingo Card';
 
   @override
-  String get shareSubject => 'Bingo Card';
+  String get importTitle => 'A friend shared a bingo card with you';
+
+  @override
+  String get importBody => 'Add it to your cards so you can play along?';
+
+  @override
+  String get importConfirm => 'Add to my cards';
+
+  @override
+  String get importCancel => 'Not now';
+
+  @override
+  String importCollisionToast(String newName) {
+    return 'You already had a card with this name, so I added it as \"$newName\".';
+  }
+
+  @override
+  String get importBadLinkToast =>
+      'Sorry, this invite couldn\'t be opened. Ask your friend to send it again.';
+
+  @override
+  String get importOutdatedAppToast => 'Update the app to open this invite.';
 
   @override
   String get toastInfo => 'Info';

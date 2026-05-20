@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "installations": {
+    "generic": {
+      "cue": {
+        "skills": [
+          {
+            "name": "cue-animations",
+            "installedAt": "2026-05-20T11:08:51.807932Z"
+          }
+        ]
+      }
+    }
+  }
+}
