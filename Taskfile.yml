@@ -1,31 +1,133 @@
 # https://taskfile.dev
+#
+# Run `task --list` to see all available commands with descriptions.
 
-version: '3'
-
-vars:
-  GREETING: Hello, World!
+version: "3"
 
 tasks:
   default:
+    desc: Run task dev
     cmds:
-      - echo "{{.GREETING}}"
-    silent: true
-  
-  build_android:
-    cmds:
-      - flutter build aab --release --flavor production -t lib/main_production.dart
-  
-  build_ios:
-    cmds:
-      - flutter build ios -t lib/main_production.dart --flavor production --config-only --release
-  
-  launch_icons:
-    cmds:
-      - flutter pub run flutter_launcher_icons
-  
-  native_splash:
-    cmds:
-      - flutter pub run flutter_native_splash:create
+      - task: dev
 
-# --flavor production -t lib/main_production.dart --build-name=1.0.$PROJECT_BUILD_NUMBER --build-number=$PROJECT_BUILD_NUMBER
-  
+  # ── Run / launch ──────────────────────────────────────────────────────
+
+  dev:
+    desc: Launch development flavor (hot-reload enabled via flutter-hot-reload skill)
+    cmds:
+      - task: _run_with_pid
+        vars:
+          RUN_ARGS: --flavor development --target lib/main_development.dart
+
+  staging:
+    desc: Launch staging flavor
+    cmds:
+      - task: _run_with_pid
+        vars:
+          RUN_ARGS: --flavor staging --target lib/main_staging.dart
+
+  production:
+    desc: Launch production flavor in release mode
+    cmds:
+      - task: _run_with_pid
+        vars:
+          RUN_ARGS: --flavor production --target lib/main_production.dart --release
+
+  _run_with_pid:
+    internal: true
+    requires:
+      vars: [RUN_ARGS]
+    cmds:
+      - |
+        bash -lc '
+          set -euo pipefail
+          raw_pid_file="${FLUTTER_PID:-/tmp/flutter.pid}"
+          pid_file="$(printf "%s" "$raw_pid_file" | sed -E "s/^[[:space:]]+//; s/[[:space:]]+$//")"
+          if [[ -z "$pid_file" ]]; then
+            pid_file="/tmp/flutter.pid"
+          fi
+          mkdir -p "$(dirname "$pid_file")"
+          printf "%s\n" "$$" > "$pid_file"
+          echo "Flutter PID $$ written to $pid_file"
+          exec flutter run {{.RUN_ARGS}} > >(tee flutter.log) 2>&1
+        '
+
+  # ── Code quality ──────────────────────────────────────────────────────
+
+  lint:
+    desc: Static analysis + format check (CI-style — fails on diff)
+    cmds:
+      - dart analyze .
+      - dart format --set-exit-if-changed .
+
+  fix:
+    desc: Auto-format and apply quick fixes
+    cmds:
+      - dart format .
+      - dart fix --apply
+
+  test:
+    desc: Run unit + widget tests
+    cmd: flutter test
+
+  test:coverage:
+    desc: Run tests with coverage and a randomized order
+    cmd: flutter test --coverage --test-randomize-ordering-seed random
+
+  # ── Code generation ───────────────────────────────────────────────────
+
+  locale:
+    desc: Regenerate Dart from ARB files (lib/l10n/arb)
+    cmd: flutter gen-l10n
+
+  build_runner:
+    desc: Run dart_mappable codegen (rebuilds *.mapper.dart files)
+    cmds:
+      - flutter pub get
+      - dart run build_runner build --delete-conflicting-outputs
+
+  # ── Native housekeeping ───────────────────────────────────────────────
+
+  podfix:
+    desc: Reset and reinstall CocoaPods
+    dir: ios
+    cmds:
+      - rm -f Podfile.lock
+      - pod install --repo-update
+
+  clean:
+    desc: flutter clean + pub get (use when builds get weird)
+    cmds:
+      - flutter clean
+      - flutter pub get
+
+  # ── Release builds ────────────────────────────────────────────────────
+
+  build:android:
+    desc: Build release Android App Bundle (production flavor)
+    cmds:
+      - flutter clean
+      - flutter pub get
+      - flutter build appbundle --flavor production --target lib/main_production.dart --release
+
+  build:apk:
+    desc: Build release APK (production flavor — for sideloading / testing)
+    cmds:
+      - flutter clean
+      - flutter pub get
+      - flutter build apk --flavor production --target lib/main_production.dart --release
+
+  build:ios:
+    desc: Build iOS (production, --config-only — Xcode does the archive)
+    cmds:
+      - flutter build ios --flavor production --target lib/main_production.dart --release --config-only
+
+  # ── Asset generation ──────────────────────────────────────────────────
+
+  launch_icons:
+    desc: Regenerate launcher icons from assets/app_icon.png
+    cmd: dart run flutter_launcher_icons
+
+  native_splash:
+    desc: Regenerate native splash from assets/app_icon.png
+    cmd: dart run flutter_native_splash:create

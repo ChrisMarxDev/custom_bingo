@@ -97,7 +97,6 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     final controller = bingoCardControllerRef.of(context);
     final gridItems = controller.gridItems
         .watch(context); // This should work with flutter_state_beacon
-    final gridSize = controller.gridSize.watch(context);
     final currentBingoName = currentSelectedBingoCardName.watch(context);
 
     controller.hasBingoTime.observe(context, (prev, next) {

@@ -76,17 +76,73 @@
     "shareTitle": "Share the bingo card",
     "@shareTitle": { "description": "Title of the share dialog" },
 
-    "shareDescription": "Share the whole bingo card above as image. You can also directly print the image.",
-    "@shareDescription": { "description": "Helper text under the share preview" },
+    "shareDialogPrompt": "How would you like to share?",
+    "@shareDialogPrompt": { "description": "Section header above the two share options" },
+
+    "shareImageOptionTitle": "Share as image",
+    "@shareImageOptionTitle": { "description": "Title of the image-share option in the share dialog" },
+
+    "shareImageOptionHelper": "Send a picture of your card. Anyone can see it — even without the app.",
+    "@shareImageOptionHelper": { "description": "Helper text explaining what 'Share as image' does" },
+
+    "shareImageOptionButton": "Share image",
+    "@shareImageOptionButton": { "description": "Confirm button on the image-share option" },
+
+    "shareInviteOptionTitle": "Invite friends to play",
+    "@shareInviteOptionTitle": { "description": "Title of the play-together invite option" },
+
+    "shareInviteOptionHelper": "Send this link to your friends who also have this app installed. They get the same card and you can play together.",
+    "@shareInviteOptionHelper": { "description": "Helper text explaining what the invite link does" },
+
+    "shareInviteIncludeMarks": "Include my checkmarks",
+    "@shareInviteIncludeMarks": { "description": "Toggle label: include the sender's marks in the invite" },
+
+    "shareInviteIncludeMarksHelper": "When on, your friends will see what you've already crossed off.",
+    "@shareInviteIncludeMarksHelper": { "description": "Helper text under the include-checkmarks toggle" },
+
+    "shareInviteOptionButton": "Send invite",
+    "@shareInviteOptionButton": { "description": "Confirm button on the invite-link option" },
+
+    "shareInviteText": "Play \"{name}\" with me! Open it in the app:\n{link}",
+    "@shareInviteText": {
+        "description": "Body text passed to the system share sheet alongside the invite link",
+        "placeholders": {
+            "name": { "type": "String", "example": "Dateline BINGO" },
+            "link": { "type": "String", "example": "custombingo://import?d=…" }
+        }
+    },
 
     "close": "Close",
     "@close": { "description": "Generic close button" },
 
-    "share": "Share",
-    "@share": { "description": "Confirm button that opens the system share sheet" },
-
     "shareSubject": "Bingo Card",
     "@shareSubject": { "description": "Subject/title used by the system share sheet" },
+
+    "importTitle": "A friend shared a bingo card with you",
+    "@importTitle": { "description": "Title of the import-card screen shown to the receiver" },
+
+    "importBody": "Add it to your cards so you can play along?",
+    "@importBody": { "description": "Body of the import-card screen" },
+
+    "importConfirm": "Add to my cards",
+    "@importConfirm": { "description": "Confirm button on the import-card screen" },
+
+    "importCancel": "Not now",
+    "@importCancel": { "description": "Cancel button on the import-card screen" },
+
+    "importCollisionToast": "You already had a card with this name, so I added it as \"{newName}\".",
+    "@importCollisionToast": {
+        "description": "Toast shown after silently renaming an imported card to avoid a collision",
+        "placeholders": {
+            "newName": { "type": "String", "example": "Dateline BINGO (2)" }
+        }
+    },
+
+    "importBadLinkToast": "Sorry, this invite couldn't be opened. Ask your friend to send it again.",
+    "@importBadLinkToast": { "description": "Toast shown when an invite link is malformed" },
+
+    "importOutdatedAppToast": "Update the app to open this invite.",
+    "@importOutdatedAppToast": { "description": "Toast shown when an invite payload uses a newer schema" },
 
     "toastInfo": "Info",
     "@toastInfo": { "description": "Title of an informational toast" },

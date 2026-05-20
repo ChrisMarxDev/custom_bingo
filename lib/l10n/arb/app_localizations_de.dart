@@ -86,17 +86,71 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shareTitle => 'Bingo-Karte teilen';
 
   @override
-  String get shareDescription =>
-      'Teile die Bingo-Karte oben als Bild. Du kannst das Bild auch direkt drucken.';
+  String get shareDialogPrompt => 'Wie möchtest du teilen?';
+
+  @override
+  String get shareImageOptionTitle => 'Als Bild teilen';
+
+  @override
+  String get shareImageOptionHelper =>
+      'Schicke ein Bild deiner Karte. Jeder kann es sehen, auch ohne die App.';
+
+  @override
+  String get shareImageOptionButton => 'Bild teilen';
+
+  @override
+  String get shareInviteOptionTitle => 'Freunde zum Mitspielen einladen';
+
+  @override
+  String get shareInviteOptionHelper =>
+      'Schicke diesen Link an deine Freunde, die diese App auch installiert haben. Sie bekommen die gleiche Karte und ihr könnt zusammen spielen.';
+
+  @override
+  String get shareInviteIncludeMarks => 'Meine Markierungen mitsenden';
+
+  @override
+  String get shareInviteIncludeMarksHelper =>
+      'Wenn aktiv, sehen deine Freunde, was du schon abgehakt hast.';
+
+  @override
+  String get shareInviteOptionButton => 'Einladung senden';
+
+  @override
+  String shareInviteText(String name, String link) {
+    return 'Spiel „$name\" mit mir! In der App öffnen:\n$link';
+  }
 
   @override
   String get close => 'Schließen';
 
   @override
-  String get share => 'Teilen';
+  String get shareSubject => 'Bingo-Karte';
 
   @override
-  String get shareSubject => 'Bingo-Karte';
+  String get importTitle => 'Ein Freund hat dir eine Bingo-Karte geschickt';
+
+  @override
+  String get importBody =>
+      'Zu deinen Karten hinzufügen, damit ihr zusammen spielen könnt?';
+
+  @override
+  String get importConfirm => 'Zu meinen Karten hinzufügen';
+
+  @override
+  String get importCancel => 'Nicht jetzt';
+
+  @override
+  String importCollisionToast(String newName) {
+    return 'Du hattest schon eine Karte mit diesem Namen — ich habe sie als „$newName\" hinzugefügt.';
+  }
+
+  @override
+  String get importBadLinkToast =>
+      'Diese Einladung konnte nicht geöffnet werden. Bitte deinen Freund, sie noch einmal zu schicken.';
+
+  @override
+  String get importOutdatedAppToast =>
+      'Aktualisiere die App, um diese Einladung zu öffnen.';
 
   @override
   String get toastInfo => 'Info';

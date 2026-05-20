@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
+import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
+import 'package:custom_bingo/features/bingo_card/share_link.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -12,24 +16,25 @@ import 'package:share_plus/share_plus.dart';
 Future<void> shareCardPopup(BuildContext context) async {
   await showDialog<void>(
     context: context,
-    builder: (context) => RecipeSharingDialog(),
+    builder: (context) => const ShareCardDialog(),
   );
 }
 
-class RecipeSharingDialog extends StatefulWidget {
-  const RecipeSharingDialog({super.key});
+class ShareCardDialog extends StatefulWidget {
+  const ShareCardDialog({super.key});
 
   @override
-  State<RecipeSharingDialog> createState() => _RecipeSharingDialogState();
+  State<ShareCardDialog> createState() => _ShareCardDialogState();
 }
 
-class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
-  late final ScreenshotController screenshotController;
+class _ShareCardDialogState extends State<ShareCardDialog> {
+  late final ScreenshotController _screenshotController;
+  bool _includeMarks = false;
 
   @override
   void initState() {
     super.initState();
-    screenshotController = ScreenshotController();
+    _screenshotController = ScreenshotController();
   }
 
   @override
@@ -42,91 +47,251 @@ class _RecipeSharingDialogState extends State<RecipeSharingDialog> {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            Text(
-              l10n.shareTitle,
-              textAlign: TextAlign.center,
-              style: context.h3,
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: context.background,
-                  border: Border.all(color: context.primary, width: 2),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: SingleChildScrollView(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Screenshot(
-                        controller: screenshotController,
-                        child: IgnorePointer(
-                          child: ColoredBox(
-                            color: context.background,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: BingoCardContentWrapper(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(
-                l10n.shareDescription,
+                l10n.shareTitle,
                 textAlign: TextAlign.center,
-                style: context.p2.copyWith(color: kGrey3),
+                style: context.h3,
               ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(l10n.close),
+            const SizedBox(height: 8),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Column(
+                  children: [
+                    _CardPreview(controller: _screenshotController),
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.shareDialogPrompt,
+                      textAlign: TextAlign.center,
+                      style: context.p2.copyWith(color: kGrey3),
+                    ),
+                    const SizedBox(height: 12),
+                    _ShareImageOption(controller: _screenshotController),
+                    const SizedBox(height: 12),
+                    _ShareInviteOption(
+                      includeMarks: _includeMarks,
+                      onIncludeMarksChanged: (v) =>
+                          setState(() => _includeMarks = v),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                Builder(
-                  builder: (buttonContext) => FilledButton(
-                    onPressed: () async {
-                      final imageData = await screenshotController.capture();
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(l10n.close),
+            ),
+            const SizedBox(height: 4),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                      if (imageData != null) {
-                        final tempDir = await getTemporaryDirectory();
-                        final tempPath =
-                            '${tempDir.path}/recipe_share_${DateTime.now().millisecondsSinceEpoch}.png';
-                        await File(tempPath).writeAsBytes(imageData);
-                        await Share.shareXFiles(
-                          [XFile(tempPath)],
-                          subject: l10n.shareSubject,
-                          text: l10n.shareSubject,
-                          // iPad needs a popover anchor or the share sheet
-                          // silently no-ops.
-                          sharePositionOrigin:
-                              _sharePositionOrigin(buttonContext),
-                        );
-                      }
-                    },
-                    child: Text(l10n.share),
+class _CardPreview extends StatelessWidget {
+  const _CardPreview({required this.controller});
+  final ScreenshotController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: context.background,
+        border: Border.all(color: context.primary, width: 2),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Screenshot(
+            controller: controller,
+            child: IgnorePointer(
+              child: ColoredBox(
+                color: context.background,
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: BingoCardContentWrapper(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShareImageOption extends StatelessWidget {
+  const _ShareImageOption({required this.controller});
+  final ScreenshotController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return _ShareOptionCard(
+      icon: PhosphorIcons.image(),
+      title: l10n.shareImageOptionTitle,
+      helper: l10n.shareImageOptionHelper,
+      buttonLabel: l10n.shareImageOptionButton,
+      onPressed: (buttonContext) => _shareImage(buttonContext, controller),
+    );
+  }
+}
+
+Future<void> _shareImage(
+    BuildContext buttonContext, ScreenshotController controller) async {
+  final l10n = buttonContext.l10n;
+  final imageData = await controller.capture();
+  if (imageData == null) return;
+
+  final tempDir = await getTemporaryDirectory();
+  final tempPath =
+      '${tempDir.path}/bingo_share_${DateTime.now().millisecondsSinceEpoch}.png';
+  await File(tempPath).writeAsBytes(imageData);
+
+  await Share.shareXFiles(
+    [XFile(tempPath)],
+    subject: l10n.shareSubject,
+    text: l10n.shareSubject,
+    sharePositionOrigin: _sharePositionOrigin(buttonContext),
+  );
+}
+
+class _ShareInviteOption extends StatelessWidget {
+  const _ShareInviteOption({
+    required this.includeMarks,
+    required this.onIncludeMarksChanged,
+  });
+
+  final bool includeMarks;
+  final ValueChanged<bool> onIncludeMarksChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return _ShareOptionCard(
+      icon: PhosphorIcons.gameController(),
+      title: l10n.shareInviteOptionTitle,
+      helper: l10n.shareInviteOptionHelper,
+      buttonLabel: l10n.shareInviteOptionButton,
+      onPressed: (buttonContext) => _shareInvite(buttonContext, includeMarks),
+      extra: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Switch.adaptive(
+                  value: includeMarks,
+                  onChanged: onIncludeMarksChanged,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.shareInviteIncludeMarks,
+                    style: context.p2,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                l10n.shareInviteIncludeMarksHelper,
+                style: context.p2.copyWith(color: kGrey3, fontSize: 12),
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+Future<void> _shareInvite(
+    BuildContext buttonContext, bool includeMarks) async {
+  final l10n = buttonContext.l10n;
+
+  final controller = bingoCardControllerRef.of(buttonContext);
+  final name = currentSelectedBingoCardName.value ?? l10n.defaultCardName;
+  final state = BingoCardState(
+    name: name,
+    gridItems: controller.gridItems.value,
+    lastChangeDateTime: controller.lastChangeDateTime.value,
+  );
+
+  final link = encodeShareLink(state, includeMarks: includeMarks).toString();
+  final body = l10n.shareInviteText(name, link);
+
+  await Share.share(
+    body,
+    subject: l10n.shareSubject,
+    sharePositionOrigin: _sharePositionOrigin(buttonContext),
+  );
+}
+
+class _ShareOptionCard extends StatelessWidget {
+  const _ShareOptionCard({
+    required this.icon,
+    required this.title,
+    required this.helper,
+    required this.buttonLabel,
+    required this.onPressed,
+    this.extra,
+  });
+
+  final IconData icon;
+  final String title;
+  final String helper;
+  final String buttonLabel;
+  final Future<void> Function(BuildContext buttonContext) onPressed;
+  final Widget? extra;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: kGrey7,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: kGrey5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 22, color: context.primary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: context.h5.copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(helper, style: context.p2.copyWith(color: kGrey2)),
+          if (extra != null) extra!,
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Builder(
+              builder: (buttonContext) => FilledButton(
+                onPressed: () => onPressed(buttonContext),
+                child: Text(buttonLabel),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -137,166 +302,3 @@ Rect? _sharePositionOrigin(BuildContext context) {
   if (renderBox == null || !renderBox.hasSize) return null;
   return renderBox.localToGlobal(Offset.zero) & renderBox.size;
 }
-
-// class RecipeSharingWidget extends StatelessWidget {
-//   const RecipeSharingWidget({required this.recipe, super.key});
-
-//   final Recipe recipe;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return IgnorePointer(
-//       child: ColoredBox(
-//         color: context.background,
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             Stack(
-//               clipBehavior: Clip.none,
-//               children: [
-//                 Stack(
-//                   children: [
-//                     const SizedBox(width: double.infinity, height: 1),
-//                     RecipePathImage(imagePath: recipe.imagePath),
-//                     Positioned.fill(
-//                       child: Container(
-//                         decoration: BoxDecoration(
-//                           gradient: LinearGradient(
-//                             begin: Alignment.topCenter,
-//                             end: Alignment.bottomCenter,
-//                             stops: const [0, 0.7, 1],
-//                             colors: [
-//                               context.background.withValues(alpha: 0),
-//                               context.background.withValues(alpha: 0.2),
-//                               context.background,
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 Positioned(
-//                   top: 12,
-//                   right: 12,
-//                   child: Transform.scale(
-//                     scale: 0.5,
-//                     alignment: Alignment.topRight,
-//                     child: const LogoWithText(),
-//                   ),
-//                 ),
-//                 Positioned(
-//                   top: 264,
-//                   left: 0,
-//                   right: 0,
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       gradient: LinearGradient(
-//                         begin: Alignment.topCenter,
-//                         end: Alignment.bottomCenter,
-//                         colors: [
-//                           context.background.withValues(alpha: 0),
-//                           context.background.withValues(alpha: 0.5),
-//                           context.background,
-//                         ],
-//                       ),
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(8),
-//                       child: Column(
-//                         mainAxisSize: MainAxisSize.min,
-//                         children: [
-//                           Text(
-//                             recipe.name ?? '',
-//                             style: context.h6.copyWith(
-//                               fontWeight: FontWeight.bold,
-//                             ),
-//                           ),
-//                           const SizedBox(height: 16),
-//                           LayoutBuilder(
-//                             builder: (context, constraints) {
-//                               final maxWidth = constraints.maxWidth;
-//                               final totalWidth = maxWidth * 2;
-//                               const spacing = 16.0;
-//                               final elementWidth = maxWidth - spacing;
-//                               return Stack(
-//                                 clipBehavior: Clip.none,
-//                                 children: [
-//                                   SingleChildScrollView(
-//                                     physics:
-//                                         const NeverScrollableScrollPhysics(),
-//                                     scrollDirection: Axis.horizontal,
-//                                     child: Transform.scale(
-//                                       alignment: Alignment.topLeft,
-//                                       scale: 0.5,
-//                                       child: SizedBox(
-//                                         width: totalWidth,
-//                                         child: Row(
-//                                           crossAxisAlignment:
-//                                               CrossAxisAlignment.start,
-//                                           children: [
-//                                             SizedBox(
-//                                               width: elementWidth,
-//                                               child: Column(
-//                                                 children: [
-//                                                   if (recipe.ingredients !=
-//                                                           null &&
-//                                                       recipe.ingredients!
-//                                                           .isNotEmpty)
-//                                                     IngredientsWidget(
-//                                                       ingredients:
-//                                                           recipe.ingredients,
-//                                                       showPantryIngredients:
-//                                                           false,
-//                                                       showServingsSelector:
-//                                                           false,
-//                                                     ),
-//                                                   if (recipe.nutritionInfo !=
-//                                                       null)
-//                                                     Padding(
-//                                                       padding:
-//                                                           const EdgeInsets.only(
-//                                                         top: 16,
-//                                                       ),
-//                                                       child:
-//                                                           NutritionInfoWidget(
-//                                                         cardAlignment:
-//                                                             Alignment.topLeft,
-//                                                         nutritionInfo: recipe
-//                                                             .nutritionInfo,
-//                                                       ),
-//                                                     ),
-//                                                 ],
-//                                               ),
-//                                             ),
-//                                             const SizedBox(width: spacing),
-//                                             if (recipe.steps != null &&
-//                                                 recipe.steps!.isNotEmpty)
-//                                               SizedBox(
-//                                                 width: elementWidth,
-//                                                 child: RecipeStepsWidget(
-//                                                   steps: recipe.steps,
-//                                                 ),
-//                                               ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ],
-//                               );
-//                             },
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

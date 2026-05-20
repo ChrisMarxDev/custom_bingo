@@ -1,0 +1,3 @@
+"display_name": "Flutter Hot Reload"
+"short_description": "Trigger the project's PID-based Flutter hot reload after Dart edits."
+"default_prompt": "Use $flutter-hot-reload after meaningful Dart changes while the app is running through task dev."
