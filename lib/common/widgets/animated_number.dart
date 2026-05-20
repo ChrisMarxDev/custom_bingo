@@ -108,7 +108,12 @@ class _AnimatedNumberState extends State<AnimatedNumber> {
             child: Text(
               widget.value.toString(),
               key: ValueKey<num>(widget.value),
-              style: widget.textStyle ?? context.h1.copyWith(fontSize: 42),
+              style:
+                  widget.textStyle ??
+                  context.h1.copyWith(
+                    fontSize: 42,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
             ),
           ),
         ],

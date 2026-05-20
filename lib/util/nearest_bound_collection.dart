@@ -28,8 +28,9 @@ class NearestBoundsSet {
     } else if (bounds[1] == null) {
       bound = bounds[0]!;
     } else {
-      bound =
-          (target - bounds[0]! < bounds[1]! - target) ? bounds[0]! : bounds[1]!;
+      bound = (target - bounds[0]! < bounds[1]! - target)
+          ? bounds[0]!
+          : bounds[1]!;
     }
 
     if ((bound - target).abs() > maxDistance) {

@@ -9,9 +9,7 @@ import 'bingo_item.dart';
 
 final bingoCardControllerRef = Ref.scoped((ctx) => BingoCardController());
 
-final bingoGridNamesBeacon = Beacon.writable<List<String>>(
-  getBingoCardNames(),
-);
+final bingoGridNamesBeacon = Beacon.writable<List<String>>(getBingoCardNames());
 
 final currentSelectedBingoCardName = Beacon.writable<String?>(
   getCurrentSelectedBingoCardName(),
@@ -41,9 +39,10 @@ final exampleGridItems = [
     BingoItem(id: '7', text: '👏 Crowd claps too early'),
     BingoItem(id: '8', text: '🎶 DJ plays a throwback hit'),
     BingoItem(
-        id: '9',
-        text:
-            '📷 Someone takes a group photo and no one looks at the same camera'),
+      id: '9',
+      text:
+          '📷 Someone takes a group photo and no one looks at the same camera',
+    ),
   ],
 ];
 
@@ -95,7 +94,8 @@ class BingoCardController extends BeaconController {
       return row.map((item) {
         if (item.id == itemId) {
           return item.copyWith(
-              fullfilledAt: item.isDone ? null : DateTime.now());
+            fullfilledAt: item.isDone ? null : DateTime.now(),
+          );
         }
         return item;
       }).toList();
@@ -129,7 +129,8 @@ class BingoCardController extends BeaconController {
         grid.every((row) => row.length == colCount) && rowCount == colCount;
     final hasCenter = isSquare && rowCount % 2 == 1;
     final centerIndex = rowCount ~/ 2;
-    final isCenterJoker = hasCenter &&
+    final isCenterJoker =
+        hasCenter &&
         ((grid.getCenterOrNull()?.getCenterOrNull()?.text.isEmpty) ?? false);
 
     bool cellIsDone(int i, int j) {
@@ -213,13 +214,14 @@ class BingoCardController extends BeaconController {
   void _saveBingoCard() async {
     final sharedPreferences = sharedPrefsBeacon.value;
     await saveBingoCard(
-        sharedPreferences,
-        BingoCardState(
-          isEditing: isEditing.value,
-          name: currentSelectedBingoCardName.value ?? '',
-          gridItems: gridItems.value,
-          lastChangeDateTime: lastChangeDateTime.value,
-        ));
+      sharedPreferences,
+      BingoCardState(
+        isEditing: isEditing.value,
+        name: currentSelectedBingoCardName.value ?? '',
+        gridItems: gridItems.value,
+        lastChangeDateTime: lastChangeDateTime.value,
+      ),
+    );
   }
 
   @override
@@ -251,15 +253,10 @@ class BingoCardController extends BeaconController {
       final row = <BingoItem>[];
       for (var j = 0; j < itemsPerRow; j += 1) {
         if (i == centerIndex && j == centerIndex && hasCenter) {
-          row.add(BingoItem(
-            id: Uuid().v4(),
-            text: '',
-          ));
+          row.add(BingoItem(id: Uuid().v4(), text: ''));
           continue;
         } else {
-          row.add(allItems.removeAt(0).copyWith(
-                fullfilledAt: null,
-              ));
+          row.add(allItems.removeAt(0).copyWith(fullfilledAt: null));
         }
       }
       result.add(row);
@@ -272,13 +269,17 @@ class BingoCardController extends BeaconController {
 }
 
 Future<void> saveBingoCard(
-    SharedPreferences sharedPreferences, BingoCardState state) async {
+  SharedPreferences sharedPreferences,
+  BingoCardState state,
+) async {
   final json = state.toJson();
   await sharedPreferences.setString('bingo_card_${state.name}', json);
 }
 
 BingoCardState? loadBingoCard(
-    SharedPreferences sharedPreferences, String name) {
+  SharedPreferences sharedPreferences,
+  String name,
+) {
   final json = sharedPreferences.getString('bingo_card_$name');
   if (json == null) {
     return null;

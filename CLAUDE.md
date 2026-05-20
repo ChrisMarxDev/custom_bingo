@@ -6,6 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Custom Bingo — a Flutter app (iOS / Android / Web / Windows / macOS) for creating, editing, and sharing custom bingo cards. Generated from the Very Good CLI template.
 
+## Agent Workflow
+
+- Follow [`agent.md`](agent.md) for repository-specific agent behavior.
+- For any non-trivial or multi-step request, maintain [`tasks.md`](tasks.md)
+  while working.
+- `tasks.md` must list each concrete task with an explicit state such as
+  `[OPEN]`, `[DOING]`, `[NEEDS SPECIFICATION]`, `[BLOCKED]`, `[DONE]`, or
+  `[CANCELLED]`.
+- `tasks.md` should include a date for each task entry and should be pruned so
+  completed work does not accumulate forever.
+- By default, remove stale `[DONE]` and `[CANCELLED]` tasks once they are older
+  than 14 days and no longer useful context.
+- Keep exactly one task in `[DOING]` unless the user explicitly asks for
+  parallel work.
+- Do not mark a task `[DONE]` until it is implemented and verified, or the
+  verification limit is clearly recorded in `tasks.md`.
+
 ## Toolchain
 
 - Flutter pinned to **3.41.9** via FVM (`.fvmrc`, `.fvm/flutter_sdk`). Prefer `fvm flutter ...` if FVM is installed; plain `flutter` works if it matches.

@@ -1,4 +1,5 @@
 import 'package:animated_to/animated_to.dart';
+import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/widgets/inherited_provider.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
@@ -19,6 +20,7 @@ class BingoCell extends StatefulWidget {
     required this.cellWidth,
     required this.isMiddleItem,
     required this.cellHeight,
+    this.borderRadius = BorderRadius.zero,
   });
 
   /// The data for this bingo cell.
@@ -32,6 +34,7 @@ class BingoCell extends StatefulWidget {
 
   /// Whether the cell is the middle item.
   final bool isMiddleItem;
+  final BorderRadius borderRadius;
 
   @override
   State<BingoCell> createState() => _BingoCellState();
@@ -72,26 +75,34 @@ class _BingoCellState extends State<BingoCell> {
     final isDone = widget.item.isDone;
     final shouldAnimate =
         context.maybeReadProvided<ShouldAnimate>()?.shouldAnimate ?? false;
-    Color borderColor = Colors.black;
+    final borderColor = context.outlineColor;
 
-    Color backgroundColor = Colors.transparent;
-    if (widget.isMiddleItem) {
-      // backgroundColor = Colors.blue.withOpacity(0.3);
+    focusNode.canRequestFocus = isEditing;
+    if (!isEditing && focusNode.hasFocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          focusNode.unfocus();
+        }
+      });
     }
-    if (isDone) {
-      backgroundColor = Colors.black.withValues(alpha: 0.8);
-    }
+
+    final backgroundColor = isDone
+        ? context.primary
+        : (widget.isMiddleItem
+              ? context.surfaceContainerLow
+              : context.cardColor);
     return AnimatedTo.spring(
       globalKey: shouldAnimate ? GlobalObjectKey(widget.item.id) : GlobalKey(),
       child: RawBingoCell(
-          widget: widget,
-          borderColor: borderColor,
-          backgroundColor: backgroundColor,
-          isDone: isDone,
-          isEditing: isEditing,
-          focusNode: focusNode,
-          controller: controller,
-          textEditingController: _textEditingController),
+        widget: widget,
+        borderColor: borderColor,
+        backgroundColor: backgroundColor,
+        isDone: isDone,
+        isEditing: isEditing,
+        focusNode: focusNode,
+        controller: controller,
+        textEditingController: _textEditingController,
+      ),
     );
   }
 }
@@ -125,17 +136,20 @@ class RawBingoCell extends StatelessWidget {
       width: widget.cellWidth,
       height: widget.cellHeight,
       decoration: BoxDecoration(
+        borderRadius: widget.borderRadius,
         border: Border.all(
-            color: borderColor,
-            width: 0.5,
-            strokeAlign: BorderSide.strokeAlignCenter),
-        // backgroundColor is now applied to the Material widget below
+          color: borderColor,
+          width: 0.5,
+          strokeAlign: BorderSide.strokeAlignInside,
+        ),
       ),
       child: Material(
-        color:
-            backgroundColor, // Material widget now holds the background color
+        color: backgroundColor,
+        shape: RoundedRectangleBorder(borderRadius: widget.borderRadius),
+        clipBehavior: Clip.antiAlias,
         child: InkWell(
-          splashColor: isDone ? Colors.white : Colors.black,
+          borderRadius: widget.borderRadius,
+          splashColor: isDone ? context.onPrimary : context.primary,
           onTap: isEditing
               ? () {
                   focusNode.requestFocus();
@@ -152,54 +166,80 @@ class RawBingoCell extends StatelessWidget {
                 Center(
                   child: Icon(
                     PhosphorIcons.asterisk(),
-                    color: Colors.grey.withValues(alpha: 0.1),
+                    color: context.weakestTextColor.withValues(alpha: 0.35),
                     size: widget.cellWidth * 0.8,
                   ),
                 ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TextField(
-                  enabled: isEditing,
-                  controller: _textEditingController,
-                  focusNode: focusNode,
-                  textAlign: TextAlign.center,
-                  maxLines: null,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: isDone ? Colors.white : Colors.black,
+                child: IgnorePointer(
+                  ignoring: !isEditing,
+                  child: TextField(
+                    controller: _textEditingController,
+                    focusNode: focusNode,
+                    readOnly: !isEditing,
+                    showCursor: isEditing,
+                    enableInteractiveSelection: isEditing,
+                    textAlign: TextAlign.center,
+                    maxLines: null,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: isDone ? context.onPrimary : context.textColor,
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      isDense: true,
+                      hintText: context.l10n.cellHint,
+                      hintStyle: TextStyle(color: context.weakTextColor),
+                    ),
+                    onChanged: isEditing
+                        ? (newText) {
+                            controller.updateItemText(widget.item.id, newText);
+                          }
+                        : null,
+                    onSubmitted: isEditing
+                        ? (newText) {
+                            controller.updateItemText(widget.item.id, newText);
+                            focusNode.unfocus();
+                          }
+                        : null,
+                    onTapOutside: isEditing
+                        ? (event) {
+                            controller.updateItemText(
+                              widget.item.id,
+                              _textEditingController.text,
+                            );
+                          }
+                        : null,
                   ),
-                  keyboardType: TextInputType.multiline,
-                  textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    focusedErrorBorder: InputBorder.none,
-                    isDense: true,
-                    hintText: context.l10n.cellHint,
-                  ),
-                  onChanged: (newText) {
-                    controller.updateItemText(widget.item.id, newText);
-                  },
-                  onSubmitted: (newText) {
-                    controller.updateItemText(widget.item.id, newText);
-                    focusNode.unfocus();
-                  },
-                  onTapOutside: (event) {
-                    controller.updateItemText(
-                        widget.item.id, _textEditingController.text);
-                  },
                 ),
               ),
               if (widget.item.isDone)
                 Positioned(
                   top: 2,
                   right: 2,
-                  child:
-                      Icon(Icons.check_circle, color: Colors.white, size: 18),
+                  child: Container(
+                    width: 18,
+                    height: 18,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: context.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check_rounded,
+                      color: context.onSecondary,
+                      size: 12,
+                    ),
+                  ),
                 ),
             ],
           ),

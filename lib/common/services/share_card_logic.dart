@@ -49,10 +49,22 @@ class _ShareCardDialogState extends State<ShareCardDialog> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                l10n.shareTitle,
-                textAlign: TextAlign.center,
-                style: context.h3,
+              child: Row(
+                children: [
+                  const SizedBox(width: 40),
+                  Expanded(
+                    child: Text(
+                      l10n.shareTitle,
+                      textAlign: TextAlign.center,
+                      style: context.h3,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                    tooltip: l10n.close,
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 8),
@@ -66,7 +78,7 @@ class _ShareCardDialogState extends State<ShareCardDialog> {
                     Text(
                       l10n.shareDialogPrompt,
                       textAlign: TextAlign.center,
-                      style: context.p2.copyWith(color: kGrey3),
+                      style: context.p2.copyWith(color: context.weakTextColor),
                     ),
                     const SizedBox(height: 12),
                     _ShareImageOption(controller: _screenshotController),
@@ -76,16 +88,16 @@ class _ShareCardDialogState extends State<ShareCardDialog> {
                       onIncludeMarksChanged: (v) =>
                           setState(() => _includeMarks = v),
                     ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(l10n.close),
+                    ),
+                    const SizedBox(height: 4),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(l10n.close),
-            ),
-            const SizedBox(height: 4),
           ],
         ),
       ),
@@ -97,6 +109,8 @@ class _CardPreview extends StatelessWidget {
   const _CardPreview({required this.controller});
   final ScreenshotController controller;
 
+  static const double _previewMaxHeight = 220;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -107,16 +121,25 @@ class _CardPreview extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Screenshot(
-            controller: controller,
-            child: IgnorePointer(
-              child: ColoredBox(
-                color: context.background,
-                child: const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: BingoCardContentWrapper(),
+        child: SizedBox(
+          height: _previewMaxHeight,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.topCenter,
+                child: Screenshot(
+                  controller: controller,
+                  child: IgnorePointer(
+                    child: ColoredBox(
+                      color: context.background,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: BingoCardContentWrapper(),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -145,7 +168,9 @@ class _ShareImageOption extends StatelessWidget {
 }
 
 Future<void> _shareImage(
-    BuildContext buttonContext, ScreenshotController controller) async {
+  BuildContext buttonContext,
+  ScreenshotController controller,
+) async {
   final l10n = buttonContext.l10n;
   final imageData = await controller.capture();
   if (imageData == null) return;
@@ -194,10 +219,7 @@ class _ShareInviteOption extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
-                    l10n.shareInviteIncludeMarks,
-                    style: context.p2,
-                  ),
+                  child: Text(l10n.shareInviteIncludeMarks, style: context.p2),
                 ),
               ],
             ),
@@ -205,7 +227,10 @@ class _ShareInviteOption extends StatelessWidget {
               padding: const EdgeInsets.only(left: 4),
               child: Text(
                 l10n.shareInviteIncludeMarksHelper,
-                style: context.p2.copyWith(color: kGrey3, fontSize: 12),
+                style: context.p2.copyWith(
+                  color: context.weakTextColor,
+                  fontSize: 12,
+                ),
               ),
             ),
           ],
@@ -215,8 +240,7 @@ class _ShareInviteOption extends StatelessWidget {
   }
 }
 
-Future<void> _shareInvite(
-    BuildContext buttonContext, bool includeMarks) async {
+Future<void> _shareInvite(BuildContext buttonContext, bool includeMarks) async {
   final l10n = buttonContext.l10n;
 
   final controller = bingoCardControllerRef.of(buttonContext);
@@ -259,9 +283,9 @@ class _ShareOptionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: kGrey7,
+        color: context.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: kGrey5),
+        border: Border.all(color: context.outlineColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +303,10 @@ class _ShareOptionCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          Text(helper, style: context.p2.copyWith(color: kGrey2)),
+          Text(
+            helper,
+            style: context.p2.copyWith(color: context.weakTextColor),
+          ),
           if (extra != null) extra!,
           const SizedBox(height: 10),
           Align(

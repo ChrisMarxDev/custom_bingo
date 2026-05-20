@@ -67,6 +67,15 @@
     "settingsHeader": "Settings",
     "@settingsHeader": { "description": "Section header in the popup menu" },
 
+    "appearanceMenuItem": "Appearance",
+    "@appearanceMenuItem": { "description": "Menu item that opens the appearance settings screen" },
+
+    "themeColorLabel": "Theme color",
+    "@themeColorLabel": { "description": "Label above the theme color selector in settings" },
+
+    "darkModeLabel": "Dark mode",
+    "@darkModeLabel": { "description": "Label for the dark mode switch in settings" },
+
     "proposeFeatures": "Propose Features",
     "@proposeFeatures": { "description": "Menu item that opens the UserOrient feedback board" },
 

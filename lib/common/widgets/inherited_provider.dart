@@ -30,12 +30,12 @@ class InheritedProvider<T> extends InheritedWidget {
 
   static T? maybeOf<T>(BuildContext context, {bool listen = true}) {
     if (listen) {
-      final widget =
-          context.dependOnInheritedWidgetOfExactType<InheritedProvider<T>>();
+      final widget = context
+          .dependOnInheritedWidgetOfExactType<InheritedProvider<T>>();
       return widget?.value;
     }
-    final element =
-        context.getElementForInheritedWidgetOfExactType<InheritedProvider<T>>();
+    final element = context
+        .getElementForInheritedWidgetOfExactType<InheritedProvider<T>>();
     final widget = element?.widget as InheritedProvider<T>?;
     return widget?.value;
   }
@@ -51,6 +51,8 @@ class InheritedProvider<T> extends InheritedWidget {
 extension InheritedProviderBuildContextX on BuildContext {
   T watchProvided<T>() => InheritedProvider.of<T>(this, listen: true);
   T readProvided<T>() => InheritedProvider.of<T>(this, listen: false);
-  T? maybeWatchProvided<T>() => InheritedProvider.maybeOf<T>(this, listen: true);
-  T? maybeReadProvided<T>() => InheritedProvider.maybeOf<T>(this, listen: false);
+  T? maybeWatchProvided<T>() =>
+      InheritedProvider.maybeOf<T>(this, listen: true);
+  T? maybeReadProvided<T>() =>
+      InheritedProvider.maybeOf<T>(this, listen: false);
 }

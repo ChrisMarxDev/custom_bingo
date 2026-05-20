@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_redundant_argument_values
 
-import 'package:custom_bingo/util/extensions/color_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,16 +64,166 @@ const kDarkBlack = Color(0xff000000);
 
 const kBackgroundColorLight = Color(0xffffffff);
 
-ThemeData getThemeData({bool isDarkMode = false}) {
-  // final offWhite = primary.blend(kWhite, 0.9);
-  final bg = isDarkMode ? kGrey1 : kBackgroundColorLight;
+class AppThemePalette {
+  const AppThemePalette({
+    required this.id,
+    required this.primary,
+    required this.onPrimary,
+    required this.secondary,
+    required this.onSecondary,
+    this.darkPrimary,
+    this.darkOnPrimary,
+    this.darkSecondary,
+    this.darkOnSecondary,
+  });
 
-  const kTextColor = kDarkBlack;
-  const primary = kDarkBlack;
-  const onPrimary = kWhite;
-  const secondary = kYellow;
-  const onSecondary = kTextColor;
+  final String id;
+  final Color primary;
+  final Color onPrimary;
+  final Color secondary;
+  final Color onSecondary;
+  final Color? darkPrimary;
+  final Color? darkOnPrimary;
+  final Color? darkSecondary;
+  final Color? darkOnSecondary;
+
+  Color resolvePrimary(bool isDarkMode) {
+    return isDarkMode ? (darkPrimary ?? primary) : primary;
+  }
+
+  Color resolveOnPrimary(bool isDarkMode) {
+    return isDarkMode ? (darkOnPrimary ?? onPrimary) : onPrimary;
+  }
+
+  Color resolveSecondary(bool isDarkMode) {
+    return isDarkMode ? (darkSecondary ?? secondary) : secondary;
+  }
+
+  Color resolveOnSecondary(bool isDarkMode) {
+    return isDarkMode ? (darkOnSecondary ?? onSecondary) : onSecondary;
+  }
+}
+
+const appThemePalettes = <AppThemePalette>[
+  AppThemePalette(
+    id: 'base',
+    primary: kDarkBlack,
+    onPrimary: kWhite,
+    secondary: kWhite,
+    onSecondary: kDarkBlack,
+    darkPrimary: kWhite,
+    darkOnPrimary: kDarkBlack,
+    darkSecondary: kDarkBlack,
+    darkOnSecondary: kWhite,
+  ),
+  AppThemePalette(
+    id: 'classic',
+    primary: kYellow,
+    onPrimary: kDarkBlack,
+    secondary: kDarkBlack,
+    onSecondary: kWhite,
+  ),
+  AppThemePalette(
+    id: 'ocean',
+    primary: Color(0xFF1D4ED8),
+    onPrimary: kWhite,
+    secondary: Color(0xFF7DD3FC),
+    onSecondary: kDarkBlack,
+  ),
+  AppThemePalette(
+    id: 'sunset',
+    primary: Color(0xFFEA580C),
+    onPrimary: kWhite,
+    secondary: Color(0xFFFBBF24),
+    onSecondary: kDarkBlack,
+  ),
+  AppThemePalette(
+    id: 'berry',
+    primary: Color(0xFFBE185D),
+    onPrimary: kWhite,
+    secondary: Color(0xFFF9A8D4),
+    onSecondary: kDarkBlack,
+  ),
+  AppThemePalette(
+    id: 'forest',
+    primary: Color(0xFF15803D),
+    onPrimary: kWhite,
+    secondary: Color(0xFFA3E635),
+    onSecondary: kDarkBlack,
+  ),
+  AppThemePalette(
+    id: 'lagoon',
+    primary: Color(0xFF0F766E),
+    onPrimary: kWhite,
+    secondary: Color(0xFF67E8F9),
+    onSecondary: kDarkBlack,
+  ),
+];
+
+final defaultThemePalette = appThemePalettes.first;
+
+ThemeData getThemeData({bool isDarkMode = false, AppThemePalette? palette}) {
+  final effectivePalette = palette ?? defaultThemePalette;
+  final brightness = isDarkMode ? Brightness.dark : Brightness.light;
+  final bg = isDarkMode ? const Color(0xFF121212) : kBackgroundColorLight;
+  final surface = isDarkMode ? const Color(0xFF1A1A1A) : kBackgroundColorLight;
+  final textColor = isDarkMode ? kWhite : kDarkBlack;
+  final weakTextColor = isDarkMode ? kGrey4 : kGrey2;
+  final borderColor = isDarkMode ? const Color(0xFF5A5A5A) : kGrey3;
+  final mutedBorderColor = isDarkMode ? const Color(0xFF363636) : kGrey4;
+  final surfaceDim = isDarkMode ? const Color(0xFF111111) : kGrey55;
+  final surfaceBright = isDarkMode ? const Color(0xFF303030) : kWhite;
+  final surfaceContainerLowest = isDarkMode ? const Color(0xFF0D0D0D) : kWhite;
+  final surfaceContainerLow = isDarkMode ? const Color(0xFF171717) : kGrey6;
+  final surfaceContainer = isDarkMode ? const Color(0xFF1F1F1F) : kGrey55;
+  final surfaceContainerHigh = isDarkMode ? const Color(0xFF272727) : kGrey5;
+  final surfaceContainerHighest = isDarkMode ? const Color(0xFF303030) : kGrey4;
+  final primary = effectivePalette.resolvePrimary(isDarkMode);
+  final onPrimary = effectivePalette.resolveOnPrimary(isDarkMode);
+  final secondary = effectivePalette.resolveSecondary(isDarkMode);
+  final onSecondary = effectivePalette.resolveOnSecondary(isDarkMode);
   const buttonPadding = EdgeInsets.symmetric(horizontal: 16, vertical: 12);
+  Color tone(Color color, double amount) {
+    return Color.alphaBlend(color.withValues(alpha: amount), surface);
+  }
+
+  final scheme =
+      ColorScheme.fromSeed(seedColor: primary, brightness: brightness).copyWith(
+        primary: primary,
+        onPrimary: onPrimary,
+        primaryContainer: tone(primary, isDarkMode ? 0.26 : 0.14),
+        onPrimaryContainer: textColor,
+        secondary: secondary,
+        onSecondary: onSecondary,
+        secondaryContainer: tone(secondary, isDarkMode ? 0.22 : 0.12),
+        onSecondaryContainer: textColor,
+        tertiary: secondary,
+        onTertiary: onSecondary,
+        tertiaryContainer: tone(secondary, isDarkMode ? 0.18 : 0.1),
+        onTertiaryContainer: textColor,
+        surface: surface,
+        onSurface: textColor,
+        surfaceDim: surfaceDim,
+        surfaceBright: surfaceBright,
+        surfaceContainerLowest: surfaceContainerLowest,
+        surfaceContainerLow: surfaceContainerLow,
+        surfaceContainer: surfaceContainer,
+        surfaceContainerHigh: surfaceContainerHigh,
+        surfaceContainerHighest: surfaceContainerHighest,
+        onSurfaceVariant: weakTextColor,
+        outline: borderColor,
+        outlineVariant: mutedBorderColor,
+        shadow: kDarkBlack,
+        scrim: kDarkBlack,
+        inverseSurface: isDarkMode ? kWhite : kGrey1,
+        onInverseSurface: isDarkMode ? kGrey1 : kWhite,
+        inversePrimary: secondary,
+        surfaceTint: Colors.transparent,
+        error: kRed,
+        onError: kWhite,
+        errorContainer: tone(kRed, isDarkMode ? 0.28 : 0.14),
+        onErrorContainer: textColor,
+      );
 
   const baseTextTheme = TextTheme(
     headlineLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -82,11 +231,10 @@ ThemeData getThemeData({bool isDarkMode = false}) {
     headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
   );
 
-  // const fontFamily = 'Roboto';
   final textTheme = GoogleFonts.outfitTextTheme(baseTextTheme).apply(
-    bodyColor: kTextColor,
-    displayColor: kTextColor,
-    decorationColor: kTextColor,
+    bodyColor: textColor,
+    displayColor: textColor,
+    decorationColor: textColor,
   );
 
   final buttonTextStyle = textTheme.titleSmall!.copyWith(
@@ -94,59 +242,58 @@ ThemeData getThemeData({bool isDarkMode = false}) {
     fontWeight: FontWeight.bold,
   );
   return ThemeData(
-    splashColor: primary.withValues(alpha: 0.2),
+    brightness: brightness,
+    splashColor: scheme.primary.withValues(alpha: 0.18),
     scaffoldBackgroundColor: bg,
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark, // Android
-        statusBarBrightness: Brightness.light, // iOS: dark icons
+        statusBarIconBrightness: isDarkMode
+            ? Brightness.light
+            : Brightness.dark,
+        statusBarBrightness: isDarkMode ? Brightness.dark : Brightness.light,
         systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: isDarkMode
+            ? Brightness.light
+            : Brightness.dark,
         systemNavigationBarDividerColor: Colors.transparent,
       ),
-      iconTheme: IconThemeData(color: kDarkBlack),
+      iconTheme: IconThemeData(color: textColor),
     ),
-    colorScheme: ColorScheme.light(
-      primary: primary,
-      secondary: secondary,
-      surface: bg,
-      onSurface: isDarkMode ? kWhite : kGrey1,
-      onPrimary: onPrimary,
-      onSecondary: onSecondary,
-      surfaceTint: Colors.transparent,
-
-      // surface: offWhite,
-    ),
+    colorScheme: scheme,
     cardTheme: CardThemeData(
-      color: bg,
+      color: surface,
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: kBorderRadius,
         side: BorderSide(
-          color: Colors.black,
+          color: borderColor,
           strokeAlign: BorderSide.strokeAlignInside,
         ),
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      indicatorColor: primary.blend(kWhite, 0.6),
+      indicatorColor: scheme.primary.withValues(
+        alpha: isDarkMode ? 0.28 : 0.14,
+      ),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return const IconThemeData(color: primary);
+          return IconThemeData(color: scheme.primary);
         }
-        return const IconThemeData(color: kGrey3);
+        return IconThemeData(color: isDarkMode ? kGrey4 : kGrey3);
       }),
     ),
     buttonTheme: const ButtonThemeData(shape: kCardShape),
-    iconTheme: const IconThemeData(color: kDarkBlack),
+    iconTheme: IconThemeData(color: textColor),
     navigationRailTheme: NavigationRailThemeData(
-      indicatorColor: primary.blend(kWhite, 0.6),
-      selectedIconTheme: const IconThemeData(color: primary),
+      indicatorColor: scheme.primary.withValues(
+        alpha: isDarkMode ? 0.28 : 0.14,
+      ),
+      selectedIconTheme: IconThemeData(color: scheme.primary),
       elevation: 0,
       groupAlignment: 0,
       labelType: NavigationRailLabelType.all,
@@ -161,15 +308,15 @@ ThemeData getThemeData({bool isDarkMode = false}) {
         shape: WidgetStateProperty.all<OutlinedBorder>(kCardShape),
         foregroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
-            return kWhite;
+            return isDarkMode ? kGrey1 : kWhite;
           }
-          return onPrimary;
+          return scheme.onPrimary;
         }),
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
             return kGrey3;
           }
-          return primary;
+          return scheme.primary;
         }),
       ),
     ),
@@ -189,8 +336,9 @@ ThemeData getThemeData({bool isDarkMode = false}) {
         //   return MeshFilledButtonBackground(states: states, child: child);
         // },
         foregroundBuilder: (context, states, child) {
-          final color =
-              states.contains(WidgetState.disabled) ? onPrimary : onPrimary;
+          final color = states.contains(WidgetState.disabled)
+              ? (isDarkMode ? kGrey1 : kWhite)
+              : scheme.onPrimary;
           return DefaultTextStyle(
             style: buttonTextStyle.copyWith(color: color),
             child: child ?? const SizedBox.shrink(),
@@ -198,59 +346,60 @@ ThemeData getThemeData({bool isDarkMode = false}) {
         },
         foregroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
-            return kWhite;
+            return isDarkMode ? kGrey1 : kWhite;
           }
-          return onPrimary;
+          return scheme.onPrimary;
         }),
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
             return kGrey3;
           }
-          return primary;
+          return scheme.primary;
         }),
       ),
     ),
-    dialogTheme: DialogThemeData(shape: kCardShape, backgroundColor: bg),
+    dialogTheme: DialogThemeData(shape: kCardShape, backgroundColor: surface),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
         textStyle: WidgetStateProperty.all<TextStyle>(
           textTheme.titleSmall!.copyWith(fontSize: 18),
         ),
         padding: const WidgetStatePropertyAll(buttonPadding),
-        foregroundColor: WidgetStateProperty.all<Color>(primary),
+        foregroundColor: WidgetStateProperty.all<Color>(textColor),
         shape: WidgetStateProperty.all<OutlinedBorder>(kCardShape),
         side: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
-            return const BorderSide(width: 2, color: kGrey4);
+            return BorderSide(width: 2, color: mutedBorderColor);
           }
-          return const BorderSide(width: 2, color: primary);
+          return BorderSide(width: 2, color: scheme.primary);
         }),
       ),
     ),
-    bottomSheetTheme: BottomSheetThemeData(backgroundColor: bg),
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: surface),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         textStyle: WidgetStateProperty.all<TextStyle>(
           textTheme.titleSmall!.copyWith(fontSize: 18),
         ),
         padding: const WidgetStatePropertyAll(buttonPadding),
+        foregroundColor: WidgetStatePropertyAll(textColor),
         shape: WidgetStateProperty.all<OutlinedBorder>(kCardShape),
       ),
     ),
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: primary,
-      selectionColor: primary.blend(kWhite, 0.6),
-      selectionHandleColor: primary,
+      cursorColor: scheme.primary,
+      selectionColor: scheme.primary.withValues(alpha: isDarkMode ? 0.35 : 0.2),
+      selectionHandleColor: scheme.primary,
     ),
-    inputDecorationTheme: const InputDecorationTheme(
-      hintStyle: TextStyle(color: kGrey4),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(color: weakTextColor),
       enabledBorder: OutlineInputBorder(
         borderRadius: kBorderradiusSmall,
-        borderSide: BorderSide(color: kGrey4),
+        borderSide: BorderSide(color: mutedBorderColor),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: kBorderradiusSmall,
-        borderSide: BorderSide(width: 2, color: primary),
+        borderSide: BorderSide(width: 2, color: scheme.primary),
       ),
     ),
     switchTheme: SwitchThemeData(
@@ -259,33 +408,39 @@ ThemeData getThemeData({bool isDarkMode = false}) {
         if (states.contains(WidgetState.disabled)) {
           return kGrey4;
         }
-        return primary;
+        return scheme.primary;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return primary.blend(kWhite, 0.8);
+          return scheme.primary.withValues(alpha: isDarkMode ? 0.35 : 0.25);
         }
-        return kWhite;
+        return surface;
       }),
       trackOutlineWidth: WidgetStateProperty.all(2),
       trackOutlineColor: WidgetStateProperty.resolveWith((states) {
-        return primary;
+        if (states.contains(WidgetState.selected)) {
+          return scheme.primary;
+        }
+        return mutedBorderColor;
       }),
     ),
-    dividerTheme: const DividerThemeData(
+    dividerTheme: DividerThemeData(
       thickness: 1,
       space: 1,
       endIndent: 0,
       indent: 0,
-      color: kGrey5,
+      color: mutedBorderColor,
     ),
     dataTableTheme: DataTableThemeData(
       dataTextStyle: const TextStyle(),
       headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-      decoration: BoxDecoration(border: Border.all(color: kGrey4)),
+      decoration: BoxDecoration(border: Border.all(color: mutedBorderColor)),
     ),
     textTheme: textTheme,
-    primaryTextTheme: GoogleFonts.bricolageGrotesqueTextTheme(),
+    primaryTextTheme: GoogleFonts.bricolageGrotesqueTextTheme().apply(
+      bodyColor: textColor,
+      displayColor: textColor,
+    ),
   );
 }
 
@@ -356,30 +511,30 @@ extension ThemeExtension on BuildContext {
 
   // helper method for weaker text
   Color get weakTextColor {
-    return isDarkMode() ? kGrey2 : kGrey4;
+    return colorScheme.onSurfaceVariant;
   }
 
   Color get disabledColor {
-    return isDarkMode() ? kGrey2 : kGrey3;
+    return colorScheme.outline;
   }
 
   Color get bg => Theme.of(this).scaffoldBackgroundColor;
   Color get background => bg;
 
   Color get weakestTextColor {
-    return isDarkMode() ? kGrey1_5 : kGrey5;
+    return colorScheme.outlineVariant;
   }
 
   Color get baseTileColor {
-    return isDarkMode() ? kGrey2 : const Color(0xffF7F9FF);
+    return colorScheme.surfaceContainerLow;
   }
 
   Color get hoveredColor {
-    return isDarkMode() ? kGrey3 : const Color(0xffD3D6DF);
+    return colorScheme.surfaceContainerHigh;
   }
 
   Color get strongTextColor {
-    return isDarkMode() ? kWhite : kGrey2;
+    return colorScheme.onSurface;
   }
 
   Color get primary {
@@ -415,8 +570,7 @@ extension ThemeExtension on BuildContext {
   }
 
   Color get textColor {
-    // return textTheme.bodyLarge!.color!;
-    return isDarkMode() ? kWhite : kDarkBlack;
+    return colorScheme.onSurface;
   }
 
   Color get onBackground {
@@ -424,7 +578,7 @@ extension ThemeExtension on BuildContext {
   }
 
   Color get notificationCardBackground {
-    return isDarkMode() ? HexColor('#1F1F1F') : kGrey3;
+    return colorScheme.surfaceContainerHigh;
   }
 
   Color get surface {
@@ -432,6 +586,30 @@ extension ThemeExtension on BuildContext {
   }
 
   Color get cardColor => theme.cardTheme.color!;
+
+  Color get outlineColor {
+    return colorScheme.outlineVariant;
+  }
+
+  Color get shadowColor {
+    return colorScheme.shadow;
+  }
+
+  Color get surfaceContainer {
+    return colorScheme.surfaceContainer;
+  }
+
+  Color get surfaceContainerLow {
+    return colorScheme.surfaceContainerLow;
+  }
+
+  Color get surfaceContainerLowest {
+    return colorScheme.surfaceContainerLowest;
+  }
+
+  Color get surfaceContainerHigh {
+    return colorScheme.surfaceContainerHigh;
+  }
 
   double get screenHeight =>
       MediaQuery.sizeOf(this).height + MediaQuery.viewInsetsOf(this).vertical;
@@ -448,7 +626,7 @@ extension ThemeExtension on BuildContext {
 
   Color get success => kGreen;
 
-  Color get error => kRed;
+  Color get error => colorScheme.error;
 }
 
 const kBaseSpacing = 16.0;

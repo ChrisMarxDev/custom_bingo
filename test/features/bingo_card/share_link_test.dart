@@ -21,13 +21,18 @@ void main() {
       for (var r = 0; r < 5; r++) {
         for (var c = 0; c < 5; c++) {
           expect(decoded.gridItems[r][c].text, state.gridItems[r][c].text);
-          expect(decoded.gridItems[r][c].isDone, isFalse,
-              reason: 'marks omitted by default');
+          expect(
+            decoded.gridItems[r][c].isDone,
+            isFalse,
+            reason: 'marks omitted by default',
+          );
         }
       }
       // Fresh UUIDs.
-      expect(decoded.gridItems.first.first.id,
-          isNot(equals(state.gridItems.first.first.id)));
+      expect(
+        decoded.gridItems.first.first.id,
+        isNot(equals(state.gridItems.first.first.id)),
+      );
     });
 
     test('preserves marks when includeMarks: true', () {
@@ -68,7 +73,9 @@ void main() {
     });
 
     test('rejects wrong scheme', () {
-      final result = decodeShareLink(Uri.parse('https://example.com/import?d=x'));
+      final result = decodeShareLink(
+        Uri.parse('https://example.com/import?d=x'),
+      );
       expect(result, isA<DecodedShareLinkInvalid>());
     });
 
@@ -78,8 +85,9 @@ void main() {
     });
 
     test('rejects garbage payload', () {
-      final result =
-          decodeShareLink(Uri.parse('custombingo://import?d=notbase64!!!'));
+      final result = decodeShareLink(
+        Uri.parse('custombingo://import?d=notbase64!!!'),
+      );
       expect(result, isA<DecodedShareLinkInvalid>());
     });
 
@@ -111,8 +119,7 @@ void main() {
         lastChangeDateTime: DateTime(2026),
       );
       final decoded =
-          (decodeShareLink(encodeShareLink(state)) as DecodedShareLinkOk)
-              .state;
+          (decodeShareLink(encodeShareLink(state)) as DecodedShareLinkOk).state;
       expect(decoded.name, state.name);
       expect(decoded.gridItems[0][0].text, '🥂 Champagner verschüttet');
       expect(decoded.gridItems[1][0].text, 'DJ spielt „Atemlos"');

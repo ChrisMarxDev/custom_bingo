@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('shows a toast when called with navigator context',
-      (tester) async {
+  testWidgets('shows a toast when called with navigator context', (
+    tester,
+  ) async {
     final navigatorKey = GlobalKey<NavigatorState>();
 
     await tester.pumpWidget(

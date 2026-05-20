@@ -128,10 +128,7 @@ class _ToastRequest {
 }
 
 class _ToastOverlay extends StatefulWidget {
-  const _ToastOverlay({
-    required this.request,
-    required this.onDismissed,
-  });
+  const _ToastOverlay({required this.request, required this.onDismissed});
 
   final _ToastRequest request;
   final VoidCallback onDismissed;
@@ -158,9 +155,7 @@ class _ToastOverlayState extends State<_ToastOverlay>
     _offsetAnimation = Tween<Offset>(
       begin: const Offset(0, -0.2),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
-    );
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
     _opacityAnimation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeOutCubic,
@@ -207,7 +202,9 @@ class _ToastOverlayState extends State<_ToastOverlay>
                       child: Material(
                         color: theme.colorScheme.surface,
                         elevation: 12,
-                        shadowColor: Colors.black.withValues(alpha: 0.18),
+                        shadowColor: theme.colorScheme.shadow.withValues(
+                          alpha: 0.18,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
@@ -217,7 +214,7 @@ class _ToastOverlayState extends State<_ToastOverlay>
                                   ? widget.request.iconColor.withValues(
                                       alpha: 0.4,
                                     )
-                                  : kGrey5,
+                                  : theme.colorScheme.outlineVariant,
                             ),
                           ),
                           child: Padding(

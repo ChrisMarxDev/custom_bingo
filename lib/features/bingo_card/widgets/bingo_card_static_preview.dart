@@ -25,7 +25,8 @@ class BingoCardStaticPreview extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: List.generate(size, (col) {
             final item = gridItems[row][col];
-            final isCenterFree = size.isOdd &&
+            final isCenterFree =
+                size.isOdd &&
                 row == size ~/ 2 &&
                 col == size ~/ 2 &&
                 item.text.isEmpty;
@@ -35,9 +36,11 @@ class BingoCardStaticPreview extends StatelessWidget {
               margin: const EdgeInsets.all(1),
               decoration: BoxDecoration(
                 color: item.isDone
-                    ? context.primary.withValues(alpha: 0.85)
-                    : (isCenterFree ? kGrey6 : kWhite),
-                border: Border.all(color: kGrey4),
+                    ? context.primary
+                    : (isCenterFree
+                          ? context.surfaceContainerLow
+                          : context.cardColor),
+                border: Border.all(color: context.outlineColor),
                 borderRadius: BorderRadius.circular(6),
               ),
               padding: const EdgeInsets.all(4),
@@ -50,7 +53,7 @@ class BingoCardStaticPreview extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: item.isDone ? kWhite : kGrey1,
+                  color: item.isDone ? context.onPrimary : context.textColor,
                 ),
               ),
             );

@@ -4,11 +4,7 @@ part 'bingo_item.mapper.dart';
 
 @MappableClass(ignoreNull: true)
 class BingoItem with BingoItemMappable {
-  BingoItem({
-    required this.id,
-    this.text = '',
-    this.fullfilledAt,
-  });
+  BingoItem({required this.id, this.text = '', this.fullfilledAt});
 
   final String id;
   final String text;

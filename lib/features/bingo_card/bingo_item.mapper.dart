@@ -23,11 +23,18 @@ class BingoItemMapper extends ClassMapperBase<BingoItem> {
   static String _$id(BingoItem v) => v.id;
   static const Field<BingoItem, String> _f$id = Field('id', _$id);
   static String _$text(BingoItem v) => v.text;
-  static const Field<BingoItem, String> _f$text =
-      Field('text', _$text, opt: true, def: '');
+  static const Field<BingoItem, String> _f$text = Field(
+    'text',
+    _$text,
+    opt: true,
+    def: '',
+  );
   static DateTime? _$fullfilledAt(BingoItem v) => v.fullfilledAt;
-  static const Field<BingoItem, DateTime> _f$fullfilledAt =
-      Field('fullfilledAt', _$fullfilledAt, opt: true);
+  static const Field<BingoItem, DateTime> _f$fullfilledAt = Field(
+    'fullfilledAt',
+    _$fullfilledAt,
+    opt: true,
+  );
 
   @override
   final MappableFields<BingoItem> fields = const {
@@ -40,9 +47,10 @@ class BingoItemMapper extends ClassMapperBase<BingoItem> {
 
   static BingoItem _instantiate(DecodingData data) {
     return BingoItem(
-        id: data.dec(_f$id),
-        text: data.dec(_f$text),
-        fullfilledAt: data.dec(_f$fullfilledAt));
+      id: data.dec(_f$id),
+      text: data.dec(_f$text),
+      fullfilledAt: data.dec(_f$fullfilledAt),
+    );
   }
 
   @override
@@ -59,28 +67,36 @@ class BingoItemMapper extends ClassMapperBase<BingoItem> {
 
 mixin BingoItemMappable {
   String toJson() {
-    return BingoItemMapper.ensureInitialized()
-        .encodeJson<BingoItem>(this as BingoItem);
+    return BingoItemMapper.ensureInitialized().encodeJson<BingoItem>(
+      this as BingoItem,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return BingoItemMapper.ensureInitialized()
-        .encodeMap<BingoItem>(this as BingoItem);
+    return BingoItemMapper.ensureInitialized().encodeMap<BingoItem>(
+      this as BingoItem,
+    );
   }
 
   BingoItemCopyWith<BingoItem, BingoItem, BingoItem> get copyWith =>
       _BingoItemCopyWithImpl<BingoItem, BingoItem>(
-          this as BingoItem, $identity, $identity);
+        this as BingoItem,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BingoItemMapper.ensureInitialized()
-        .stringifyValue(this as BingoItem);
+    return BingoItemMapper.ensureInitialized().stringifyValue(
+      this as BingoItem,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BingoItemMapper.ensureInitialized()
-        .equalsValue(this as BingoItem, other);
+    return BingoItemMapper.ensureInitialized().equalsValue(
+      this as BingoItem,
+      other,
+    );
   }
 
   @override
@@ -109,22 +125,24 @@ class _BingoItemCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BingoItem> $mapper =
       BingoItemMapper.ensureInitialized();
   @override
-  $R call({String? id, String? text, Object? fullfilledAt = $none}) =>
-      $apply(FieldCopyWithData({
-        if (id != null) #id: id,
-        if (text != null) #text: text,
-        if (fullfilledAt != $none) #fullfilledAt: fullfilledAt
-      }));
+  $R call({String? id, String? text, Object? fullfilledAt = $none}) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (text != null) #text: text,
+      if (fullfilledAt != $none) #fullfilledAt: fullfilledAt,
+    }),
+  );
   @override
   BingoItem $make(CopyWithData data) => BingoItem(
-      id: data.get(#id, or: $value.id),
-      text: data.get(#text, or: $value.text),
-      fullfilledAt: data.get(#fullfilledAt, or: $value.fullfilledAt));
+    id: data.get(#id, or: $value.id),
+    text: data.get(#text, or: $value.text),
+    fullfilledAt: data.get(#fullfilledAt, or: $value.fullfilledAt),
+  );
 
   @override
   BingoItemCopyWith<$R2, BingoItem, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BingoItemCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BingoItemCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BingoCardStateMapper extends ClassMapperBase<BingoCardState> {
@@ -149,11 +167,16 @@ class BingoCardStateMapper extends ClassMapperBase<BingoCardState> {
       Field('gridItems', _$gridItems);
   static DateTime? _$lastChangeDateTime(BingoCardState v) =>
       v.lastChangeDateTime;
-  static const Field<BingoCardState, DateTime> _f$lastChangeDateTime =
-      Field('lastChangeDateTime', _$lastChangeDateTime);
+  static const Field<BingoCardState, DateTime> _f$lastChangeDateTime = Field(
+    'lastChangeDateTime',
+    _$lastChangeDateTime,
+  );
   static bool? _$isEditing(BingoCardState v) => v.isEditing;
-  static const Field<BingoCardState, bool> _f$isEditing =
-      Field('isEditing', _$isEditing, opt: true);
+  static const Field<BingoCardState, bool> _f$isEditing = Field(
+    'isEditing',
+    _$isEditing,
+    opt: true,
+  );
 
   @override
   final MappableFields<BingoCardState> fields = const {
@@ -167,10 +190,11 @@ class BingoCardStateMapper extends ClassMapperBase<BingoCardState> {
 
   static BingoCardState _instantiate(DecodingData data) {
     return BingoCardState(
-        name: data.dec(_f$name),
-        gridItems: data.dec(_f$gridItems),
-        lastChangeDateTime: data.dec(_f$lastChangeDateTime),
-        isEditing: data.dec(_f$isEditing));
+      name: data.dec(_f$name),
+      gridItems: data.dec(_f$gridItems),
+      lastChangeDateTime: data.dec(_f$lastChangeDateTime),
+      isEditing: data.dec(_f$isEditing),
+    );
   }
 
   @override
@@ -187,35 +211,43 @@ class BingoCardStateMapper extends ClassMapperBase<BingoCardState> {
 
 mixin BingoCardStateMappable {
   String toJson() {
-    return BingoCardStateMapper.ensureInitialized()
-        .encodeJson<BingoCardState>(this as BingoCardState);
+    return BingoCardStateMapper.ensureInitialized().encodeJson<BingoCardState>(
+      this as BingoCardState,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return BingoCardStateMapper.ensureInitialized()
-        .encodeMap<BingoCardState>(this as BingoCardState);
+    return BingoCardStateMapper.ensureInitialized().encodeMap<BingoCardState>(
+      this as BingoCardState,
+    );
   }
 
   BingoCardStateCopyWith<BingoCardState, BingoCardState, BingoCardState>
-      get copyWith =>
-          _BingoCardStateCopyWithImpl<BingoCardState, BingoCardState>(
-              this as BingoCardState, $identity, $identity);
+  get copyWith => _BingoCardStateCopyWithImpl<BingoCardState, BingoCardState>(
+    this as BingoCardState,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return BingoCardStateMapper.ensureInitialized()
-        .stringifyValue(this as BingoCardState);
+    return BingoCardStateMapper.ensureInitialized().stringifyValue(
+      this as BingoCardState,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BingoCardStateMapper.ensureInitialized()
-        .equalsValue(this as BingoCardState, other);
+    return BingoCardStateMapper.ensureInitialized().equalsValue(
+      this as BingoCardState,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BingoCardStateMapper.ensureInitialized()
-        .hashValue(this as BingoCardState);
+    return BingoCardStateMapper.ensureInitialized().hashValue(
+      this as BingoCardState,
+    );
   }
 }
 
@@ -227,15 +259,21 @@ extension BingoCardStateValueCopy<$R, $Out>
 
 abstract class BingoCardStateCopyWith<$R, $In extends BingoCardState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, List<BingoItem>,
-      ObjectCopyWith<$R, List<BingoItem>, List<BingoItem>>> get gridItems;
-  $R call(
-      {String? name,
-      List<List<BingoItem>>? gridItems,
-      DateTime? lastChangeDateTime,
-      bool? isEditing});
+  ListCopyWith<
+    $R,
+    List<BingoItem>,
+    ObjectCopyWith<$R, List<BingoItem>, List<BingoItem>>
+  >
+  get gridItems;
+  $R call({
+    String? name,
+    List<List<BingoItem>>? gridItems,
+    DateTime? lastChangeDateTime,
+    bool? isEditing,
+  });
   BingoCardStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BingoCardStateCopyWithImpl<$R, $Out>
@@ -247,33 +285,43 @@ class _BingoCardStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BingoCardState> $mapper =
       BingoCardStateMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, List<BingoItem>,
-          ObjectCopyWith<$R, List<BingoItem>, List<BingoItem>>>
-      get gridItems => ListCopyWith($value.gridItems,
-          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(gridItems: v));
+  ListCopyWith<
+    $R,
+    List<BingoItem>,
+    ObjectCopyWith<$R, List<BingoItem>, List<BingoItem>>
+  >
+  get gridItems => ListCopyWith(
+    $value.gridItems,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(gridItems: v),
+  );
   @override
-  $R call(
-          {String? name,
-          List<List<BingoItem>>? gridItems,
-          Object? lastChangeDateTime = $none,
-          Object? isEditing = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (gridItems != null) #gridItems: gridItems,
-        if (lastChangeDateTime != $none)
-          #lastChangeDateTime: lastChangeDateTime,
-        if (isEditing != $none) #isEditing: isEditing
-      }));
+  $R call({
+    String? name,
+    List<List<BingoItem>>? gridItems,
+    Object? lastChangeDateTime = $none,
+    Object? isEditing = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (gridItems != null) #gridItems: gridItems,
+      if (lastChangeDateTime != $none) #lastChangeDateTime: lastChangeDateTime,
+      if (isEditing != $none) #isEditing: isEditing,
+    }),
+  );
   @override
   BingoCardState $make(CopyWithData data) => BingoCardState(
-      name: data.get(#name, or: $value.name),
-      gridItems: data.get(#gridItems, or: $value.gridItems),
-      lastChangeDateTime:
-          data.get(#lastChangeDateTime, or: $value.lastChangeDateTime),
-      isEditing: data.get(#isEditing, or: $value.isEditing));
+    name: data.get(#name, or: $value.name),
+    gridItems: data.get(#gridItems, or: $value.gridItems),
+    lastChangeDateTime: data.get(
+      #lastChangeDateTime,
+      or: $value.lastChangeDateTime,
+    ),
+    isEditing: data.get(#isEditing, or: $value.isEditing),
+  );
 
   @override
   BingoCardStateCopyWith<$R2, BingoCardState, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BingoCardStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BingoCardStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

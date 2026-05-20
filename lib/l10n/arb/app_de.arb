@@ -28,6 +28,9 @@
     "newCardMenuItem": "Neues Bingo",
     "yourCardsHeader": "Deine Bingos",
     "settingsHeader": "Einstellungen",
+    "appearanceMenuItem": "Design",
+    "themeColorLabel": "Themenfarbe",
+    "darkModeLabel": "Dunkler Modus",
     "proposeFeatures": "Funktion vorschlagen",
     "supportKoFi": "Auf Ko-Fi unterstützen",
 

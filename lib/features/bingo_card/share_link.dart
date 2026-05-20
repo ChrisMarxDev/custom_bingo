@@ -25,8 +25,7 @@ Uri encodeShareLink(BingoCardState state, {bool includeMarks = false}) {
     'cells': cells.map((c) => c.text).toList(growable: false),
   };
   if (includeMarks) {
-    payload['marks'] =
-        cells.map((c) => c.isDone).toList(growable: false);
+    payload['marks'] = cells.map((c) => c.isDone).toList(growable: false);
   }
 
   final json = jsonEncode(payload);
@@ -95,8 +94,7 @@ DecodedShareLink decodeShareLink(Uri uri) {
     }
 
     final marks = map['marks'];
-    final hasMarks =
-        marks is List && marks.length == size * size;
+    final hasMarks = marks is List && marks.length == size * size;
 
     final uuid = const Uuid();
     final now = DateTime.now();
@@ -108,22 +106,26 @@ DecodedShareLink decodeShareLink(Uri uri) {
         final text = cells[idx];
         if (text is! String) return const DecodedShareLinkInvalid();
         final isMarked = hasMarks && marks[idx] == true;
-        rowItems.add(BingoItem(
-          id: uuid.v4(),
-          text: text,
-          fullfilledAt: isMarked ? now : null,
-        ));
+        rowItems.add(
+          BingoItem(
+            id: uuid.v4(),
+            text: text,
+            fullfilledAt: isMarked ? now : null,
+          ),
+        );
         idx++;
       }
       gridItems.add(rowItems);
     }
 
-    return DecodedShareLinkOk(BingoCardState(
-      name: name,
-      gridItems: gridItems,
-      lastChangeDateTime: now,
-      isEditing: false,
-    ));
+    return DecodedShareLinkOk(
+      BingoCardState(
+        name: name,
+        gridItems: gridItems,
+        lastChangeDateTime: now,
+        isEditing: false,
+      ),
+    );
   } catch (_) {
     return const DecodedShareLinkInvalid();
   }

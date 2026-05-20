@@ -16,8 +16,8 @@ class BingoCardContentWrapper extends StatelessWidget {
     final controller = bingoCardControllerRef.of(context);
     final gridItems = controller.gridItems.watch(context);
     final lastChangeDateTime = controller.lastChangeDateTime.watch(context);
-    final currentSelectedBingoCardNameString =
-        currentSelectedBingoCardName.watch(context);
+    final currentSelectedBingoCardNameString = currentSelectedBingoCardName
+        .watch(context);
     return BingoCardContent(
       gridItems: gridItems,
       lastChangeDateTime: lastChangeDateTime,
@@ -69,6 +69,21 @@ class BingoCardContent extends StatelessWidget {
                 isMiddleItem: isMiddleItem,
                 cellWidth: _cellSize,
                 cellHeight: _cellSize,
+                borderRadius: BorderRadius.only(
+                  topLeft: rowIndex == 0 && colIndex == 0
+                      ? kRadiusCircular
+                      : Radius.zero,
+                  topRight: rowIndex == 0 && colIndex == gridSize - 1
+                      ? kRadiusCircular
+                      : Radius.zero,
+                  bottomLeft: rowIndex == gridSize - 1 && colIndex == 0
+                      ? kRadiusCircular
+                      : Radius.zero,
+                  bottomRight:
+                      rowIndex == gridSize - 1 && colIndex == gridSize - 1
+                      ? kRadiusCircular
+                      : Radius.zero,
+                ),
               );
             }),
           );
@@ -81,10 +96,7 @@ class BingoCardContent extends StatelessWidget {
 }
 
 class LastChange extends StatelessWidget {
-  const LastChange({
-    required this.lastChangeDateTime,
-    super.key,
-  });
+  const LastChange({required this.lastChangeDateTime, super.key});
 
   final DateTime? lastChangeDateTime;
 
@@ -101,7 +113,10 @@ class LastChange extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Text(
         text,
-        style: context.h5.copyWith(fontWeight: FontWeight.w700),
+        style: context.p3.copyWith(
+          color: context.weakTextColor,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

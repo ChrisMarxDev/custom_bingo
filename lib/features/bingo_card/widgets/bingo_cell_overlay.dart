@@ -1,12 +1,9 @@
+import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../bingo_item.dart';
 
-enum SelectedItem {
-  edit,
-  markDone,
-  cancel,
-}
+enum SelectedItem { edit, markDone, cancel }
 
 class BingoCellOverlay extends StatelessWidget {
   const BingoCellOverlay({
@@ -30,14 +27,14 @@ class BingoCellOverlay extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.cardColor,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: context.shadowColor.withValues(alpha: 0.12),
               blurRadius: 6,
               offset: const Offset(0, 2),
-            )
+            ),
           ],
         ),
         child: IntrinsicWidth(
@@ -51,11 +48,13 @@ class BingoCellOverlay extends StatelessWidget {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft,
                 ),
-                child: Text(context.l10n.edit,
-                    style: const TextStyle(color: Colors.black87)),
+                child: Text(
+                  context.l10n.edit,
+                  style: TextStyle(color: context.textColor),
+                ),
                 onPressed: onEdit,
               ),
-              const Divider(height: 1, thickness: 0.5),
+              Divider(height: 1, thickness: 0.5, color: context.outlineColor),
               TextButton(
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -63,21 +62,24 @@ class BingoCellOverlay extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                 ),
                 child: Text(
-                    item.isDone
-                        ? context.l10n.markNotDone
-                        : context.l10n.markDone,
-                    style: const TextStyle(color: Colors.black87)),
+                  item.isDone
+                      ? context.l10n.markNotDone
+                      : context.l10n.markDone,
+                  style: TextStyle(color: context.textColor),
+                ),
                 onPressed: onToggleDone,
               ),
-              const Divider(height: 1, thickness: 0.5),
+              Divider(height: 1, thickness: 0.5, color: context.outlineColor),
               TextButton(
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft,
                 ),
-                child: Text(context.l10n.cancel,
-                    style: const TextStyle(color: Colors.redAccent)),
+                child: Text(
+                  context.l10n.cancel,
+                  style: TextStyle(color: context.error),
+                ),
                 onPressed: onCancel,
               ),
             ],

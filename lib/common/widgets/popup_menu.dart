@@ -38,24 +38,28 @@ class _PopupMenuState extends State<PopupMenu> {
     if (_isOpen) return;
 
     _overlayEntry = OverlayEntry(
-      builder:
-          (context) => Stack(
-            children: [
-              // Overlay background
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: _hideOverlay,
-                  child: Container(color: Colors.black.withValues(alpha: .3)),
-                ),
-              ).animate().fadeIn(duration: 200.ms),
-              // Popup menu
-              CompositedTransformFollower(
-                link: _layerLink,
-                offset: widget.offset,
-                targetAnchor: widget.targetAnchor,
-                followerAnchor: widget.followerAnchor,
-                child: Material(
-                      color: Colors.transparent,
+      builder: (context) => Stack(
+        children: [
+          // Overlay background
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _hideOverlay,
+              child: Container(
+                color: Theme.of(
+                  context,
+                ).colorScheme.shadow.withValues(alpha: .3),
+              ),
+            ),
+          ).animate().fadeIn(duration: 200.ms),
+          // Popup menu
+          CompositedTransformFollower(
+            link: _layerLink,
+            offset: widget.offset,
+            targetAnchor: widget.targetAnchor,
+            followerAnchor: widget.followerAnchor,
+            child:
+                Material(
+                      type: MaterialType.transparency,
                       child: Card(
                         elevation: 4,
                         margin: EdgeInsets.zero,
@@ -72,9 +76,9 @@ class _PopupMenuState extends State<PopupMenu> {
                       curve: Curves.easeOutCubic,
                     )
                     .fadeIn(duration: 200.ms),
-              ),
-            ],
           ),
+        ],
+      ),
     );
 
     Overlay.of(context).insert(_overlayEntry!);
@@ -102,10 +106,9 @@ class _PopupMenuState extends State<PopupMenu> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _layerLink,
-      child:
-          widget.childBuilder != null
-              ? widget.childBuilder!(context, _showOverlay)
-              : GestureDetector(onTap: _showOverlay, child: widget.child),
+      child: widget.childBuilder != null
+          ? widget.childBuilder!(context, _showOverlay)
+          : GestureDetector(onTap: _showOverlay, child: widget.child),
     );
   }
 }

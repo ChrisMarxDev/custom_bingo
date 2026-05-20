@@ -12,35 +12,38 @@ import 'package:state_beacon/state_beacon.dart';
 import 'package:userorient_flutter/userorient_flutter.dart';
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  await runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    configureLogging();
+  await runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      configureLogging();
 
-    FlutterError.onError = (details) {
-      FlutterError.presentError(details);
-      logError('Flutter framework error', details.exception, details.stack);
-    };
+      FlutterError.onError = (details) {
+        FlutterError.presentError(details);
+        logError('Flutter framework error', details.exception, details.stack);
+      };
 
-    PlatformDispatcher.instance.onError = (error, stackTrace) {
-      logError('Unhandled platform error', error, stackTrace);
-      return true;
-    };
+      PlatformDispatcher.instance.onError = (error, stackTrace) {
+        logError('Unhandled platform error', error, stackTrace);
+        return true;
+      };
 
-    UserOrient.configure(
-      apiKey: 'bdd8a7b8-04dc-4780-862f-d052f74e86e1',
-      languageCode: 'en',
-    );
+      UserOrient.configure(
+        apiKey: 'bdd8a7b8-04dc-4780-862f-d052f74e86e1',
+        languageCode: 'en',
+      );
 
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
 
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPrefsBeacon.value = sharedPreferences;
+      final sharedPreferences = await SharedPreferences.getInstance();
+      sharedPrefsBeacon.value = sharedPreferences;
 
-    runApp(LiteRefScope(child: await builder()));
-  }, (error, stackTrace) {
-    logError('Uncaught async error', error, stackTrace);
-  });
+      runApp(LiteRefScope(child: await builder()));
+    },
+    (error, stackTrace) {
+      logError('Uncaught async error', error, stackTrace);
+    },
+  );
 }

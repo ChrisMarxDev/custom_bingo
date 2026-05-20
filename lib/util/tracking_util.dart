@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:state_beacon/state_beacon.dart';
 
-
 extension BuildContextTrackingUtil on BuildContext {
   void trackEvent(String event, [Map<String, Object>? properties]) {
     logI('tracking event: $event');

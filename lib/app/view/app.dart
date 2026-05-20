@@ -8,9 +8,11 @@ import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/import_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/share_link.dart';
+import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/arb/app_localizations.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:state_beacon/state_beacon.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -53,9 +55,9 @@ class _AppState extends State<App> {
     final result = decodeShareLink(uri);
     switch (result) {
       case DecodedShareLinkOk(:final state):
-        navigator.push(MaterialPageRoute(
-          builder: (_) => ImportCardScreen(incoming: state),
-        ));
+        navigator.push(
+          MaterialPageRoute(builder: (_) => ImportCardScreen(incoming: state)),
+        );
       case DecodedShareLinkUnsupported():
         showRootErrorToast(rootContext.l10n.importOutdatedAppToast);
       case DecodedShareLinkInvalid():
@@ -65,12 +67,15 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = appThemeModeBeacon.watch(context);
+    final palette = appThemePaletteBeacon.watch(context);
     final hasBingoCard = currentSelectedBingoCardName.value != null;
     return MaterialApp(
       navigatorKey: rootNavigatorKey,
       navigatorObservers: [routeContextObserver],
-      theme: getThemeData(),
-      themeMode: ThemeMode.light,
+      theme: getThemeData(palette: palette),
+      darkTheme: getThemeData(isDarkMode: true, palette: palette),
+      themeMode: themeMode,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,

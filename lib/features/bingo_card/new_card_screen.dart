@@ -18,6 +18,7 @@ class NewCardScreen extends StatefulWidget {
 }
 
 class _NewCardScreenState extends State<NewCardScreen> {
+  static const int _maxGridSize = 24;
   final _nameController = TextEditingController();
   int _gridSize = 5;
 
@@ -35,7 +36,7 @@ class _NewCardScreenState extends State<NewCardScreen> {
       appBar: AppBar(
         title: Text(l10n.newCardTitle, style: context.h2),
         actions: [
-          BingoPopupMenu(),
+          const BingoPopupMenu(host: BingoPopupMenuHost.newCard),
           SizedBox(width: 16),
         ],
       ),
@@ -61,7 +62,7 @@ class _NewCardScreenState extends State<NewCardScreen> {
               AnimatedNumberSelector(
                 value: _gridSize,
                 minValue: 2, // Assuming a minimum grid size
-                maxValue: 99, // Assuming a maximum grid size
+                maxValue: _maxGridSize,
                 onChanged: (newValue) {
                   setState(() {
                     _gridSize = newValue;
@@ -77,16 +78,20 @@ class _NewCardScreenState extends State<NewCardScreen> {
                           final gridSize = _gridSize;
                           final sharedPrefs = sharedPrefsBeacon.value;
                           await saveBingoCard(
-                              sharedPrefs,
-                              BingoCardState(
-                                  name: name,
-                                  gridItems: List.generate(
-                                      gridSize,
-                                      (index) => List.generate(
-                                          gridSize,
-                                          (index) => BingoItem(
-                                              id: Uuid().v4(), text: ''))),
-                                  lastChangeDateTime: DateTime.now()));
+                            sharedPrefs,
+                            BingoCardState(
+                              name: name,
+                              gridItems: List.generate(
+                                gridSize,
+                                (index) => List.generate(
+                                  gridSize,
+                                  (index) =>
+                                      BingoItem(id: Uuid().v4(), text: ''),
+                                ),
+                              ),
+                              lastChangeDateTime: DateTime.now(),
+                            ),
+                          );
 
                           await setCurrentSelectedBingoCard(name);
                           await addBingoCardName(name);
@@ -94,9 +99,11 @@ class _NewCardScreenState extends State<NewCardScreen> {
                           await bingoCardControllerRef.of(context).loadBoard();
                           // print('Bingo Grid Name: $name, Grid Size: $gridSize');
                           Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => BingoCardScreen()),
-                              (route) => false);
+                            MaterialPageRoute(
+                              builder: (context) => BingoCardScreen(),
+                            ),
+                            (route) => false,
+                          );
                         }
                       : null,
                   child: Text(l10n.createCardButton),
@@ -140,14 +147,35 @@ class _AnimatedGridPreviewState extends State<AnimatedGridPreview> {
           ),
           itemBuilder: (BuildContext context, int index) {
             final isMiddle = hasCenter && index == totalItems ~/ 2;
+            final isTopRow = index < widget.gridSize;
+            final isBottomRow = index >= totalItems - widget.gridSize;
+            final isLeftColumn = index % widget.gridSize == 0;
+            final isRightColumn = (index + 1) % widget.gridSize == 0;
+            final borderRadius = BorderRadius.only(
+              topLeft: isTopRow && isLeftColumn ? kRadiusCircular : Radius.zero,
+              topRight: isTopRow && isRightColumn
+                  ? kRadiusCircular
+                  : Radius.zero,
+              bottomLeft: isBottomRow && isLeftColumn
+                  ? kRadiusCircular
+                  : Radius.zero,
+              bottomRight: isBottomRow && isRightColumn
+                  ? kRadiusCircular
+                  : Radius.zero,
+            );
+
             return Container(
+              margin: const EdgeInsets.all(0.5),
+              clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: isMiddle
-                    ? Colors.black.withValues(alpha: 0.1)
-                    : Colors.white,
+                    ? context.primary.withValues(alpha: 0.12)
+                    : context.surfaceContainerLowest,
                 border: Border.all(
-                    color: Colors.black,
-                    strokeAlign: BorderSide.strokeAlignCenter),
+                  color: context.outlineColor,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
+                borderRadius: borderRadius,
               ),
             );
           },

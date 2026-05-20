@@ -48,7 +48,7 @@ class _ImportCardScreenState extends State<ImportCardScreen> {
               const SizedBox(height: 4),
               Text(
                 '$size × $size',
-                style: context.p2.copyWith(color: kGrey3),
+                style: context.p2.copyWith(color: context.weakTextColor),
               ),
               const SizedBox(height: 16),
               Expanded(
@@ -72,8 +72,9 @@ class _ImportCardScreenState extends State<ImportCardScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed:
-                        _busy ? null : () => Navigator.of(context).maybePop(),
+                    onPressed: _busy
+                        ? null
+                        : () => Navigator.of(context).maybePop(),
                     child: Text(l10n.importCancel),
                   ),
                   const SizedBox(width: 16),

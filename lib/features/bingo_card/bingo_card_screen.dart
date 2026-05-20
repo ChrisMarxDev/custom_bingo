@@ -32,6 +32,7 @@ class BingoCardScreen extends StatefulWidget {
 
 class _BingoCardScreenState extends State<BingoCardScreen> {
   late final TransformationController _transformationController;
+  String? _lastCenteredBoardName;
 
   @override
   void initState() {
@@ -95,16 +96,28 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = bingoCardControllerRef.of(context);
-    final gridItems = controller.gridItems
-        .watch(context); // This should work with flutter_state_beacon
+    final gridItems = controller.gridItems.watch(
+      context,
+    ); // This should work with flutter_state_beacon
     final currentBingoName = currentSelectedBingoCardName.watch(context);
+    if (_lastCenteredBoardName != currentBingoName) {
+      _lastCenteredBoardName = currentBingoName;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _centerView();
+        }
+      });
+    }
 
     controller.hasBingoTime.observe(context, (prev, next) {
       if (next != null) {
         Confetti.launch(
           context,
-          options:
-              const ConfettiOptions(particleCount: 100, spread: 70, y: 0.6),
+          options: const ConfettiOptions(
+            particleCount: 100,
+            spread: 70,
+            y: 0.6,
+          ),
         );
       }
     });
@@ -124,48 +137,52 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
         body: Stack(
           children: [
             InteractiveViewer.builder(
-                transformationController: _transformationController,
-                boundaryMargin: EdgeInsets.only(
-                  bottom: size.height * 0.7,
-                  top: size.height * 0.5,
-                  left: size.width * 0.6,
-                  right: size.width * 0.6,
-                ),
-                // alignment: Alignment.topCenter,
-                minScale: 0.2,
-                maxScale: 2.0,
-                builder: (context, child) {
-                  return Container(
-                    padding: const EdgeInsets.only(
-                      top: 24,
-                      left: 24,
-                      right: 24,
-                      bottom: 48,
-                    ),
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // SizedBox(
-                            //   width: MediaQuery.of(context).size.width,
-                            //   child: EditingHint(),
-                            // ),
-                            // SizedBox(height: 16),
-                            BingoCardContent(
-                              gridItems: gridItems,
-                              lastChangeDateTime: lastChangeDateTime,
-                              currentSelectedBingoCardName: currentBingoName,
-                            ),
-                            SizedBox(height: 16),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+              transformationController: _transformationController,
+              boundaryMargin: EdgeInsets.only(
+                bottom: size.height * 0.7,
+                top: size.height * 0.5,
+                left: size.width * 0.6,
+                right: size.width * 0.6,
+              ),
+              // alignment: Alignment.topCenter,
+              minScale: 0.2,
+              maxScale: 2.0,
+              builder: (context, child) {
+                return Container(
+                  padding: const EdgeInsets.only(
+                    top: 24,
+                    left: 24,
+                    right: 24,
+                    bottom: 48,
+                  ),
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   child: EditingHint(),
+                          // ),
+                          // SizedBox(height: 16),
+                          BingoCardContent(
+                            gridItems: gridItems,
+                            lastChangeDateTime: lastChangeDateTime,
+                            currentSelectedBingoCardName: currentBingoName,
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
             Positioned(
-                top: kToolbarHeight + 8, right: 8, child: BingoPopupMenu()),
+              top: kToolbarHeight + 8,
+              right: 8,
+              child: const BingoPopupMenu(host: BingoPopupMenuHost.board),
+            ),
             Positioned(
               bottom: 42 + MediaQuery.of(context).padding.bottom,
               left: 16,
@@ -188,9 +205,7 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
 }
 
 class ToggleHint extends StatelessWidget {
-  const ToggleHint({
-    super.key,
-  });
+  const ToggleHint({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -205,10 +220,7 @@ class ToggleHint extends StatelessWidget {
 }
 
 class Actions extends StatelessWidget {
-  const Actions({
-    required this.transformationController,
-    super.key,
-  });
+  const Actions({required this.transformationController, super.key});
 
   final TransformationController transformationController;
 
@@ -222,9 +234,9 @@ class Actions extends StatelessWidget {
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          border: Border.all(color: Colors.white),
+          color: context.primary,
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: context.outlineColor),
         ),
         child: IntrinsicHeight(
           child: Row(
@@ -234,20 +246,22 @@ class Actions extends StatelessWidget {
                 onPressed: () async {
                   final l10n = context.l10n;
                   final confirmed = await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text(l10n.deleteCardTitle),
-                            content: Text(l10n.deleteCardConfirm),
-                            actions: [
-                              TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, false),
-                                  child: Text(l10n.cancel)),
-                              FilledButton(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: Text(l10n.delete)),
-                            ],
-                          ));
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(l10n.deleteCardTitle),
+                      content: Text(l10n.deleteCardConfirm),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text(l10n.cancel),
+                        ),
+                        FilledButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: Text(l10n.delete),
+                        ),
+                      ],
+                    ),
+                  );
                   if (confirmed) {
                     final name = currentSelectedBingoCardName.value;
                     if (name != null) {
@@ -255,13 +269,15 @@ class Actions extends StatelessWidget {
                       await deleteBingoCardName(name);
                       await setCurrentSelectedBingoCard(null);
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => NewCardScreen()),
-                          (route) => false);
+                        MaterialPageRoute(
+                          builder: (context) => NewCardScreen(),
+                        ),
+                        (route) => false,
+                      );
                     }
                   }
                 },
-                icon: Icon(PhosphorIcons.trash(), color: Colors.red),
+                icon: Icon(PhosphorIcons.trash(), color: context.error),
               ),
               ButtonDivider(),
               IconButton(
@@ -275,8 +291,10 @@ class Actions extends StatelessWidget {
                   transformationController.value =
                       newMatrix * transformationController.value;
                 },
-                icon: Icon(PhosphorIcons.magnifyingGlassMinus(),
-                    color: Colors.white),
+                icon: Icon(
+                  PhosphorIcons.magnifyingGlassMinus(),
+                  color: context.onPrimary,
+                ),
               ),
               IconButton(
                 onPressed: () {
@@ -289,22 +307,24 @@ class Actions extends StatelessWidget {
                   transformationController.value =
                       newMatrix * transformationController.value;
                 },
-                icon: Icon(PhosphorIcons.magnifyingGlassPlus(),
-                    color: Colors.white),
+                icon: Icon(
+                  PhosphorIcons.magnifyingGlassPlus(),
+                  color: context.onPrimary,
+                ),
               ),
               ButtonDivider(),
               IconButton(
                 onPressed: () {
                   shareCardPopup(context);
                 },
-                icon: Icon(PhosphorIcons.share(), color: Colors.white),
+                icon: Icon(PhosphorIcons.share(), color: context.onPrimary),
               ),
               ButtonDivider(),
               IconButton(
                 onPressed: () {
                   shuffleCard(context);
                 },
-                icon: Icon(PhosphorIcons.shuffle(), color: Colors.white),
+                icon: Icon(PhosphorIcons.shuffle(), color: context.onPrimary),
               ),
               ButtonDivider(),
               IconButton(
@@ -313,10 +333,11 @@ class Actions extends StatelessWidget {
                   controller.isEditing.value = !controller.isEditing.value;
                 },
                 icon: Icon(
-                    isEditing
-                        ? PhosphorIcons.lockOpen()
-                        : PhosphorIcons.lock(PhosphorIconsStyle.fill),
-                    color: Colors.white),
+                  isEditing
+                      ? PhosphorIcons.lockOpen()
+                      : PhosphorIcons.lock(PhosphorIconsStyle.fill),
+                  color: context.onPrimary,
+                ),
               ),
             ],
           ),
@@ -328,19 +349,22 @@ class Actions extends StatelessWidget {
   Future<void> shuffleCard(BuildContext context) async {
     final l10n = context.l10n;
     final confirmed = await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(l10n.shuffleCardTitle),
-              content: Text(l10n.shuffleCardConfirm),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context, false),
-                    child: Text(l10n.cancel)),
-                FilledButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    child: Text(l10n.shuffle)),
-              ],
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.shuffleCardTitle),
+        content: Text(l10n.shuffleCardConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.shuffle),
+          ),
+        ],
+      ),
+    );
     if (!confirmed) return;
     final controller = bingoCardControllerRef.of(context);
     controller.shuffleCard();
@@ -348,14 +372,12 @@ class Actions extends StatelessWidget {
 }
 
 class ButtonDivider extends StatelessWidget {
-  const ButtonDivider({
-    super.key,
-  });
+  const ButtonDivider({super.key});
 
   @override
   Widget build(BuildContext context) {
     return VerticalDivider(
-      color: Colors.white,
+      color: context.onPrimary.withValues(alpha: 0.45),
       thickness: 1,
       indent: 8,
       endIndent: 8,
@@ -390,7 +412,7 @@ class _EditingHintState extends State<EditingHint> {
             WidgetSpan(
               child: Icon(
                 PhosphorIcons.lockKeyOpen(),
-                color: Colors.black,
+                color: context.textColor,
                 size: context.p1.fontSize,
               ),
             ),

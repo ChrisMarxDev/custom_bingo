@@ -77,6 +77,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsHeader => 'Einstellungen';
 
   @override
+  String get appearanceMenuItem => 'Design';
+
+  @override
+  String get themeColorLabel => 'Themenfarbe';
+
+  @override
+  String get darkModeLabel => 'Dunkler Modus';
+
+  @override
   String get proposeFeatures => 'Funktion vorschlagen';
 
   @override
