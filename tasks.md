@@ -35,7 +35,7 @@
 | T-020 | [DONE] | 2026-05-21 | Add repeatable web build and deploy tasks | Added `task build:web` and `task deploy:web`. |
 | T-021 | [DONE] | 2026-05-21 | Deploy the current web app to Firebase Hosting | Deployed successfully to `https://bingogrid.web.app` and verified `200` on `/` and `/import?...`. |
 | T-022 | [DONE] | 2026-05-21 | Fix serving of hosted app/universal-link association files | Adjusted Firebase Hosting header paths and verified `200` plus `application/json` for both `/.well-known/assetlinks.json` and `/.well-known/apple-app-site-association`. |
-| T-023 | [OPEN] | 2026-05-21 | Make installed mobile apps claim hosted HTTPS import links directly | Hosting and association files are ready; Android `https` intent filters and iOS associated domains still need app-side wiring. |
+| T-023 | [DONE] | 2026-05-21 | Make installed mobile apps claim hosted HTTPS import links directly | Added Android `https` App Links and iOS associated domains for `bingogrid.web.app`; verified with `task lint` and an iOS simulator build for the development flavor. |
 | T-024 | [DONE] | 2026-05-21 | Skip the import confirmation dialog on web-hosted share links | Web now auto-imports hosted links directly; verified with `task lint`, `flutter test test/features/bingo_card/share_link_test.dart`, web builds, and a fresh Hosting deploy. |
 | T-025 | [DONE] | 2026-05-21 | Update repository instructions for the live web app target | Added explicit web-compatibility and hosted-import-link guidance to `agent.md` and `CLAUDE.md`. |
 
