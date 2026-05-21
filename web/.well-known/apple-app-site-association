@@ -1,0 +1,28 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "KSU83WWMWV.de.christophermarx.bingo.custom-bingo",
+        "paths": [
+          "/import",
+          "/import/*"
+        ]
+      },
+      {
+        "appID": "KSU83WWMWV.de.christophermarx.bingo.custom-bingo.stg",
+        "paths": [
+          "/import",
+          "/import/*"
+        ]
+      },
+      {
+        "appID": "KSU83WWMWV.de.christophermarx.bingo.custom-bingo.dev",
+        "paths": [
+          "/import",
+          "/import/*"
+        ]
+      }
+    ]
+  }
+}

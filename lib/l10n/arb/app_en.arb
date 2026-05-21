@@ -117,7 +117,7 @@
         "description": "Body text passed to the system share sheet alongside the invite link",
         "placeholders": {
             "name": { "type": "String", "example": "Dateline BINGO" },
-            "link": { "type": "String", "example": "custombingo://import?d=…" }
+            "link": { "type": "String", "example": "https://bingogrid.web.app/import?d=…" }
         }
     },
 

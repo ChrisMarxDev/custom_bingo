@@ -122,6 +122,17 @@ tasks:
     cmds:
       - flutter build ios --flavor production --target lib/main_production.dart --release --config-only
 
+  build:web:
+    desc: Build Flutter web bundle (production entrypoint)
+    cmds:
+      - flutter build web --target lib/main_production.dart
+
+  deploy:web:
+    desc: Build and deploy the web app to Firebase Hosting
+    cmds:
+      - task: build:web
+      - firebase deploy --only hosting
+
   # ── Asset generation ──────────────────────────────────────────────────
 
   launch_icons:

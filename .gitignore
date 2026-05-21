@@ -92,7 +92,8 @@ coverage/
 packages/**/pubspec.lock
 
 # Web related
-lib/generated_plugin_registrant.dart
+.firebase/
+firepit-log.txt
 
 # Symbolication related
 app.*.symbols

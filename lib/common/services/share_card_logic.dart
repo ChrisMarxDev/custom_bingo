@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
@@ -8,8 +6,6 @@ import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-// ignore: depend_on_referenced_packages
-import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -175,16 +171,14 @@ Future<void> _shareImage(
   final imageData = await controller.capture();
   if (imageData == null) return;
 
-  final tempDir = await getTemporaryDirectory();
-  final tempPath =
-      '${tempDir.path}/bingo_share_${DateTime.now().millisecondsSinceEpoch}.png';
-  await File(tempPath).writeAsBytes(imageData);
+  final fileName = 'bingo_share_${DateTime.now().millisecondsSinceEpoch}.png';
 
   await Share.shareXFiles(
-    [XFile(tempPath)],
+    [XFile.fromData(imageData, mimeType: 'image/png')],
     subject: l10n.shareSubject,
     text: l10n.shareSubject,
     sharePositionOrigin: _sharePositionOrigin(buttonContext),
+    fileNameOverrides: [fileName],
   );
 }
 

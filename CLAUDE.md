@@ -22,6 +22,10 @@ Custom Bingo — a Flutter app (iOS / Android / Web / Windows / macOS) for creat
   parallel work.
 - Do not mark a task `[DONE]` until it is implemented and verified, or the
   verification limit is clearly recorded in `tasks.md`.
+- The live web app is hosted at `https://bingogrid.web.app`; future work must
+  preserve Flutter web compatibility and the hosted import route
+  `https://bingogrid.web.app/import?d=...` unless the task explicitly changes
+  that contract.
 
 ## Toolchain
 
@@ -49,6 +53,8 @@ task build_runner     # rerun dart_mappable codegen (*.mapper.dart)
 task build:android    # release Android App Bundle (production)
 task build:apk        # release APK for sideloading
 task build:ios        # iOS build, --config-only (Xcode archives)
+task build:web        # production web build for Firebase Hosting
+task deploy:web       # build + deploy web to Firebase Hosting
 
 task podfix           # rm Podfile.lock + pod install --repo-update
 task clean            # flutter clean + pub get
@@ -115,3 +121,6 @@ lib/
 - Keep persistence calls confined to the controller / `*_logic.dart` layer; widgets read beacons.
 - After editing any `@MappableClass` model, regenerate `*.mapper.dart` before committing.
 - Localization: add new strings to `lib/l10n/arb/app_en.arb` (and any other locales) rather than hardcoding.
+- Web is now a real deployment target, not just a compile target. Before adding
+  shared-code dependencies or platform behavior, check whether it breaks Flutter
+  web, Firebase Hosting, or hosted import links.

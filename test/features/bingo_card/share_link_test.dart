@@ -7,8 +7,9 @@ void main() {
     test('roundtrips a 5x5 card without marks', () {
       final state = _square(5, namePrefix: 'cell');
       final uri = encodeShareLink(state);
-      expect(uri.scheme, 'custombingo');
-      expect(uri.host, 'import');
+      expect(uri.scheme, shareLinkWebScheme);
+      expect(uri.host, shareLinkWebHost);
+      expect(uri.path, '/import');
 
       final result = decodeShareLink(uri);
       expect(result, isA<DecodedShareLinkOk>());
@@ -72,9 +73,17 @@ void main() {
       expect(decoded.gridItems[0][0].isDone, isFalse);
     });
 
+    test('accepts legacy custom-scheme links', () {
+      final state = _square(3);
+      final payload = encodeShareLink(state).queryParameters['d']!;
+      final uri = Uri.parse('custombingo://import?d=$payload');
+      final result = decodeShareLink(uri);
+      expect(result, isA<DecodedShareLinkOk>());
+    });
+
     test('rejects wrong scheme', () {
       final result = decodeShareLink(
-        Uri.parse('https://example.com/import?d=x'),
+        Uri.parse('ftp://bingogrid.web.app/import?d=x'),
       );
       expect(result, isA<DecodedShareLinkInvalid>());
     });

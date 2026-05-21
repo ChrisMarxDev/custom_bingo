@@ -1,0 +1,38 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "de.christophermarx.bingo.custom_bingo",
+      "sha256_cert_fingerprints": [
+        "5B:1F:24:AC:65:8C:30:46:C0:B2:32:01:4E:AA:D2:EB:99:00:F0:18:F4:8D:00:09:80:BE:41:00:F9:B2:3E:A8"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "de.christophermarx.bingo.custom_bingo.stg",
+      "sha256_cert_fingerprints": [
+        "5B:1F:24:AC:65:8C:30:46:C0:B2:32:01:4E:AA:D2:EB:99:00:F0:18:F4:8D:00:09:80:BE:41:00:F9:B2:3E:A8"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "de.christophermarx.bingo.custom_bingo.dev",
+      "sha256_cert_fingerprints": [
+        "5B:1F:24:AC:65:8C:30:46:C0:B2:32:01:4E:AA:D2:EB:99:00:F0:18:F4:8D:00:09:80:BE:41:00:F9:B2:3E:A8"
+      ]
+    }
+  }
+]

@@ -11,6 +11,7 @@ import 'package:custom_bingo/features/bingo_card/share_link.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/arb/app_localizations.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:state_beacon/state_beacon.dart';
 
@@ -33,6 +34,11 @@ class _AppState extends State<App> {
     // app_links exposes the initial link and all further link events through
     // the singleton stream, so we only subscribe once here.
     _linkSub = _appLinks.uriLinkStream.listen(_handleIncomingLink);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _handleIncomingLink(Uri.base);
+      }
+    });
   }
 
   @override
@@ -42,22 +48,35 @@ class _AppState extends State<App> {
   }
 
   void _handleIncomingLink(Uri uri) {
-    if (uri.scheme != shareLinkScheme) return;
-    // Dedup: getInitialLink + getLatestLink + the stream may all surface the
-    // same URL. Only push the import screen once per unique link.
-    if (_lastHandled == uri) return;
-    _lastHandled = uri;
+    final result = decodeShareLink(uri);
+    if (result case DecodedShareLinkInvalid()) return;
 
     final navigator = rootNavigatorKey.currentState;
     final rootContext = rootNavigatorKey.currentContext;
-    if (navigator == null || rootContext == null) return;
+    if (navigator == null || rootContext == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _handleIncomingLink(uri);
+        }
+      });
+      return;
+    }
 
-    final result = decodeShareLink(uri);
+    // Dedup: initial URL handling and the app_links stream can surface the
+    // same URL more than once. Only push the import screen once.
+    if (_lastHandled == uri) return;
+    _lastHandled = uri;
     switch (result) {
       case DecodedShareLinkOk(:final state):
-        navigator.push(
-          MaterialPageRoute(builder: (_) => ImportCardScreen(incoming: state)),
-        );
+        if (kIsWeb) {
+          unawaited(importIncomingBingoCard(rootContext, state));
+        } else {
+          navigator.push(
+            MaterialPageRoute(
+              builder: (_) => ImportCardScreen(incoming: state),
+            ),
+          );
+        }
       case DecodedShareLinkUnsupported():
         showRootErrorToast(rootContext.l10n.importOutdatedAppToast);
       case DecodedShareLinkInvalid():

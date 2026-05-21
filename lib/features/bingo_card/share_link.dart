@@ -1,19 +1,25 @@
 import 'dart:convert';
-import 'dart:io' show gzip;
 
+import 'package:archive/archive.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:uuid/uuid.dart';
 
+const String shareLinkWebScheme = 'https';
+const String shareLinkWebHost = 'bingogrid.web.app';
 const String shareLinkScheme = 'custombingo';
 const String shareLinkHost = 'import';
 const String _payloadParam = 'd';
 const int _currentVersion = 1;
 
-/// Encodes a bingo card into a shareable `custombingo://import?d=...` URI.
+/// Encodes a bingo card into a shareable URI.
 ///
-/// The payload is gzipped + base64url JSON. UUIDs and timestamps are stripped
-/// — the receiver always gets fresh IDs. Marks (`fullfilledAt`) are included
-/// only when [includeMarks] is true.
+/// New links use the hosted `https://bingogrid.web.app/import?d=...` format so
+/// chat apps treat them as clickable web URLs. Older `custombingo://import`
+/// links remain supported by [decodeShareLink].
+///
+/// The payload is gzipped + base64url JSON. UUIDs and timestamps are stripped;
+/// the receiver always gets fresh IDs. Marks (`fullfilledAt`) are included only
+/// when [includeMarks] is true.
 Uri encodeShareLink(BingoCardState state, {bool includeMarks = false}) {
   final cells = state.gridItems.expand((row) => row).toList(growable: false);
   final size = state.gridItems.length;
@@ -29,11 +35,12 @@ Uri encodeShareLink(BingoCardState state, {bool includeMarks = false}) {
   }
 
   final json = jsonEncode(payload);
-  final compressed = gzip.encode(utf8.encode(json));
+  final compressed = GZipEncoder().encode(utf8.encode(json));
   final encoded = base64Url.encode(compressed);
   return Uri(
-    scheme: shareLinkScheme,
-    host: shareLinkHost,
+    scheme: shareLinkWebScheme,
+    host: shareLinkWebHost,
+    path: '/$shareLinkHost',
     queryParameters: {_payloadParam: encoded},
   );
 }
@@ -64,7 +71,7 @@ class DecodedShareLinkInvalid extends DecodedShareLink {
 /// [DecodedShareLinkInvalid] for any other failure (malformed, wrong scheme,
 /// truncated, etc.).
 DecodedShareLink decodeShareLink(Uri uri) {
-  if (uri.scheme != shareLinkScheme || uri.host != shareLinkHost) {
+  if (!_isSupportedShareUri(uri)) {
     return const DecodedShareLinkInvalid();
   }
   final blob = uri.queryParameters[_payloadParam];
@@ -73,7 +80,7 @@ DecodedShareLink decodeShareLink(Uri uri) {
   }
   try {
     final compressed = base64Url.decode(_padBase64(blob));
-    final json = utf8.decode(gzip.decode(compressed));
+    final json = utf8.decode(GZipDecoder().decodeBytes(compressed));
     final map = jsonDecode(json) as Map<String, dynamic>;
 
     final version = map['v'];
@@ -129,6 +136,18 @@ DecodedShareLink decodeShareLink(Uri uri) {
   } catch (_) {
     return const DecodedShareLinkInvalid();
   }
+}
+
+bool _isSupportedShareUri(Uri uri) {
+  final isCustomScheme =
+      uri.scheme == shareLinkScheme && uri.host == shareLinkHost;
+  if (isCustomScheme) return true;
+
+  final isWebShare =
+      (uri.scheme == 'http' || uri.scheme == 'https') &&
+      uri.pathSegments.isNotEmpty &&
+      uri.pathSegments.last == shareLinkHost;
+  return isWebShare;
 }
 
 /// Some senders strip base64url padding when embedding in URLs. Restore it

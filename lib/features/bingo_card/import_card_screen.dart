@@ -8,6 +8,54 @@ import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_static_previ
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
+Future<void> importIncomingBingoCard(
+  BuildContext context,
+  BingoCardState incoming, {
+  bool closeCurrentRoute = false,
+}) async {
+  final l10n = context.l10n;
+  final navigator = Navigator.of(context);
+  final hadSelectedBoard = currentSelectedBingoCardName.value != null;
+
+  final existing = getBingoCardNames();
+  final originalName = incoming.name.isEmpty
+      ? l10n.defaultCardName
+      : incoming.name;
+  final finalName = _resolveImportedCardCollision(originalName, existing);
+  final renamed = finalName != originalName;
+  final renameToast = renamed ? l10n.importCollisionToast(finalName) : null;
+
+  final toSave = BingoCardState(
+    name: finalName,
+    gridItems: incoming.gridItems,
+    lastChangeDateTime: DateTime.now(),
+    isEditing: false,
+  );
+  await saveBingoCard(sharedPrefsBeacon.value, toSave);
+  await addBingoCardName(finalName);
+  await setCurrentSelectedBingoCard(finalName);
+
+  if (!context.mounted) return;
+  bingoCardControllerRef.of(context).loadBoard(finalName);
+
+  if (hadSelectedBoard) {
+    if (closeCurrentRoute && navigator.canPop()) {
+      navigator.pop();
+    }
+  } else {
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const BingoCardScreen()),
+      (_) => false,
+    );
+  }
+
+  if (renameToast != null) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showRootNeutralToast(renameToast);
+    });
+  }
+}
+
 class ImportCardScreen extends StatefulWidget {
   const ImportCardScreen({super.key, required this.incoming});
 
@@ -106,54 +154,19 @@ class _ImportCardScreenState extends State<ImportCardScreen> {
   Future<void> _onConfirm() async {
     if (_busy) return;
     setState(() => _busy = true);
-
-    final l10n = context.l10n;
-    final navigator = Navigator.of(context);
-    final hadSelectedBoard = currentSelectedBingoCardName.value != null;
-
-    final existing = getBingoCardNames();
-    final originalName = widget.incoming.name.isEmpty
-        ? l10n.defaultCardName
-        : widget.incoming.name;
-    final finalName = _resolveCollision(originalName, existing);
-    final renamed = finalName != originalName;
-    final renameToast = renamed ? l10n.importCollisionToast(finalName) : null;
-
-    final toSave = BingoCardState(
-      name: finalName,
-      gridItems: widget.incoming.gridItems,
-      lastChangeDateTime: DateTime.now(),
-      isEditing: false,
+    await importIncomingBingoCard(
+      context,
+      widget.incoming,
+      closeCurrentRoute: true,
     );
-    await saveBingoCard(sharedPrefsBeacon.value, toSave);
-    await addBingoCardName(finalName);
-    await setCurrentSelectedBingoCard(finalName);
-
-    if (!mounted) return;
-    bingoCardControllerRef.of(context).loadBoard(finalName);
-
-    if (hadSelectedBoard) {
-      navigator.pop();
-    } else {
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const BingoCardScreen()),
-        (_) => false,
-      );
-    }
-
-    if (renameToast != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showRootNeutralToast(renameToast);
-      });
-    }
   }
+}
 
-  String _resolveCollision(String name, List<String> existing) {
-    if (!existing.contains(name)) return name;
-    var n = 2;
-    while (existing.contains('$name ($n)')) {
-      n++;
-    }
-    return '$name ($n)';
+String _resolveImportedCardCollision(String name, List<String> existing) {
+  if (!existing.contains(name)) return name;
+  var n = 2;
+  while (existing.contains('$name ($n)')) {
+    n++;
   }
+  return '$name ($n)';
 }

@@ -55,6 +55,21 @@ Use only these states in `tasks.md`:
 - If verification cannot be run, record that in `tasks.md`.
 - Do not describe a task as complete if it still needs manual confirmation.
 
+## Web Compatibility Rules
+
+- This repository now has a live web target at
+  `https://bingogrid.web.app`.
+- Future features must consider web compatibility by default, not as an
+  afterthought.
+- Before introducing platform-specific code or dependencies, check whether the
+  change affects Flutter web builds, the hosted app at `bingogrid.web.app`, or
+  the hosted import-link flow at `/import?d=...`.
+- Avoid unguarded use of `dart:io`, native-only plugins, local temp-file
+  assumptions, or custom URL-scheme-only behavior in shared code paths.
+- If a feature is intentionally mobile-only, document that decision in
+  `tasks.md` and keep the web behavior explicit instead of letting it fail
+  implicitly.
+
 ## Expected `tasks.md` Format
 
 `tasks.md` should contain a task list in this form:
