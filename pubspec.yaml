@@ -10,7 +10,7 @@ environment:
 dependencies:
   archive: ^4.0.7
   collection: ^1.19.1
-  dart_mappable: ^4.5.0
+  dart_mappable: ^4.8.0
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
