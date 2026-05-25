@@ -33,7 +33,7 @@ dependencies:
   package_info_plus: ^8.3.0
   screenshot: ^3.0.0
   phosphor_flutter: ^2.1.0
-  userorient_flutter: ^1.2.0
+  userorient_flutter: ^2.0.0
   animated_to: ^0.4.0
   url_launcher: ^6.3.2
   flutter_svg: ^2.2.1
