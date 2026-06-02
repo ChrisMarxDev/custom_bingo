@@ -1,9 +1,12 @@
+import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:userorient_flutter/userorient_flutter.dart';
@@ -66,6 +69,23 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
+          if (kDebugMode) ...[
+            const SizedBox(height: 16),
+            _SettingsSection(
+              title: 'Custom Bingo Pro',
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.workspace_premium),
+                title: Text(
+                  'Lifetime',
+                  style: context.p1.copyWith(fontWeight: FontWeight.w700),
+                ),
+                subtitle: const Text('One lifetime option for Pro access.'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(AppRoutePaths.paywall),
+              ),
+            ),
+          ],
         ],
       ),
     );

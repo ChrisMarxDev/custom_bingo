@@ -3,6 +3,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:custom_bingo/common/services/app_database.dart';
+import 'package:custom_bingo/common/services/app_database_connection.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +41,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
       final sharedPreferences = await SharedPreferences.getInstance();
       sharedPrefsBeacon.value = sharedPreferences;
+
+      final appDatabase = AppDatabase(openAppDatabaseConnection());
+      appDatabaseBeacon.value = appDatabase;
 
       runApp(LiteRefScope(child: await builder()));
     },

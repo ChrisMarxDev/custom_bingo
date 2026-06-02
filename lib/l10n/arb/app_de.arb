@@ -31,6 +31,26 @@
     "appearanceMenuItem": "Design",
     "themeColorLabel": "Themenfarbe",
     "darkModeLabel": "Dunkler Modus",
+    "preMadeTilesTitle": "Vorbereitete Felder",
+    "preMadeTilesSettingsDescription": "Lege wiederverwendbare Feldtexte für spätere Bingos an.",
+    "preMadeTilesDescription": "Erstelle wiederverwendbare Bingo-Einträge. Wenn du ein neues Board erstellst, kannst du sie später hinzufügen, ohne alles erneut zu tippen.",
+    "preMadeTilesSelectMode": "Auswählen",
+    "preMadeTilesEditMode": "Bearbeiten",
+    "preMadeTileHint": "Feldtext",
+    "preMadeTilesAdd": "Feld hinzufügen",
+    "preMadeTilesDelete": "Feld löschen",
+    "preMadeTilesSelectAll": "Alle auswählen",
+    "preMadeTilesSelectNone": "Keine auswählen",
+    "preMadeTilesApply": "Anwenden",
+    "preMadeTilesSelectedCount": "{selected} / {total} ausgewählt",
+    "@preMadeTilesSelectedCount": {
+        "placeholders": {
+            "selected": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "preMadeTilesEmptyTitle": "Noch keine Felder",
+    "preMadeTilesEmptyBody": "Füge ein Feld hinzu, um eine wiederverwendbare Liste aufzubauen.",
     "proposeFeatures": "Funktion vorschlagen",
     "supportKoFi": "Auf Ko-Fi unterstützen",
 

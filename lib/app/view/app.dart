@@ -1,18 +1,17 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:custom_bingo/app/view/app_router.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/app/view/root_navigation.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/import_card_screen.dart';
-import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/share_link.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/arb/app_localizations.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:state_beacon/state_beacon.dart';
 
 class App extends StatefulWidget {
@@ -24,12 +23,14 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late final AppLinks _appLinks;
+  late final GoRouter _router;
   StreamSubscription<Uri>? _linkSub;
   Uri? _lastHandled;
 
   @override
   void initState() {
     super.initState();
+    _router = createAppRouter();
     _appLinks = AppLinks();
     // app_links exposes the initial link and all further link events through
     // the singleton stream, so we only subscribe once here.
@@ -44,6 +45,7 @@ class _AppState extends State<App> {
   @override
   void dispose() {
     _linkSub?.cancel();
+    _router.dispose();
     super.dispose();
   }
 
@@ -88,17 +90,14 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final themeMode = appThemeModeBeacon.watch(context);
     final palette = appThemePaletteBeacon.watch(context);
-    final hasBingoCard = currentSelectedBingoCardName.value != null;
-    return MaterialApp(
-      navigatorKey: rootNavigatorKey,
-      navigatorObservers: [routeContextObserver],
+    return MaterialApp.router(
+      routerConfig: _router,
       theme: getThemeData(palette: palette),
       darkTheme: getThemeData(isDarkMode: true, palette: palette),
       themeMode: themeMode,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
-      home: hasBingoCard ? const BingoCardScreen() : const NewCardScreen(),
     );
   }
 }

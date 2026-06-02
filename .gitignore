@@ -94,6 +94,8 @@ packages/**/pubspec.lock
 # Web related
 .firebase/
 firepit-log.txt
+web/drift_worker.dart.js.deps
+web/drift_worker.dart.js.map
 
 # Symbolication related
 app.*.symbols

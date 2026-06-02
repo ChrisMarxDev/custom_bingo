@@ -38,6 +38,60 @@
 | T-023 | [DONE] | 2026-05-21 | Make installed mobile apps claim hosted HTTPS import links directly | Added Android `https` App Links and iOS associated domains for `bingogrid.web.app`; verified with `task lint` and an iOS simulator build for the development flavor. |
 | T-024 | [DONE] | 2026-05-21 | Skip the import confirmation dialog on web-hosted share links | Web now auto-imports hosted links directly; verified with `task lint`, `flutter test test/features/bingo_card/share_link_test.dart`, web builds, and a fresh Hosting deploy. |
 | T-025 | [DONE] | 2026-05-21 | Update repository instructions for the live web app target | Added explicit web-compatibility and hosted-import-link guidance to `agent.md` and `CLAUDE.md`. |
+| T-026 | [DONE] | 2026-06-02 | Design and implement randomized item pools for bingo boards | Added global "Pre-made tiles" settings library with Drift-backed persisted selection and passive watch updates; verified with build_runner, `dart analyze .`, `flutter test`, and production web build. Board creation integration remains intentionally out of scope for this pass. |
+| T-027 | [OPEN] | 2026-06-02 | Explore image support for bingo squares | Candidate feature; needs a web-safe storage/share approach before implementation. |
+
+## Feature Concepts
+
+### Randomized Item Pool
+
+User need:
+Allow creators to enter more possible bingo items than the board has squares, then generate a board by randomly selecting from that pool. This covers repeated requests for bonus fields, extra entries, random placement, and a fresh board on each play without requiring a server.
+
+MVP behavior:
+- Store a flat pool of candidate text entries per board.
+- Let users bulk-paste lines into the pool.
+- Generate/refill the current grid by sampling without replacement from the pool.
+- Clear existing marks when generating a new board from the pool.
+- Preserve the current free-center behavior for odd grids: if the center is empty/free, keep it fixed and only fill the other squares.
+- If the pool has fewer usable entries than required, either disable generation with a count hint or fill the remainder with blank cells. Prefer disabling at first so users understand the pool requirement.
+
+Data model direction:
+- Extend `BingoCardState` with an optional `poolItems` list so old saved cards continue loading without migration.
+- Use a separate pool item model, such as `BingoPoolItem(id, text)`, instead of overloading `BingoItem.fullfilledAt`; pool entries are source material, while grid items are the playable generated board.
+- Treat existing board cells as the implicit starter pool when opening the pool editor on older boards with no stored pool.
+
+Controller direction:
+- Add a `generateFromPool()` method near the existing `shuffleCard()` logic.
+- Keep `shuffleCard()` as "shuffle the current board"; add pool generation as a separate command because it can replace items, not just reorder them.
+- Generate fresh `BingoItem` IDs for selected pool entries so completion state cannot leak between generated boards.
+- Add targeted tests for sampling size, mark clearing, insufficient pool handling, old-card loading, and free-center preservation.
+
+Design direction:
+- Add an "Item pool" action to the board menu or edit toolbar.
+- Use a focused editor screen or bottom sheet with a list/multiline paste surface, item count, and a primary "Fill board" action.
+- Show the required count based on grid size and free-center state, for example 24 needed for a 5x5 board with a free center.
+- On the new-board screen, consider an optional "Start from list" flow so a pasted list can immediately create a generated board.
+
+Sharing direction:
+- Keep share links serverless.
+- For the first implementation, share the generated board as today and keep the source pool local.
+- If sharing pools later, add a v2 share payload with optional pool data and a clear size limit, because long lists can exceed practical URL lengths even with gzip.
+
+### Image Support
+
+User need:
+Let users add images/photos to bingo squares, with one request specifically asking to reveal a random photo from a collection when a square is completed.
+
+Initial direction:
+- Treat this as a separate feature after item pools because storage and sharing are more complex without a server.
+- Prefer square-level image attachments before photo-reveal behavior.
+- Decide whether images are local-only, shareable, or both before implementation.
+- Avoid putting large base64 images into existing share links by default; that would be fragile on web and in chat apps.
+- Investigate a web-compatible local storage option before adding image files to `BingoCardState`.
+
+Benched for now:
+- Proper live multiplayer, collaboration, group scoring, and iMessage real-time play stay out of scope while the app remains serverless.
 
 ## Notes
 

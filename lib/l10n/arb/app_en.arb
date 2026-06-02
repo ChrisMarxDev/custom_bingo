@@ -76,6 +76,54 @@
     "darkModeLabel": "Dark mode",
     "@darkModeLabel": { "description": "Label for the dark mode switch in settings" },
 
+    "preMadeTilesTitle": "Pre-made tiles",
+    "@preMadeTilesTitle": { "description": "Title of the pre-made tiles settings screen and menu entry" },
+
+    "preMadeTilesSettingsDescription": "Create reusable tile text for future boards.",
+    "@preMadeTilesSettingsDescription": { "description": "Settings entry helper text for pre-made tiles" },
+
+    "preMadeTilesDescription": "Create reusable bingo entries here. When you create a new board, you can add them without typing everything again.",
+    "@preMadeTilesDescription": { "description": "Description shown below the pre-made tiles screen title" },
+
+    "preMadeTilesSelectMode": "Select",
+    "@preMadeTilesSelectMode": { "description": "Segmented control label for selecting pre-made tiles" },
+
+    "preMadeTilesEditMode": "Edit",
+    "@preMadeTilesEditMode": { "description": "Segmented control label for editing pre-made tiles" },
+
+    "preMadeTileHint": "Tile text",
+    "@preMadeTileHint": { "description": "Placeholder for a pre-made tile text field" },
+
+    "preMadeTilesAdd": "Add tile",
+    "@preMadeTilesAdd": { "description": "Accessible label and tooltip for adding a pre-made tile" },
+
+    "preMadeTilesDelete": "Delete tile",
+    "@preMadeTilesDelete": { "description": "Accessible label and tooltip for deleting a pre-made tile" },
+
+    "preMadeTilesSelectAll": "Select all",
+    "@preMadeTilesSelectAll": { "description": "Button label for selecting all pre-made tiles" },
+
+    "preMadeTilesSelectNone": "Select none",
+    "@preMadeTilesSelectNone": { "description": "Button label for clearing all selected pre-made tiles" },
+
+    "preMadeTilesApply": "Apply",
+    "@preMadeTilesApply": { "description": "Button label for applying selected pre-made tiles to a board" },
+
+    "preMadeTilesSelectedCount": "{selected} / {total} selected",
+    "@preMadeTilesSelectedCount": {
+        "description": "Count of selected pre-made tiles",
+        "placeholders": {
+            "selected": { "type": "int", "example": "12" },
+            "total": { "type": "int", "example": "24" }
+        }
+    },
+
+    "preMadeTilesEmptyTitle": "No tiles yet",
+    "@preMadeTilesEmptyTitle": { "description": "Empty-state title for the pre-made tiles screen" },
+
+    "preMadeTilesEmptyBody": "Add a tile to start building a reusable list.",
+    "@preMadeTilesEmptyBody": { "description": "Empty-state helper text for the pre-made tiles screen" },
+
     "proposeFeatures": "Propose Features",
     "@proposeFeatures": { "description": "Menu item that opens the UserOrient feedback board" },
 

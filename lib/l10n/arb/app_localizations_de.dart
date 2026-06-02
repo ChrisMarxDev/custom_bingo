@@ -86,6 +86,53 @@ class AppLocalizationsDe extends AppLocalizations {
   String get darkModeLabel => 'Dunkler Modus';
 
   @override
+  String get preMadeTilesTitle => 'Vorbereitete Felder';
+
+  @override
+  String get preMadeTilesSettingsDescription =>
+      'Lege wiederverwendbare Feldtexte für spätere Bingos an.';
+
+  @override
+  String get preMadeTilesDescription =>
+      'Erstelle wiederverwendbare Bingo-Einträge. Wenn du ein neues Board erstellst, kannst du sie später hinzufügen, ohne alles erneut zu tippen.';
+
+  @override
+  String get preMadeTilesSelectMode => 'Auswählen';
+
+  @override
+  String get preMadeTilesEditMode => 'Bearbeiten';
+
+  @override
+  String get preMadeTileHint => 'Feldtext';
+
+  @override
+  String get preMadeTilesAdd => 'Feld hinzufügen';
+
+  @override
+  String get preMadeTilesDelete => 'Feld löschen';
+
+  @override
+  String get preMadeTilesSelectAll => 'Alle auswählen';
+
+  @override
+  String get preMadeTilesSelectNone => 'Keine auswählen';
+
+  @override
+  String get preMadeTilesApply => 'Anwenden';
+
+  @override
+  String preMadeTilesSelectedCount(int selected, int total) {
+    return '$selected / $total ausgewählt';
+  }
+
+  @override
+  String get preMadeTilesEmptyTitle => 'Noch keine Felder';
+
+  @override
+  String get preMadeTilesEmptyBody =>
+      'Füge ein Feld hinzu, um eine wiederverwendbare Liste aufzubauen.';
+
+  @override
   String get proposeFeatures => 'Funktion vorschlagen';
 
   @override

@@ -85,6 +85,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get darkModeLabel => 'Dark mode';
 
   @override
+  String get preMadeTilesTitle => 'Pre-made tiles';
+
+  @override
+  String get preMadeTilesSettingsDescription =>
+      'Create reusable tile text for future boards.';
+
+  @override
+  String get preMadeTilesDescription =>
+      'Create reusable bingo entries here. When you create a new board, you can add them without typing everything again.';
+
+  @override
+  String get preMadeTilesSelectMode => 'Select';
+
+  @override
+  String get preMadeTilesEditMode => 'Edit';
+
+  @override
+  String get preMadeTileHint => 'Tile text';
+
+  @override
+  String get preMadeTilesAdd => 'Add tile';
+
+  @override
+  String get preMadeTilesDelete => 'Delete tile';
+
+  @override
+  String get preMadeTilesSelectAll => 'Select all';
+
+  @override
+  String get preMadeTilesSelectNone => 'Select none';
+
+  @override
+  String get preMadeTilesApply => 'Apply';
+
+  @override
+  String preMadeTilesSelectedCount(int selected, int total) {
+    return '$selected / $total selected';
+  }
+
+  @override
+  String get preMadeTilesEmptyTitle => 'No tiles yet';
+
+  @override
+  String get preMadeTilesEmptyBody =>
+      'Add a tile to start building a reusable list.';
+
+  @override
   String get proposeFeatures => 'Propose Features';
 
   @override

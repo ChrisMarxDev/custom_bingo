@@ -248,6 +248,90 @@ abstract class AppLocalizations {
   /// **'Dark mode'**
   String get darkModeLabel;
 
+  /// Title of the pre-made tiles settings screen and menu entry
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-made tiles'**
+  String get preMadeTilesTitle;
+
+  /// Settings entry helper text for pre-made tiles
+  ///
+  /// In en, this message translates to:
+  /// **'Create reusable tile text for future boards.'**
+  String get preMadeTilesSettingsDescription;
+
+  /// Description shown below the pre-made tiles screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Create reusable bingo entries here. When you create a new board, you can add them without typing everything again.'**
+  String get preMadeTilesDescription;
+
+  /// Segmented control label for selecting pre-made tiles
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get preMadeTilesSelectMode;
+
+  /// Segmented control label for editing pre-made tiles
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get preMadeTilesEditMode;
+
+  /// Placeholder for a pre-made tile text field
+  ///
+  /// In en, this message translates to:
+  /// **'Tile text'**
+  String get preMadeTileHint;
+
+  /// Accessible label and tooltip for adding a pre-made tile
+  ///
+  /// In en, this message translates to:
+  /// **'Add tile'**
+  String get preMadeTilesAdd;
+
+  /// Accessible label and tooltip for deleting a pre-made tile
+  ///
+  /// In en, this message translates to:
+  /// **'Delete tile'**
+  String get preMadeTilesDelete;
+
+  /// Button label for selecting all pre-made tiles
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get preMadeTilesSelectAll;
+
+  /// Button label for clearing all selected pre-made tiles
+  ///
+  /// In en, this message translates to:
+  /// **'Select none'**
+  String get preMadeTilesSelectNone;
+
+  /// Button label for applying selected pre-made tiles to a board
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get preMadeTilesApply;
+
+  /// Count of selected pre-made tiles
+  ///
+  /// In en, this message translates to:
+  /// **'{selected} / {total} selected'**
+  String preMadeTilesSelectedCount(int selected, int total);
+
+  /// Empty-state title for the pre-made tiles screen
+  ///
+  /// In en, this message translates to:
+  /// **'No tiles yet'**
+  String get preMadeTilesEmptyTitle;
+
+  /// Empty-state helper text for the pre-made tiles screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add a tile to start building a reusable list.'**
+  String get preMadeTilesEmptyBody;
+
   /// Menu item that opens the UserOrient feedback board
   ///
   /// In en, this message translates to:

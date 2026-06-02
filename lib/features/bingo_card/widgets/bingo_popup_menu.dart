@@ -1,3 +1,4 @@
+import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
@@ -7,6 +8,7 @@ import 'package:custom_bingo/features/settings/settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 import 'package:flutter/material.dart';
@@ -42,110 +44,123 @@ class BingoPopupMenu extends StatelessWidget {
       ),
       followerAnchor: Alignment.topRight,
       targetAnchor: Alignment.bottomRight,
-      popupMenuBuilder: (BuildContext context, void Function() hideOverlay) {
-        return Container(
-          constraints: const BoxConstraints(maxWidth: 260, maxHeight: 600),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextButton(
-                  onPressed: () async {
-                    hideOverlay();
-                    await setCurrentSelectedBingoCard(null);
-                    if (!context.mounted) return;
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const NewCardScreen(),
-                      ),
-                      (route) => false,
-                    );
-                    logI('Selected "new bingo board" from the popup menu');
-                  },
-                  child: Text(l10n.newCardMenuItem),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 12.0),
-                  child: Text(l10n.yourCardsHeader),
-                ),
-                if (bingoCardNames.isNotEmpty) const Divider(),
-                ...bingoCardNames.map((name) {
-                  return TextButton(
-                    onPressed: () async {
-                      hideOverlay();
-                      await setCurrentSelectedBingoCard(name);
-                      await bingoCardControllerRef.of(context).loadBoard(name);
-                      if (!context.mounted) return;
+      popupMenuBuilder:
+          (BuildContext menuContext, void Function() hideOverlay) {
+            return Container(
+              constraints: const BoxConstraints(maxWidth: 260, maxHeight: 600),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        hideOverlay();
+                        await setCurrentSelectedBingoCard(null);
+                        if (!context.mounted) return;
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const NewCardScreen(),
+                          ),
+                          (route) => false,
+                        );
+                        logI('Selected "new bingo board" from the popup menu');
+                      },
+                      child: Text(l10n.newCardMenuItem),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 12.0),
+                      child: Text(l10n.yourCardsHeader),
+                    ),
+                    if (bingoCardNames.isNotEmpty) const Divider(),
+                    ...bingoCardNames.map((name) {
+                      return TextButton(
+                        onPressed: () async {
+                          hideOverlay();
+                          await setCurrentSelectedBingoCard(name);
+                          await bingoCardControllerRef
+                              .of(context)
+                              .loadBoard(name);
+                          if (!context.mounted) return;
 
-                      if (host == BingoPopupMenuHost.board) {
-                        return;
-                      }
+                          if (host == BingoPopupMenuHost.board) {
+                            return;
+                          }
 
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const BingoCardScreen(),
-                        ),
-                        (route) => false,
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const BingoCardScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Text('- $name'),
                       );
-                    },
-                    child: Text('- $name'),
-                  );
-                }).toList(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 12.0),
-                  child: Text(l10n.settingsHeader),
-                ),
-                Divider(),
-                TextButton(
-                  onPressed: () {
-                    hideOverlay();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsScreen(),
+                    }).toList(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 12.0),
+                      child: Text(l10n.settingsHeader),
+                    ),
+                    Divider(),
+                    TextButton(
+                      onPressed: () {
+                        hideOverlay();
+                        context.push(AppRoutePaths.settings);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(PhosphorIcons.palette()),
+                          const SizedBox(width: 8),
+                          Text(l10n.appearanceMenuItem),
+                        ],
                       ),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(PhosphorIcons.palette()),
-                      const SizedBox(width: 8),
-                      Text(l10n.appearanceMenuItem),
-                    ],
-                  ),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    hideOverlay();
-                    openUserOrient(context);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(PhosphorIcons.chat()),
-                      const SizedBox(width: 8),
-                      Text(l10n.proposeFeatures),
-                    ],
-                  ),
-                ),
-                KoFiButton(),
-                if (kDebugMode)
-                  TextButton(
-                    onPressed: () {
-                      sharedPrefsBeacon.value.clear();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => NewCardScreen(),
+                    ),
+                    if (kDebugMode)
+                      TextButton(
+                        onPressed: () {
+                          hideOverlay();
+                          context.push(AppRoutePaths.preMadeTilesEdit);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(PhosphorIcons.squaresFour()),
+                            const SizedBox(width: 8),
+                            Text(l10n.preMadeTilesTitle),
+                          ],
                         ),
-                      );
-                      hideOverlay();
-                    },
-                    child: const Text('Clear Settings'),
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
+                      ),
+                    TextButton(
+                      onPressed: () async {
+                        hideOverlay();
+                        openUserOrient(context);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(PhosphorIcons.chat()),
+                          const SizedBox(width: 8),
+                          Text(l10n.proposeFeatures),
+                        ],
+                      ),
+                    ),
+                    KoFiButton(),
+                    if (kDebugMode)
+                      TextButton(
+                        onPressed: () {
+                          sharedPrefsBeacon.value.clear();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => NewCardScreen(),
+                            ),
+                          );
+                          hideOverlay();
+                        },
+                        child: const Text('Clear Settings'),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
     );
   }
 }

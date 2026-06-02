@@ -1,4 +1,5 @@
 import 'package:animated_to/animated_to.dart';
+import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/widgets/inherited_provider.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
@@ -9,6 +10,9 @@ import 'package:state_beacon/state_beacon.dart';
 
 import '../bingo_item.dart';
 import '../bingo_card_logic.dart';
+
+const double _cellTextMaxFontSize = 14;
+const double _cellTextMinFontSize = 8;
 
 /// A widget representing a single cell in the bingo card.
 
@@ -174,16 +178,18 @@ class RawBingoCell extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: IgnorePointer(
                   ignoring: !isEditing,
-                  child: TextField(
+                  child: AutoSizeTextField(
                     controller: _textEditingController,
                     focusNode: focusNode,
+                    minFontSize: _cellTextMinFontSize,
+                    maxFontSize: _cellTextMaxFontSize,
                     readOnly: !isEditing,
                     showCursor: isEditing,
                     enableInteractiveSelection: isEditing,
                     textAlign: TextAlign.center,
                     maxLines: null,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: _cellTextMaxFontSize,
                       fontWeight: FontWeight.bold,
                       color: isDone ? context.onPrimary : context.textColor,
                     ),
@@ -197,6 +203,7 @@ class RawBingoCell extends StatelessWidget {
                       disabledBorder: InputBorder.none,
                       focusedErrorBorder: InputBorder.none,
                       isDense: true,
+                      contentPadding: EdgeInsets.zero,
                       hintText: context.l10n.cellHint,
                       hintStyle: TextStyle(color: context.weakTextColor),
                     ),
