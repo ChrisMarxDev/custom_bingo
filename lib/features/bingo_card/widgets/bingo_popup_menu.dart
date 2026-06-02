@@ -40,7 +40,7 @@ class BingoPopupMenu extends StatelessWidget {
           ],
         ),
         padding: const EdgeInsets.all(8),
-        child: Icon(Icons.more_vert, color: context.textColor),
+        child: Icon(PhosphorIcons.gearSix(), color: context.textColor),
       ),
       followerAnchor: Alignment.topRight,
       targetAnchor: Alignment.bottomRight,
@@ -66,7 +66,13 @@ class BingoPopupMenu extends StatelessWidget {
                         );
                         logI('Selected "new bingo board" from the popup menu');
                       },
-                      child: Text(l10n.newCardMenuItem),
+                      child: Row(
+                        children: [
+                          Icon(PhosphorIcons.plus()),
+                          const SizedBox(width: 8),
+                          Text(l10n.newCardMenuItem),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 12.0),

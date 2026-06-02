@@ -5,6 +5,29 @@
     "cardNameLabel": "Name des Bingos *",
     "cardNameHint": "Gib deinem Bingo einen Namen",
     "createCardButton": "Bingo erstellen",
+    "newBoardPreMadeSectionTitle": "Deine vorbereiteten Einträge",
+    "newBoardPreMadeButton": "Mit vorbereiteten Einträgen starten",
+    "newBoardPreMadeChangeButton": "Vorbereitete Einträge ändern",
+    "newBoardPreMadeClearButton": "Vorbereitete Einträge entfernen",
+    "newBoardPreMadeAppliedCount": "{count} vorbereitete Einträge angewendet",
+    "@newBoardPreMadeAppliedCount": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "newBoardPreMadeFullSummary": "{used} werden zufällig für dieses Board gezogen.",
+    "@newBoardPreMadeFullSummary": {
+        "placeholders": {
+            "used": { "type": "int" }
+        }
+    },
+    "newBoardPreMadePartialSummary": "{used} Felder werden gefüllt. {blank} bleiben leer.",
+    "@newBoardPreMadePartialSummary": {
+        "placeholders": {
+            "used": { "type": "int" },
+            "blank": { "type": "int" }
+        }
+    },
     "defaultCardName": "Bingo-Karte",
 
     "toggleHint": "Lange drücken, um ein Feld zu markieren",
@@ -19,6 +42,11 @@
     "shuffleCardTitle": "Karte mischen",
     "shuffleCardConfirm": "Möchtest du die Karte wirklich mischen? Alle Markierungen werden danach zurückgesetzt.",
     "shuffle": "Mischen",
+    "ratingPromptTitle": "Wie gefällt dir die App?",
+    "ratingPromptNo": "Nicht jetzt",
+    "ratingPromptYes": "Ja",
+    "boardActionShare": "Teilen",
+    "boardActionAddPreMadeItems": "Vorbereitete Einträge hinzufügen",
 
     "cellHint": "Text eingeben…",
     "edit": "Bearbeiten",
@@ -39,9 +67,12 @@
     "preMadeTileHint": "Feldtext",
     "preMadeTilesAdd": "Feld hinzufügen",
     "preMadeTilesDelete": "Feld löschen",
-    "preMadeTilesSelectAll": "Alle auswählen",
+    "preMadeTilesSelectAll": "Alle aus-/abwählen",
     "preMadeTilesSelectNone": "Keine auswählen",
     "preMadeTilesApply": "Anwenden",
+    "preMadeTilesReplaceItems": "Einträge ersetzen",
+    "preMadeTilesFillItems": "Einträge füllen",
+    "preMadeTilesBoardActionHelp": "Ersetzen tauscht die Board-Einträge zufällig mit deiner Auswahl aus. Füllen ergänzt nur leere Felder. Bei ungeraden Boards bleibt das mittlere Feld an Ort und Stelle.",
     "preMadeTilesSelectedCount": "{selected} / {total} ausgewählt",
     "@preMadeTilesSelectedCount": {
         "placeholders": {

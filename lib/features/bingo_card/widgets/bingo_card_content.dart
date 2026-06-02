@@ -22,6 +22,7 @@ class BingoCardContentWrapper extends StatelessWidget {
       gridItems: gridItems,
       lastChangeDateTime: lastChangeDateTime,
       currentSelectedBingoCardName: currentSelectedBingoCardNameString,
+      animationKeyFor: null,
     );
   }
 }
@@ -32,11 +33,13 @@ class BingoCardContent extends StatelessWidget {
     required this.gridItems,
     required this.lastChangeDateTime,
     required this.currentSelectedBingoCardName,
+    required this.animationKeyFor,
   });
 
   final List<List<BingoItem>> gridItems;
   final DateTime? lastChangeDateTime;
   final String? currentSelectedBingoCardName;
+  final Object Function(String itemId)? animationKeyFor;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,7 @@ class BingoCardContent extends StatelessWidget {
                 isMiddleItem: isMiddleItem,
                 cellWidth: _cellSize,
                 cellHeight: _cellSize,
+                animationKeyFor: animationKeyFor,
                 borderRadius: BorderRadius.only(
                   topLeft: rowIndex == 0 && colIndex == 0
                       ? kRadiusCircular

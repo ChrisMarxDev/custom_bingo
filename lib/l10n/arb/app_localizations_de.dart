@@ -21,6 +21,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String get createCardButton => 'Bingo erstellen';
 
   @override
+  String get newBoardPreMadeSectionTitle => 'Deine vorbereiteten Einträge';
+
+  @override
+  String get newBoardPreMadeButton => 'Mit vorbereiteten Einträgen starten';
+
+  @override
+  String get newBoardPreMadeChangeButton => 'Vorbereitete Einträge ändern';
+
+  @override
+  String get newBoardPreMadeClearButton => 'Vorbereitete Einträge entfernen';
+
+  @override
+  String newBoardPreMadeAppliedCount(int count) {
+    return '$count vorbereitete Einträge angewendet';
+  }
+
+  @override
+  String newBoardPreMadeFullSummary(int used) {
+    return '$used werden zufällig für dieses Board gezogen.';
+  }
+
+  @override
+  String newBoardPreMadePartialSummary(int used, int blank) {
+    return '$used Felder werden gefüllt. $blank bleiben leer.';
+  }
+
+  @override
   String get defaultCardName => 'Bingo-Karte';
 
   @override
@@ -54,6 +81,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get shuffle => 'Mischen';
+
+  @override
+  String get ratingPromptTitle => 'Wie gefällt dir die App?';
+
+  @override
+  String get ratingPromptNo => 'Nicht jetzt';
+
+  @override
+  String get ratingPromptYes => 'Ja';
+
+  @override
+  String get boardActionShare => 'Teilen';
+
+  @override
+  String get boardActionAddPreMadeItems => 'Vorbereitete Einträge hinzufügen';
 
   @override
   String get cellHint => 'Text eingeben…';
@@ -112,13 +154,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get preMadeTilesDelete => 'Feld löschen';
 
   @override
-  String get preMadeTilesSelectAll => 'Alle auswählen';
+  String get preMadeTilesSelectAll => 'Alle aus-/abwählen';
 
   @override
   String get preMadeTilesSelectNone => 'Keine auswählen';
 
   @override
   String get preMadeTilesApply => 'Anwenden';
+
+  @override
+  String get preMadeTilesReplaceItems => 'Einträge ersetzen';
+
+  @override
+  String get preMadeTilesFillItems => 'Einträge füllen';
+
+  @override
+  String get preMadeTilesBoardActionHelp =>
+      'Ersetzen tauscht die Board-Einträge zufällig mit deiner Auswahl aus. Füllen ergänzt nur leere Felder. Bei ungeraden Boards bleibt das mittlere Feld an Ort und Stelle.';
 
   @override
   String preMadeTilesSelectedCount(int selected, int total) {

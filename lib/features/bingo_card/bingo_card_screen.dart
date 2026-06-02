@@ -1,27 +1,28 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:async';
+import 'dart:math' as math;
+
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/common/services/rating_prompt_service.dart';
 import 'package:custom_bingo/common/services/share_card_logic.dart';
-import 'package:custom_bingo/common/widgets/inherited_provider.dart';
+import 'package:custom_bingo/common/widgets/popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
+import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
-import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
+import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
+import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tiles_screen.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_confetti/flutter_confetti.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
-import 'dart:math' as math;
 
 // const double _cellSize = 128.0; // Removed as it's in BingoCardContent or should be passed
-
-class ShouldAnimate {
-  final bool shouldAnimate;
-
-  ShouldAnimate({this.shouldAnimate = true});
-}
 
 class BingoCardScreen extends StatefulWidget {
   const BingoCardScreen({super.key});
@@ -32,6 +33,7 @@ class BingoCardScreen extends StatefulWidget {
 
 class _BingoCardScreenState extends State<BingoCardScreen> {
   late final TransformationController _transformationController;
+  final _animationKeysByItemId = <String, Object>{};
   String? _lastCenteredBoardName;
 
   @override
@@ -99,6 +101,7 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
     final gridItems = controller.gridItems.watch(
       context,
     ); // This should work with flutter_state_beacon
+    _retainAnimationKeysFor(gridItems);
     final currentBingoName = currentSelectedBingoCardName.watch(context);
     if (_lastCenteredBoardName != currentBingoName) {
       _lastCenteredBoardName = currentBingoName;
@@ -119,6 +122,9 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
             y: 0.6,
           ),
         );
+        unawaited(
+          ratingPromptServiceBeacon.value.maybeRequestAfterBingo(context),
+        );
       }
     });
     final size = MediaQuery.sizeOf(context);
@@ -129,77 +135,89 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
 
     // InteractiveViewer creates its own controller if not provided.
 
-    return InheritedProvider<ShouldAnimate>(
-      value: ShouldAnimate(shouldAnimate: true),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        body: Stack(
-          children: [
-            InteractiveViewer.builder(
-              transformationController: _transformationController,
-              boundaryMargin: EdgeInsets.only(
-                bottom: size.height * 0.7,
-                top: size.height * 0.5,
-                left: size.width * 0.6,
-                right: size.width * 0.6,
-              ),
-              // alignment: Alignment.topCenter,
-              minScale: 0.2,
-              maxScale: 2.0,
-              builder: (context, child) {
-                return Container(
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    left: 24,
-                    right: 24,
-                    bottom: 48,
-                  ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   child: EditingHint(),
-                          // ),
-                          // SizedBox(height: 16),
-                          BingoCardContent(
-                            gridItems: gridItems,
-                            lastChangeDateTime: lastChangeDateTime,
-                            currentSelectedBingoCardName: currentBingoName,
-                          ),
-                          SizedBox(height: 16),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        children: [
+          InteractiveViewer.builder(
+            transformationController: _transformationController,
+            boundaryMargin: EdgeInsets.only(
+              bottom: size.height * 0.7,
+              top: size.height * 0.5,
+              left: size.width * 0.6,
+              right: size.width * 0.6,
             ),
-            Positioned(
-              top: kToolbarHeight + 8,
-              right: 8,
-              child: const BingoPopupMenu(host: BingoPopupMenuHost.board),
+            // alignment: Alignment.topCenter,
+            minScale: 0.2,
+            maxScale: 2.0,
+            builder: (context, child) {
+              return Container(
+                padding: const EdgeInsets.only(
+                  top: 24,
+                  left: 24,
+                  right: 24,
+                  bottom: 48,
+                ),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   child: EditingHint(),
+                        // ),
+                        // SizedBox(height: 16),
+                        BingoCardContent(
+                          gridItems: gridItems,
+                          lastChangeDateTime: lastChangeDateTime,
+                          currentSelectedBingoCardName: currentBingoName,
+                          animationKeyFor: _animationKeyFor,
+                        ),
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          Positioned(
+            top: kToolbarHeight + 8,
+            right: 8,
+            child: const BingoPopupMenu(host: BingoPopupMenuHost.board),
+          ),
+          Positioned(
+            bottom: 42 + MediaQuery.of(context).padding.bottom,
+            left: 16,
+            right: 16,
+            child: Column(
+              children: [
+                EditingHint(),
+                SizedBox(height: 8),
+                ToggleHint(),
+                SizedBox(height: 8),
+                Actions(transformationController: _transformationController),
+              ],
             ),
-            Positioned(
-              bottom: 42 + MediaQuery.of(context).padding.bottom,
-              left: 16,
-              right: 16,
-              child: Column(
-                children: [
-                  EditingHint(),
-                  SizedBox(height: 8),
-                  ToggleHint(),
-                  SizedBox(height: 8),
-                  Actions(transformationController: _transformationController),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+  }
+
+  Object _animationKeyFor(String itemId) {
+    return _animationKeysByItemId.putIfAbsent(itemId, () => Object());
+  }
+
+  void _retainAnimationKeysFor(List<List<BingoItem>> gridItems) {
+    final itemIds = gridItems
+        .expand((row) => row)
+        .map((item) => item.id)
+        .toSet();
+    _animationKeysByItemId.removeWhere(
+      (itemId, _) => !itemIds.contains(itemId),
     );
   }
 }
@@ -242,43 +260,7 @@ class Actions extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                onPressed: () async {
-                  final l10n = context.l10n;
-                  final confirmed = await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(l10n.deleteCardTitle),
-                      content: Text(l10n.deleteCardConfirm),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: Text(l10n.cancel),
-                        ),
-                        FilledButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: Text(l10n.delete),
-                        ),
-                      ],
-                    ),
-                  );
-                  if (confirmed) {
-                    final name = currentSelectedBingoCardName.value;
-                    if (name != null) {
-                      await deleteBingoCard(name);
-                      await deleteBingoCardName(name);
-                      await setCurrentSelectedBingoCard(null);
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => NewCardScreen(),
-                        ),
-                        (route) => false,
-                      );
-                    }
-                  }
-                },
-                icon: Icon(PhosphorIcons.trash(), color: context.error),
-              ),
+              BoardActionsPopupMenu(onShuffle: () => shuffleCard(context)),
               ButtonDivider(),
               IconButton(
                 onPressed: () {
@@ -311,20 +293,6 @@ class Actions extends StatelessWidget {
                   PhosphorIcons.magnifyingGlassPlus(),
                   color: context.onPrimary,
                 ),
-              ),
-              ButtonDivider(),
-              IconButton(
-                onPressed: () {
-                  shareCardPopup(context);
-                },
-                icon: Icon(PhosphorIcons.share(), color: context.onPrimary),
-              ),
-              ButtonDivider(),
-              IconButton(
-                onPressed: () {
-                  shuffleCard(context);
-                },
-                icon: Icon(PhosphorIcons.shuffle(), color: context.onPrimary),
               ),
               ButtonDivider(),
               IconButton(
@@ -368,6 +336,168 @@ class Actions extends StatelessWidget {
     if (!confirmed) return;
     final controller = bingoCardControllerRef.of(context);
     controller.shuffleCard();
+  }
+}
+
+class BoardActionsPopupMenu extends StatelessWidget {
+  const BoardActionsPopupMenu({required this.onShuffle, super.key});
+
+  final VoidCallback onShuffle;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return PopupMenu(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      followerAnchor: Alignment.bottomLeft,
+      targetAnchor: Alignment.topLeft,
+      child: SizedBox(
+        width: 48,
+        height: 48,
+        child: Icon(Icons.more_vert, color: context.onPrimary),
+      ),
+      popupMenuBuilder: (menuContext, hideOverlay) {
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 280),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _BoardActionMenuItem(
+                icon: PhosphorIcons.trash(),
+                label: l10n.delete,
+                foregroundColor: context.theme.colorScheme.error,
+                onPressed: () {
+                  hideOverlay();
+                  _deleteCard(context);
+                },
+              ),
+              _BoardActionMenuItem(
+                icon: PhosphorIcons.shuffle(),
+                label: l10n.shuffle,
+                onPressed: () {
+                  hideOverlay();
+                  onShuffle();
+                },
+              ),
+              _BoardActionMenuItem(
+                icon: PhosphorIcons.share(),
+                label: l10n.boardActionShare,
+                onPressed: () {
+                  hideOverlay();
+                  shareCardPopup(context);
+                },
+              ),
+              if (kDebugMode)
+                _BoardActionMenuItem(
+                  icon: PhosphorIcons.squaresFour(),
+                  label: l10n.boardActionAddPreMadeItems,
+                  onPressed: () {
+                    hideOverlay();
+                    _openPreMadeItemsSheet(context);
+                  },
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _openPreMadeItemsSheet(BuildContext context) async {
+    final controller = bingoCardControllerRef.of(context);
+    final result = await showModalBottomSheet<PreMadeTileBoardActionResult>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.9,
+          child: const PreMadeTilesScreen(
+            initialMode: PreMadeTileMode.selecting,
+            showBoardActionButtons: true,
+          ),
+        );
+      },
+    );
+    if (result == null) return;
+
+    switch (result.action) {
+      case PreMadeTileBoardAction.replaceItems:
+        controller.replaceItemsWithPreMade(result.selectedTexts);
+      case PreMadeTileBoardAction.fillItems:
+        controller.fillEmptyItemsWithPreMade(result.selectedTexts);
+    }
+  }
+
+  Future<void> _deleteCard(BuildContext context) async {
+    final l10n = context.l10n;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteCardTitle),
+        content: Text(l10n.deleteCardConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    final name = currentSelectedBingoCardName.value;
+    if (name == null) return;
+
+    await deleteBingoCard(name);
+    await deleteBingoCardName(name);
+    await setCurrentSelectedBingoCard(null);
+    if (!context.mounted) return;
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const NewCardScreen()),
+      (route) => false,
+    );
+  }
+}
+
+class _BoardActionMenuItem extends StatelessWidget {
+  const _BoardActionMenuItem({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+    this.foregroundColor,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+  final Color? foregroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = foregroundColor ?? context.textColor;
+    return TextButton(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: color),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(label, style: context.p1.copyWith(color: color)),
+          ),
+        ],
+      ),
+    );
   }
 }
 

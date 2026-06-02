@@ -1,8 +1,6 @@
 import 'package:animated_to/animated_to.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
-import 'package:custom_bingo/common/widgets/inherited_provider.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -24,6 +22,7 @@ class BingoCell extends StatefulWidget {
     required this.cellWidth,
     required this.isMiddleItem,
     required this.cellHeight,
+    required this.animationKeyFor,
     this.borderRadius = BorderRadius.zero,
   });
 
@@ -38,6 +37,7 @@ class BingoCell extends StatefulWidget {
 
   /// Whether the cell is the middle item.
   final bool isMiddleItem;
+  final Object Function(String itemId)? animationKeyFor;
   final BorderRadius borderRadius;
 
   @override
@@ -47,6 +47,7 @@ class BingoCell extends StatefulWidget {
 class _BingoCellState extends State<BingoCell> {
   late final FocusNode focusNode;
   late final TextEditingController _textEditingController;
+  final GlobalKey _fallbackAnimationKey = GlobalKey();
 
   @override
   void initState() {
@@ -77,8 +78,7 @@ class _BingoCellState extends State<BingoCell> {
     final controller = bingoCardControllerRef.of(context);
     final isEditing = controller.isEditing.watch(context);
     final isDone = widget.item.isDone;
-    final shouldAnimate =
-        context.maybeReadProvided<ShouldAnimate>()?.shouldAnimate ?? false;
+    final animationKeyFor = widget.animationKeyFor;
     final borderColor = context.outlineColor;
 
     focusNode.canRequestFocus = isEditing;
@@ -96,7 +96,10 @@ class _BingoCellState extends State<BingoCell> {
               ? context.surfaceContainerLow
               : context.cardColor);
     return AnimatedTo.spring(
-      globalKey: shouldAnimate ? GlobalObjectKey(widget.item.id) : GlobalKey(),
+      globalKey: animationKeyFor == null
+          ? _fallbackAnimationKey
+          : GlobalObjectKey(animationKeyFor(widget.item.id)),
+      enabled: animationKeyFor != null,
       child: RawBingoCell(
         widget: widget,
         borderColor: borderColor,

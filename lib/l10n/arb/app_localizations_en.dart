@@ -21,6 +21,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createCardButton => 'Create Bingo Grid';
 
   @override
+  String get newBoardPreMadeSectionTitle => 'Your pre-made items';
+
+  @override
+  String get newBoardPreMadeButton => 'Start with pre-made items';
+
+  @override
+  String get newBoardPreMadeChangeButton => 'Change pre-made items';
+
+  @override
+  String get newBoardPreMadeClearButton => 'Clear pre-made items';
+
+  @override
+  String newBoardPreMadeAppliedCount(int count) {
+    return '$count pre-made entries applied';
+  }
+
+  @override
+  String newBoardPreMadeFullSummary(int used) {
+    return '$used will be drawn at random for this board.';
+  }
+
+  @override
+  String newBoardPreMadePartialSummary(int used, int blank) {
+    return '$used cells will be filled. $blank will stay blank.';
+  }
+
+  @override
   String get defaultCardName => 'Bingo Card';
 
   @override
@@ -53,6 +80,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shuffle => 'Shuffle';
+
+  @override
+  String get ratingPromptTitle => 'How do you like the app?';
+
+  @override
+  String get ratingPromptNo => 'Not now';
+
+  @override
+  String get ratingPromptYes => 'Yes';
+
+  @override
+  String get boardActionShare => 'Share';
+
+  @override
+  String get boardActionAddPreMadeItems => 'Add pre-made items';
 
   @override
   String get cellHint => 'Enter text…';
@@ -111,13 +153,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preMadeTilesDelete => 'Delete tile';
 
   @override
-  String get preMadeTilesSelectAll => 'Select all';
+  String get preMadeTilesSelectAll => 'Un/select all';
 
   @override
   String get preMadeTilesSelectNone => 'Select none';
 
   @override
   String get preMadeTilesApply => 'Apply';
+
+  @override
+  String get preMadeTilesReplaceItems => 'Replace items';
+
+  @override
+  String get preMadeTilesFillItems => 'Fill items';
+
+  @override
+  String get preMadeTilesBoardActionHelp =>
+      'Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.';
 
   @override
   String preMadeTilesSelectedCount(int selected, int total) {

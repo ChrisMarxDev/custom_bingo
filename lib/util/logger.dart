@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
@@ -39,8 +41,21 @@ void configureLogging() {
         ..write(record.stackTrace);
     }
 
-    debugPrint(buffer.toString());
+    developer.log(
+      record.message,
+      time: record.time,
+      level: record.level.value,
+      name: record.loggerName,
+      error: record.error,
+      stackTrace: record.stackTrace,
+    );
+    debugPrintSynchronously(buffer.toString());
   });
+
+  logI(
+    'Logging configured: level=${Logger.root.level.name} debugMode=$kDebugMode '
+    'sinks=dart_developer,debug_print_synchronous',
+  );
 }
 
 void logD(String message) {

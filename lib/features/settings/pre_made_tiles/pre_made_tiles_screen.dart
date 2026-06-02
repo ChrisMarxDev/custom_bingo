@@ -4,7 +4,6 @@ import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/app_database.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
@@ -12,12 +11,14 @@ import 'package:state_beacon/state_beacon.dart';
 class PreMadeTilesScreen extends StatefulWidget {
   const PreMadeTilesScreen({
     this.initialMode = PreMadeTileMode.editing,
-    this.showModeSwitch = kDebugMode,
+    this.returnSelectedTextsOnApply = false,
+    this.showBoardActionButtons = false,
     super.key,
   });
 
   final PreMadeTileMode initialMode;
-  final bool showModeSwitch;
+  final bool returnSelectedTextsOnApply;
+  final bool showBoardActionButtons;
 
   @override
   State<PreMadeTilesScreen> createState() => _PreMadeTilesScreenState();
@@ -43,27 +44,61 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
     final mode = controller.mode.watch(context);
     final isLoading = controller.isLoading.watch(context);
     final isSelecting = mode == PreMadeTileMode.selecting;
+    _ensureEmptyDraft(controller, drafts, isLoading);
+    final filledDrafts = drafts
+        .where((draft) => draft.text.trim().isNotEmpty)
+        .toList();
     final selectedCount =
         tiles.where((tile) => tile.isSelected).length +
-        drafts.where((draft) => draft.isSelected).length;
-    final totalCount = tiles.length + drafts.length;
+        filledDrafts.where((draft) => draft.isSelected).length;
+    final totalCount = tiles.length + filledDrafts.length;
     final allSelected = totalCount > 0 && selectedCount == totalCount;
     final l10n = context.l10n;
+    final contentBottomPadding = isSelecting
+        ? (widget.showBoardActionButtons ? 168.0 : 112.0)
+        : 86.0;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.preMadeTilesTitle, style: context.h2)),
-      floatingActionButton: isSelecting
-          ? FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.of(context).maybePop();
+      floatingActionButton: isSelecting && !widget.showBoardActionButtons
+          ? _PreMadePrimaryButton(
+              onPressed: () async {
+                final navigator = Navigator.of(context);
+                if (widget.returnSelectedTextsOnApply) {
+                  final selectedTexts = await controller
+                      .selectedTextsSnapshot();
+                  navigator.pop(selectedTexts);
+                  return;
+                }
+
+                navigator.maybePop();
               },
-              backgroundColor: context.primary,
-              foregroundColor: context.onPrimary,
               icon: Icon(PhosphorIcons.check()),
               label: Text(l10n.preMadeTilesApply),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: isSelecting && widget.showBoardActionButtons
+          ? _BoardSelectionActions(
+              hasSelection: selectedCount > 0,
+              onReplace: () {
+                unawaited(
+                  _finishBoardAction(
+                    controller,
+                    PreMadeTileBoardAction.replaceItems,
+                  ),
+                );
+              },
+              onFill: () {
+                unawaited(
+                  _finishBoardAction(
+                    controller,
+                    PreMadeTileBoardAction.fillItems,
+                  ),
+                );
+              },
+            )
+          : null,
       body: CustomScrollView(
         slivers: [
           SliverPadding(
@@ -81,34 +116,15 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
                     l10n.preMadeTilesDescription,
                     style: context.p1.copyWith(color: context.weakTextColor),
                   ),
-                  if (widget.showModeSwitch) ...[
-                    const SizedBox(height: 20),
-                    SegmentedButton<PreMadeTileMode>(
-                      selected: {mode},
-                      onSelectionChanged: (selection) {
-                        controller.setMode(selection.single);
+                  if (isSelecting && totalCount > 0) ...[
+                    const SizedBox(height: 16),
+                    _SelectAllRow(
+                      selectedCount: selectedCount,
+                      totalCount: totalCount,
+                      allSelected: allSelected,
+                      onToggle: () {
+                        unawaited(controller.setAllSelected(!allSelected));
                       },
-                      segments: [
-                        ButtonSegment(
-                          value: PreMadeTileMode.selecting,
-                          icon: Icon(PhosphorIcons.checkSquare()),
-                          label: Text(l10n.preMadeTilesSelectMode),
-                        ),
-                        ButtonSegment(
-                          value: PreMadeTileMode.editing,
-                          icon: Icon(PhosphorIcons.pencilSimple()),
-                          label: Text(l10n.preMadeTilesEditMode),
-                        ),
-                      ],
-                    ),
-                  ],
-                  if (isSelecting) ...[
-                    SizedBox(height: widget.showModeSwitch ? 12 : 16),
-                    Text(
-                      l10n.preMadeTilesSelectedCount(selectedCount, totalCount),
-                      style: context.caption.copyWith(
-                        color: context.weakTextColor,
-                      ),
                     ),
                   ],
                 ],
@@ -119,11 +135,6 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
             const SliverFillRemaining(
               hasScrollBody: false,
               child: Center(child: CircularProgressIndicator()),
-            )
-          else if (tiles.isEmpty && drafts.isEmpty)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: _EmptyState(onAdd: controller.addDraft),
             )
           else
             SliverPadding(
@@ -152,24 +163,55 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
                 },
               ),
             ),
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(16, 20, 16, isSelecting ? 112 : 32),
-            sliver: SliverToBoxAdapter(
-              child: _BottomActions(
-                isSelecting: isSelecting,
-                allSelected: allSelected,
-                hasItems: totalCount > 0,
-                onAdd: controller.addDraft,
-                onToggleAll: () {
-                  unawaited(controller.setAllSelected(!allSelected));
-                },
-              ),
-            ),
-          ),
+          SliverToBoxAdapter(child: SizedBox(height: contentBottomPadding)),
         ],
       ),
     );
   }
+
+  Future<void> _finishBoardAction(
+    PreMadeTileController controller,
+    PreMadeTileBoardAction action,
+  ) async {
+    final navigator = Navigator.of(context);
+    final selectedTexts = await controller.selectedTextsSnapshot();
+    navigator.pop(
+      PreMadeTileBoardActionResult(
+        action: action,
+        selectedTexts: selectedTexts,
+      ),
+    );
+  }
+
+  void _ensureEmptyDraft(
+    PreMadeTileController controller,
+    List<PreMadeTileDraft> drafts,
+    bool isLoading,
+  ) {
+    if (isLoading || drafts.any((draft) => draft.text.trim().isEmpty)) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final latestDrafts = controller.drafts.value;
+      if (latestDrafts.any((draft) => draft.text.trim().isEmpty)) return;
+
+      controller.addDraft();
+    });
+  }
+}
+
+enum PreMadeTileBoardAction { replaceItems, fillItems }
+
+class PreMadeTileBoardActionResult {
+  const PreMadeTileBoardActionResult({
+    required this.action,
+    required this.selectedTexts,
+  });
+
+  final PreMadeTileBoardAction action;
+  final List<String> selectedTexts;
 }
 
 class _SavedTileRow extends StatefulWidget {
@@ -234,6 +276,7 @@ class _SavedTileRowState extends State<_SavedTileRow> {
   Widget build(BuildContext context) {
     return _TileRowShell(
       isSelecting: widget.isSelecting,
+      showSelectionControl: true,
       isSelected: widget.tile.isSelected,
       onSelectionChanged: (value) {
         unawaited(widget.controller.updateTileSelection(widget.tile, value));
@@ -322,24 +365,27 @@ class _DraftTileRowState extends State<_DraftTileRow> {
 
   @override
   Widget build(BuildContext context) {
+    final isEmptyDraft = widget.draft.text.trim().isEmpty;
     return _TileRowShell(
       isSelecting: widget.isSelecting,
+      showSelectionControl: !isEmptyDraft,
       isSelected: widget.draft.isSelected,
       onSelectionChanged: (value) {
         widget.controller.updateDraftSelection(widget.draft.id, value);
       },
-      trailing: IconButton(
-        tooltip: context.l10n.preMadeTilesDelete,
-        onPressed: () {
-          widget.controller.removeDraft(widget.draft.id);
-        },
-        color: context.theme.colorScheme.error,
-        icon: Icon(PhosphorIcons.trash()),
-      ),
+      trailing: isEmptyDraft
+          ? null
+          : IconButton(
+              tooltip: context.l10n.preMadeTilesDelete,
+              onPressed: () {
+                widget.controller.removeDraft(widget.draft.id);
+              },
+              color: context.theme.colorScheme.error,
+              icon: Icon(PhosphorIcons.trash()),
+            ),
       child: TextField(
         controller: _textController,
         focusNode: _focusNode,
-        autofocus: true,
         minLines: 1,
         maxLines: 3,
         textInputAction: TextInputAction.done,
@@ -361,6 +407,7 @@ class _DraftTileRowState extends State<_DraftTileRow> {
 class _TileRowShell extends StatelessWidget {
   const _TileRowShell({
     required this.isSelecting,
+    required this.showSelectionControl,
     required this.isSelected,
     required this.onSelectionChanged,
     required this.trailing,
@@ -368,9 +415,10 @@ class _TileRowShell extends StatelessWidget {
   });
 
   final bool isSelecting;
+  final bool showSelectionControl;
   final bool isSelected;
   final void Function(bool value) onSelectionChanged;
-  final Widget trailing;
+  final Widget? trailing;
   final Widget child;
 
   @override
@@ -381,10 +429,14 @@ class _TileRowShell extends StatelessWidget {
         if (isSelecting) ...[
           SizedBox(
             width: 44,
-            child: Checkbox.adaptive(
-              value: isSelected,
-              onChanged: (value) => onSelectionChanged(value ?? false),
-            ),
+            child: showSelectionControl
+                ? Checkbox.adaptive(
+                    value: isSelected,
+                    activeColor: context.primary,
+                    checkColor: context.onPrimary,
+                    onChanged: (value) => onSelectionChanged(value ?? false),
+                  )
+                : const SizedBox.shrink(),
           ),
           const SizedBox(width: 4),
         ],
@@ -396,96 +448,139 @@ class _TileRowShell extends StatelessWidget {
   }
 }
 
-class _BottomActions extends StatelessWidget {
-  const _BottomActions({
-    required this.isSelecting,
+class _SelectAllRow extends StatelessWidget {
+  const _SelectAllRow({
+    required this.selectedCount,
+    required this.totalCount,
     required this.allSelected,
-    required this.hasItems,
-    required this.onAdd,
-    required this.onToggleAll,
+    required this.onToggle,
   });
 
-  final bool isSelecting;
+  final int selectedCount;
+  final int totalCount;
   final bool allSelected;
-  final bool hasItems;
-  final VoidCallback onAdd;
-  final VoidCallback onToggleAll;
+  final VoidCallback onToggle;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        if (isSelecting && hasItems) ...[
-          FilledButton.tonal(
-            onPressed: onToggleAll,
-            child: Text(
-              allSelected
-                  ? l10n.preMadeTilesSelectNone
-                  : l10n.preMadeTilesSelectAll,
+    final checkboxValue = selectedCount == 0
+        ? false
+        : allSelected
+        ? true
+        : null;
+
+    return InkWell(
+      borderRadius: kBorderRadius,
+      onTap: onToggle,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 44,
+              child: Checkbox.adaptive(
+                tristate: true,
+                value: checkboxValue,
+                activeColor: context.primary,
+                checkColor: context.onPrimary,
+                onChanged: (_) => onToggle(),
+              ),
             ),
-          ),
-          const SizedBox(width: 12),
-        ],
-        SizedBox(
-          width: 48,
-          height: 48,
-          child: IconButton.filled(
-            tooltip: l10n.preMadeTilesAdd,
-            style: IconButton.styleFrom(
-              backgroundColor: context.primary,
-              foregroundColor: context.onPrimary,
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                l10n.preMadeTilesSelectAll,
+                style: context.p1.copyWith(fontWeight: FontWeight.w700),
+              ),
             ),
-            onPressed: onAdd,
-            icon: Icon(PhosphorIcons.plus()),
-          ),
+            Text(
+              l10n.preMadeTilesSelectedCount(selectedCount, totalCount),
+              style: context.caption.copyWith(color: context.weakTextColor),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
 
-class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.onAdd});
+class _BoardSelectionActions extends StatelessWidget {
+  const _BoardSelectionActions({
+    required this.hasSelection,
+    required this.onReplace,
+    required this.onFill,
+  });
 
-  final VoidCallback onAdd;
+  final bool hasSelection;
+  final VoidCallback onReplace;
+  final VoidCallback onFill;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            PhosphorIcons.squaresFour(),
-            size: 44,
-            color: context.weakTextColor,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            l10n.preMadeTilesEmptyTitle,
-            style: context.h4.copyWith(fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.preMadeTilesEmptyBody,
-            textAlign: TextAlign.center,
-            style: context.p1.copyWith(color: context.weakTextColor),
-          ),
-          const SizedBox(height: 20),
-          IconButton.filled(
-            tooltip: l10n.preMadeTilesAdd,
-            style: IconButton.styleFrom(
-              backgroundColor: context.primary,
-              foregroundColor: context.onPrimary,
+    return SafeArea(
+      top: false,
+      child: Container(
+        color: context.surface,
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: hasSelection ? onReplace : null,
+                    icon: Icon(PhosphorIcons.shuffle()),
+                    label: Text(l10n.preMadeTilesReplaceItems),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: hasSelection ? onFill : null,
+                    icon: Icon(PhosphorIcons.squaresFour()),
+                    label: Text(l10n.preMadeTilesFillItems),
+                  ),
+                ),
+              ],
             ),
-            onPressed: onAdd,
-            icon: Icon(PhosphorIcons.plus()),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              l10n.preMadeTilesBoardActionHelp,
+              textAlign: TextAlign.center,
+              style: context.caption.copyWith(color: context.weakTextColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PreMadePrimaryButton extends StatelessWidget {
+  const _PreMadePrimaryButton({
+    required this.onPressed,
+    required this.icon,
+    required this.label,
+  });
+
+  final VoidCallback? onPressed;
+  final Widget icon;
+  final Widget label;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.icon(
+      onPressed: onPressed,
+      icon: icon,
+      label: label,
+      style: FilledButton.styleFrom(
+        backgroundColor: context.primary,
+        foregroundColor: context.onPrimary,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: kCardShape,
       ),
     );
   }

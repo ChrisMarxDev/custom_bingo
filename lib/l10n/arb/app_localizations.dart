@@ -122,6 +122,48 @@ abstract class AppLocalizations {
   /// **'Create Bingo Grid'**
   String get createCardButton;
 
+  /// Expandable section title for pre-made items on the new-board screen
+  ///
+  /// In en, this message translates to:
+  /// **'Your pre-made items'**
+  String get newBoardPreMadeSectionTitle;
+
+  /// Button that opens pre-made item selection from the new-board screen
+  ///
+  /// In en, this message translates to:
+  /// **'Start with pre-made items'**
+  String get newBoardPreMadeButton;
+
+  /// Button that reopens pre-made item selection after items have been applied
+  ///
+  /// In en, this message translates to:
+  /// **'Change pre-made items'**
+  String get newBoardPreMadeChangeButton;
+
+  /// Button that clears applied pre-made entries from the new-board form
+  ///
+  /// In en, this message translates to:
+  /// **'Clear pre-made items'**
+  String get newBoardPreMadeClearButton;
+
+  /// Summary of how many pre-made entries are applied to the new-board form
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pre-made entries applied'**
+  String newBoardPreMadeAppliedCount(int count);
+
+  /// Summary when applied pre-made entries can fill the new board
+  ///
+  /// In en, this message translates to:
+  /// **'{used} will be drawn at random for this board.'**
+  String newBoardPreMadeFullSummary(int used);
+
+  /// Summary when applied pre-made entries are fewer than the board cells
+  ///
+  /// In en, this message translates to:
+  /// **'{used} cells will be filled. {blank} will stay blank.'**
+  String newBoardPreMadePartialSummary(int used, int blank);
+
   /// Fallback title shown when a card has no name
   ///
   /// In en, this message translates to:
@@ -187,6 +229,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shuffle'**
   String get shuffle;
+
+  /// Title of the dialog shown before asking for an app store review
+  ///
+  /// In en, this message translates to:
+  /// **'How do you like the app?'**
+  String get ratingPromptTitle;
+
+  /// Dismiss button for the rating prompt dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get ratingPromptNo;
+
+  /// Confirm button that continues to the native app store review flow
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get ratingPromptYes;
+
+  /// Menu item that opens the share dialog from the board action bar
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get boardActionShare;
+
+  /// Debug menu item placeholder for filling a board with pre-made items
+  ///
+  /// In en, this message translates to:
+  /// **'Add pre-made items'**
+  String get boardActionAddPreMadeItems;
 
   /// Placeholder for an empty bingo cell
   ///
@@ -296,10 +368,10 @@ abstract class AppLocalizations {
   /// **'Delete tile'**
   String get preMadeTilesDelete;
 
-  /// Button label for selecting all pre-made tiles
+  /// Checkbox label for toggling all pre-made tile selections
   ///
   /// In en, this message translates to:
-  /// **'Select all'**
+  /// **'Un/select all'**
   String get preMadeTilesSelectAll;
 
   /// Button label for clearing all selected pre-made tiles
@@ -313,6 +385,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply'**
   String get preMadeTilesApply;
+
+  /// Button label for replacing current board items with selected pre-made items
+  ///
+  /// In en, this message translates to:
+  /// **'Replace items'**
+  String get preMadeTilesReplaceItems;
+
+  /// Button label for filling empty board items with selected pre-made items
+  ///
+  /// In en, this message translates to:
+  /// **'Fill items'**
+  String get preMadeTilesFillItems;
+
+  /// Helper text explaining replace and fill actions for pre-made items on an existing board
+  ///
+  /// In en, this message translates to:
+  /// **'Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.'**
+  String get preMadeTilesBoardActionHelp;
 
   /// Count of selected pre-made tiles
   ///

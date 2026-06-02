@@ -81,16 +81,42 @@ void main() {
       expect(result, isA<DecodedShareLinkOk>());
     });
 
+    test('accepts router import locations', () {
+      final state = _square(3);
+      final payload = encodeShareLink(state).queryParameters['d']!;
+      final uri = Uri.parse('/import?d=$payload');
+      final result = decodeShareLink(uri);
+      expect(result, isA<DecodedShareLinkOk>());
+    });
+
+    test(
+      'describes share uris for logs without including payload contents',
+      () {
+        final state = _square(3);
+        final payload = encodeShareLink(state).queryParameters['d']!;
+        final uri = Uri.parse('/import?d=$payload');
+        final description = describeShareUriForLog(uri);
+
+        expect(description, contains('scheme=<relative>'));
+        expect(description, contains('path=/import'));
+        expect(description, contains('queryKeys=d'));
+        expect(description, contains('payloadChars=${payload.length}'));
+        expect(description, isNot(contains(payload)));
+      },
+    );
+
     test('rejects wrong scheme', () {
       final result = decodeShareLink(
         Uri.parse('ftp://bingogrid.web.app/import?d=x'),
       );
       expect(result, isA<DecodedShareLinkInvalid>());
+      expect(describeShareLinkOutcomeForLog(result), 'invalid:unsupported-uri');
     });
 
     test('rejects empty payload', () {
       final result = decodeShareLink(Uri.parse('custombingo://import'));
       expect(result, isA<DecodedShareLinkInvalid>());
+      expect(describeShareLinkOutcomeForLog(result), 'invalid:missing-payload');
     });
 
     test('rejects garbage payload', () {
@@ -98,6 +124,10 @@ void main() {
         Uri.parse('custombingo://import?d=notbase64!!!'),
       );
       expect(result, isA<DecodedShareLinkInvalid>());
+      expect(
+        describeShareLinkOutcomeForLog(result),
+        startsWith('invalid:decode-error:'),
+      );
     });
 
     test('flags newer schema as unsupported, not invalid', () {

@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:custom_bingo/common/services/app_database.dart';
 import 'package:custom_bingo/common/services/app_database_connection.dart';
+import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/services.dart';
@@ -44,6 +45,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
       final appDatabase = AppDatabase(openAppDatabaseConnection());
       appDatabaseBeacon.value = appDatabase;
+
+      unawaited(configureRevenueCat());
 
       runApp(LiteRefScope(child: await builder()));
     },

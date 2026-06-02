@@ -94,6 +94,38 @@ class PreMadeTileController extends BeaconController {
         .toList();
   }
 
+  Future<List<String>> selectedTextsSnapshot() async {
+    final savedTexts = tiles.value
+        .where((tile) => tile.isSelected)
+        .map((tile) => tile.tileText.trim())
+        .where((text) => text.isNotEmpty)
+        .toList();
+    final selectedDrafts = drafts.value
+        .where((draft) => draft.isSelected)
+        .where((draft) => draft.text.trim().isNotEmpty)
+        .toList();
+    if (selectedDrafts.isEmpty) {
+      return savedTexts;
+    }
+
+    var sortOrder = _nextSortOrder();
+    for (final draft in selectedDrafts) {
+      await _database.createPreMadeTile(
+        text: draft.text,
+        isSelected: draft.isSelected,
+        sortOrder: sortOrder,
+      );
+      sortOrder += 1;
+    }
+
+    final savedDraftIds = selectedDrafts.map((draft) => draft.id).toSet();
+    drafts.value = drafts.value
+        .where((draft) => !savedDraftIds.contains(draft.id))
+        .toList();
+
+    return [...savedTexts, ...selectedDrafts.map((draft) => draft.text.trim())];
+  }
+
   Future<void> updateTileText(PreMadeTile tile, String text) async {
     final normalizedText = text.trim();
     if (normalizedText == tile.tileText) return;

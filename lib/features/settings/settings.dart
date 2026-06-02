@@ -1,9 +1,9 @@
 import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -25,6 +25,7 @@ class SettingsScreen extends StatelessWidget {
     final l10n = context.l10n;
     final themeMode = appThemeModeBeacon.watch(context);
     final themePalette = appThemePaletteBeacon.watch(context);
+    final revenueCatState = revenueCatStateBeacon.watch(context);
     final isDarkMode = themeMode == ThemeMode.dark;
 
     return Scaffold(
@@ -69,23 +70,25 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
-          if (kDebugMode) ...[
-            const SizedBox(height: 16),
-            _SettingsSection(
-              title: 'Custom Bingo Pro',
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.workspace_premium),
-                title: Text(
-                  'Lifetime',
-                  style: context.p1.copyWith(fontWeight: FontWeight.w700),
-                ),
-                subtitle: const Text('One lifetime option for Pro access.'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push(AppRoutePaths.paywall),
+          const SizedBox(height: 16),
+          _SettingsSection(
+            title: 'Custom Bingo Pro',
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.workspace_premium),
+              title: Text(
+                revenueCatState.hasProAccess ? 'Pro active' : 'Lifetime',
+                style: context.p1.copyWith(fontWeight: FontWeight.w700),
               ),
+              subtitle: Text(
+                revenueCatState.hasProAccess
+                    ? 'Lifetime access is unlocked.'
+                    : 'One lifetime option for Pro access.',
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(AppRoutePaths.paywall),
             ),
-          ],
+          ),
         ],
       ),
     );

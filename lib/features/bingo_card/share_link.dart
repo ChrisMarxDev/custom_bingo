@@ -61,7 +61,9 @@ class DecodedShareLinkUnsupported extends DecodedShareLink {
 }
 
 class DecodedShareLinkInvalid extends DecodedShareLink {
-  const DecodedShareLinkInvalid();
+  const DecodedShareLinkInvalid([this.reason]);
+
+  final String? reason;
 }
 
 /// Decodes a share URI into a [BingoCardState] ready to save.
@@ -72,11 +74,11 @@ class DecodedShareLinkInvalid extends DecodedShareLink {
 /// truncated, etc.).
 DecodedShareLink decodeShareLink(Uri uri) {
   if (!_isSupportedShareUri(uri)) {
-    return const DecodedShareLinkInvalid();
+    return const DecodedShareLinkInvalid('unsupported-uri');
   }
   final blob = uri.queryParameters[_payloadParam];
   if (blob == null || blob.isEmpty) {
-    return const DecodedShareLinkInvalid();
+    return const DecodedShareLinkInvalid('missing-payload');
   }
   try {
     final compressed = base64Url.decode(_padBase64(blob));
@@ -84,7 +86,9 @@ DecodedShareLink decodeShareLink(Uri uri) {
     final map = jsonDecode(json) as Map<String, dynamic>;
 
     final version = map['v'];
-    if (version is! int) return const DecodedShareLinkInvalid();
+    if (version is! int) {
+      return const DecodedShareLinkInvalid('missing-version');
+    }
     if (version > _currentVersion) {
       return const DecodedShareLinkUnsupported();
     }
@@ -97,7 +101,7 @@ DecodedShareLink decodeShareLink(Uri uri) {
         size <= 0 ||
         cells is! List ||
         cells.length != size * size) {
-      return const DecodedShareLinkInvalid();
+      return const DecodedShareLinkInvalid('invalid-card-shape');
     }
 
     final marks = map['marks'];
@@ -111,7 +115,9 @@ DecodedShareLink decodeShareLink(Uri uri) {
       final rowItems = <BingoItem>[];
       for (var col = 0; col < size; col++) {
         final text = cells[idx];
-        if (text is! String) return const DecodedShareLinkInvalid();
+        if (text is! String) {
+          return const DecodedShareLinkInvalid('invalid-cell-text');
+        }
         final isMarked = hasMarks && marks[idx] == true;
         rowItems.add(
           BingoItem(
@@ -133,15 +139,43 @@ DecodedShareLink decodeShareLink(Uri uri) {
         isEditing: false,
       ),
     );
-  } catch (_) {
-    return const DecodedShareLinkInvalid();
+  } catch (error) {
+    return DecodedShareLinkInvalid('decode-error:${error.runtimeType}');
   }
+}
+
+String describeShareUriForLog(Uri uri) {
+  final queryKeys = uri.queryParameters.keys.toList()..sort();
+  final payloadLength = uri.queryParameters[_payloadParam]?.length ?? 0;
+  return [
+    'scheme=${uri.scheme.isEmpty ? '<relative>' : uri.scheme}',
+    'host=${uri.host.isEmpty ? '<none>' : uri.host}',
+    'path=${uri.path.isEmpty ? '<empty>' : uri.path}',
+    'queryKeys=${queryKeys.isEmpty ? '<none>' : queryKeys.join(',')}',
+    'payloadChars=$payloadLength',
+  ].join(' ');
+}
+
+String describeShareLinkOutcomeForLog(DecodedShareLink result) {
+  return switch (result) {
+    DecodedShareLinkOk() => 'ok',
+    DecodedShareLinkUnsupported() => 'unsupported',
+    DecodedShareLinkInvalid(:final reason) =>
+      reason == null ? 'invalid' : 'invalid:$reason',
+  };
 }
 
 bool _isSupportedShareUri(Uri uri) {
   final isCustomScheme =
       uri.scheme == shareLinkScheme && uri.host == shareLinkHost;
   if (isCustomScheme) return true;
+
+  final isAppRouteShare =
+      !uri.hasScheme &&
+      !uri.hasAuthority &&
+      uri.pathSegments.isNotEmpty &&
+      uri.pathSegments.last == shareLinkHost;
+  if (isAppRouteShare) return true;
 
   final isWebShare =
       (uri.scheme == 'http' || uri.scheme == 'https') &&

@@ -3,7 +3,6 @@ import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
 import 'package:custom_bingo/util/extensions/list_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_beacon/state_beacon.dart';
-import 'package:uuid/uuid.dart';
 
 import 'bingo_item.dart';
 
@@ -232,19 +231,15 @@ class BingoCardController extends BeaconController {
   void shuffleCard() {
     final grid = gridItems.value;
     final allItems = grid.expand((row) => row).toList();
-    allItems.shuffle();
     final itemsPerRow = gridSize.value;
-
-    // check for free space
-    // check if grid is odd and if the center element is empty
-
     final isOdd = itemsPerRow % 2 == 1;
     final centerItem = grid.getCenterOrNull()?.getCenterOrNull();
-    final hasCenter = isOdd && (centerItem?.text.isEmpty ?? true);
+    final shouldKeepCenter = isOdd && centerItem != null;
 
-    if (hasCenter) {
+    if (shouldKeepCenter) {
       allItems.remove(centerItem);
     }
+    allItems.shuffle();
 
     final centerIndex = itemsPerRow ~/ 2;
 
@@ -252,8 +247,8 @@ class BingoCardController extends BeaconController {
     for (var i = 0; i < itemsPerRow; i += 1) {
       final row = <BingoItem>[];
       for (var j = 0; j < itemsPerRow; j += 1) {
-        if (i == centerIndex && j == centerIndex && hasCenter) {
-          row.add(BingoItem(id: Uuid().v4(), text: ''));
+        if (i == centerIndex && j == centerIndex && shouldKeepCenter) {
+          row.add(centerItem.copyWith(fullfilledAt: null));
           continue;
         } else {
           row.add(allItems.removeAt(0).copyWith(fullfilledAt: null));
@@ -263,6 +258,90 @@ class BingoCardController extends BeaconController {
     }
 
     gridItems.value = result;
+    lastChangeDateTime.value = DateTime.now();
+    _saveBingoCard();
+  }
+
+  void replaceItemsWithPreMade(List<String> texts) {
+    _applyPreMadeItems(texts: texts, replaceExisting: true);
+  }
+
+  void fillEmptyItemsWithPreMade(List<String> texts) {
+    _applyPreMadeItems(texts: texts, replaceExisting: false);
+  }
+
+  void _applyPreMadeItems({
+    required List<String> texts,
+    required bool replaceExisting,
+  }) {
+    final pool =
+        texts
+            .map((text) => text.trim())
+            .where((text) => text.isNotEmpty)
+            .toList()
+          ..shuffle();
+    if (pool.isEmpty) return;
+
+    final grid = gridItems.value;
+    final gridCount = grid.length;
+    final centerIndex = gridCount ~/ 2;
+    final shouldKeepCenter =
+        gridCount % 2 == 1 && grid.every((row) => row.length == gridCount);
+
+    final targets = <({int row, int column})>[];
+    for (var rowIndex = 0; rowIndex < grid.length; rowIndex += 1) {
+      for (
+        var columnIndex = 0;
+        columnIndex < grid[rowIndex].length;
+        columnIndex += 1
+      ) {
+        final isCenter =
+            shouldKeepCenter &&
+            rowIndex == centerIndex &&
+            columnIndex == centerIndex;
+        if (isCenter) continue;
+
+        final item = grid[rowIndex][columnIndex];
+        if (replaceExisting || item.text.trim().isEmpty) {
+          targets.add((row: rowIndex, column: columnIndex));
+        }
+      }
+    }
+    if (targets.isEmpty) return;
+
+    targets.shuffle();
+    final replacementByPosition = <({int row, int column}), String>{};
+    for (
+      var index = 0;
+      index < targets.length && index < pool.length;
+      index += 1
+    ) {
+      replacementByPosition[targets[index]] = pool[index];
+    }
+
+    final nextGrid = List.generate(grid.length, (rowIndex) {
+      return List.generate(grid[rowIndex].length, (columnIndex) {
+        final item = grid[rowIndex][columnIndex];
+        final position = (row: rowIndex, column: columnIndex);
+        if (!replacementByPosition.containsKey(position)) {
+          if (replaceExisting &&
+              targets.any(
+                (target) =>
+                    target.row == rowIndex && target.column == columnIndex,
+              )) {
+            return item.copyWith(text: '', fullfilledAt: null);
+          }
+          return item;
+        }
+
+        return item.copyWith(
+          text: replacementByPosition[position],
+          fullfilledAt: null,
+        );
+      });
+    });
+
+    gridItems.value = nextGrid;
     lastChangeDateTime.value = DateTime.now();
     _saveBingoCard();
   }
@@ -320,7 +399,9 @@ Future<void> setBingoCardNames(List<String> names) async {
 
 Future<void> addBingoCardName(String name) async {
   final names = List<String>.from(getBingoCardNames());
-  names.add(name);
+  if (!names.contains(name)) {
+    names.add(name);
+  }
   await setBingoCardNames(names);
 }
 

@@ -13,6 +13,43 @@
     "createCardButton": "Create Bingo Grid",
     "@createCardButton": { "description": "Confirm button on the new-card screen" },
 
+    "newBoardPreMadeSectionTitle": "Your pre-made items",
+    "@newBoardPreMadeSectionTitle": { "description": "Expandable section title for pre-made items on the new-board screen" },
+
+    "newBoardPreMadeButton": "Start with pre-made items",
+    "@newBoardPreMadeButton": { "description": "Button that opens pre-made item selection from the new-board screen" },
+
+    "newBoardPreMadeChangeButton": "Change pre-made items",
+    "@newBoardPreMadeChangeButton": { "description": "Button that reopens pre-made item selection after items have been applied" },
+
+    "newBoardPreMadeClearButton": "Clear pre-made items",
+    "@newBoardPreMadeClearButton": { "description": "Button that clears applied pre-made entries from the new-board form" },
+
+    "newBoardPreMadeAppliedCount": "{count} pre-made entries applied",
+    "@newBoardPreMadeAppliedCount": {
+        "description": "Summary of how many pre-made entries are applied to the new-board form",
+        "placeholders": {
+            "count": { "type": "int", "example": "40" }
+        }
+    },
+
+    "newBoardPreMadeFullSummary": "{used} will be drawn at random for this board.",
+    "@newBoardPreMadeFullSummary": {
+        "description": "Summary when applied pre-made entries can fill the new board",
+        "placeholders": {
+            "used": { "type": "int", "example": "25" }
+        }
+    },
+
+    "newBoardPreMadePartialSummary": "{used} cells will be filled. {blank} will stay blank.",
+    "@newBoardPreMadePartialSummary": {
+        "description": "Summary when applied pre-made entries are fewer than the board cells",
+        "placeholders": {
+            "used": { "type": "int", "example": "10" },
+            "blank": { "type": "int", "example": "15" }
+        }
+    },
+
     "defaultCardName": "Bingo Card",
     "@defaultCardName": { "description": "Fallback title shown when a card has no name" },
 
@@ -45,6 +82,21 @@
 
     "shuffle": "Shuffle",
     "@shuffle": { "description": "Confirm button to shuffle the card" },
+
+    "ratingPromptTitle": "How do you like the app?",
+    "@ratingPromptTitle": { "description": "Title of the dialog shown before asking for an app store review" },
+
+    "ratingPromptNo": "Not now",
+    "@ratingPromptNo": { "description": "Dismiss button for the rating prompt dialog" },
+
+    "ratingPromptYes": "Yes",
+    "@ratingPromptYes": { "description": "Confirm button that continues to the native app store review flow" },
+
+    "boardActionShare": "Share",
+    "@boardActionShare": { "description": "Menu item that opens the share dialog from the board action bar" },
+
+    "boardActionAddPreMadeItems": "Add pre-made items",
+    "@boardActionAddPreMadeItems": { "description": "Debug menu item placeholder for filling a board with pre-made items" },
 
     "cellHint": "Enter text…",
     "@cellHint": { "description": "Placeholder for an empty bingo cell" },
@@ -100,14 +152,23 @@
     "preMadeTilesDelete": "Delete tile",
     "@preMadeTilesDelete": { "description": "Accessible label and tooltip for deleting a pre-made tile" },
 
-    "preMadeTilesSelectAll": "Select all",
-    "@preMadeTilesSelectAll": { "description": "Button label for selecting all pre-made tiles" },
+    "preMadeTilesSelectAll": "Un/select all",
+    "@preMadeTilesSelectAll": { "description": "Checkbox label for toggling all pre-made tile selections" },
 
     "preMadeTilesSelectNone": "Select none",
     "@preMadeTilesSelectNone": { "description": "Button label for clearing all selected pre-made tiles" },
 
     "preMadeTilesApply": "Apply",
     "@preMadeTilesApply": { "description": "Button label for applying selected pre-made tiles to a board" },
+
+    "preMadeTilesReplaceItems": "Replace items",
+    "@preMadeTilesReplaceItems": { "description": "Button label for replacing current board items with selected pre-made items" },
+
+    "preMadeTilesFillItems": "Fill items",
+    "@preMadeTilesFillItems": { "description": "Button label for filling empty board items with selected pre-made items" },
+
+    "preMadeTilesBoardActionHelp": "Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.",
+    "@preMadeTilesBoardActionHelp": { "description": "Helper text explaining replace and fill actions for pre-made items on an existing board" },
 
     "preMadeTilesSelectedCount": "{selected} / {total} selected",
     "@preMadeTilesSelectedCount": {
