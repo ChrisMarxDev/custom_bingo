@@ -1,9 +1,6 @@
 import 'package:custom_bingo/common/widgets/toast.dart';
 import 'package:flutter/material.dart';
 
-/// Root navigator key — used by share-link handling and app-level toast helpers.
-final rootNavigatorKey = GlobalKey<NavigatorState>();
-
 final routeContextObserver = RouteContextObserver();
 
 class RouteContextObserver extends NavigatorObserver {

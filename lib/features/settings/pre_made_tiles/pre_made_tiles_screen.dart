@@ -5,6 +5,7 @@ import 'package:custom_bingo/common/services/app_database.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 
@@ -54,24 +55,33 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
     final totalCount = tiles.length + filledDrafts.length;
     final allSelected = totalCount > 0 && selectedCount == totalCount;
     final l10n = context.l10n;
+    final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    final showApplyButton =
+        isSelecting && !widget.showBoardActionButtons && !isKeyboardVisible;
     final contentBottomPadding = isSelecting
-        ? (widget.showBoardActionButtons ? 168.0 : 112.0)
+        ? (widget.showBoardActionButtons
+              ? 168.0
+              : showApplyButton
+              ? 112.0
+              : 32.0)
         : 86.0;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.preMadeTilesTitle, style: context.h2)),
-      floatingActionButton: isSelecting && !widget.showBoardActionButtons
+      floatingActionButton: showApplyButton
           ? _PreMadePrimaryButton(
               onPressed: () async {
-                final navigator = Navigator.of(context);
                 if (widget.returnSelectedTextsOnApply) {
                   final selectedTexts = await controller
                       .selectedTextsSnapshot();
-                  navigator.pop(selectedTexts);
+                  if (!context.mounted) return;
+                  Navigator.of(context).pop(selectedTexts);
                   return;
                 }
 
-                navigator.maybePop();
+                if (context.canPop()) {
+                  context.pop();
+                }
               },
               icon: Icon(PhosphorIcons.check()),
               label: Text(l10n.preMadeTilesApply),
@@ -161,6 +171,7 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
                     draft: draft,
                     controller: controller,
                     isSelecting: isSelecting,
+                    bottomPadding: draft.text.trim().isEmpty ? 32 : 0,
                   );
                 },
               ),
@@ -343,12 +354,14 @@ class _DraftTileRow extends StatefulWidget {
     required this.draft,
     required this.controller,
     required this.isSelecting,
+    required this.bottomPadding,
     super.key,
   });
 
   final PreMadeTileDraft draft;
   final PreMadeTileController controller;
   final bool isSelecting;
+  final double bottomPadding;
 
   @override
   State<_DraftTileRow> createState() => _DraftTileRowState();
@@ -395,38 +408,41 @@ class _DraftTileRowState extends State<_DraftTileRow> {
   @override
   Widget build(BuildContext context) {
     final isEmptyDraft = widget.draft.text.trim().isEmpty;
-    return _TileRowShell(
-      isSelecting: widget.isSelecting,
-      showSelectionControl: !isEmptyDraft,
-      isSelected: widget.draft.isSelected,
-      onSelectionChanged: (value) {
-        widget.controller.updateDraftSelection(widget.draft.id, value);
-      },
-      trailing: isEmptyDraft
-          ? null
-          : IconButton(
-              tooltip: context.l10n.preMadeTilesDelete,
-              onPressed: () {
-                widget.controller.removeDraft(widget.draft.id);
-              },
-              color: context.theme.colorScheme.error,
-              icon: Icon(PhosphorIcons.trash()),
-            ),
-      child: TextField(
-        controller: _textController,
-        focusNode: _focusNode,
-        minLines: 1,
-        maxLines: 3,
-        textInputAction: TextInputAction.done,
-        onChanged: (value) {
-          widget.controller.updateDraftText(widget.draft.id, value);
+    return Padding(
+      padding: EdgeInsets.only(bottom: widget.bottomPadding),
+      child: _TileRowShell(
+        isSelecting: widget.isSelecting,
+        showSelectionControl: !isEmptyDraft,
+        isSelected: widget.draft.isSelected,
+        onSelectionChanged: (value) {
+          widget.controller.updateDraftSelection(widget.draft.id, value);
         },
-        onSubmitted: (_) {
-          unawaited(widget.controller.saveDraftIfReady(widget.draft.id));
-        },
-        decoration: InputDecoration(
-          hintText: context.l10n.preMadeTileHint,
-          border: const OutlineInputBorder(),
+        trailing: isEmptyDraft
+            ? null
+            : IconButton(
+                tooltip: context.l10n.preMadeTilesDelete,
+                onPressed: () {
+                  widget.controller.removeDraft(widget.draft.id);
+                },
+                color: context.theme.colorScheme.error,
+                icon: Icon(PhosphorIcons.trash()),
+              ),
+        child: TextField(
+          controller: _textController,
+          focusNode: _focusNode,
+          minLines: 1,
+          maxLines: 3,
+          textInputAction: TextInputAction.done,
+          onChanged: (value) {
+            widget.controller.updateDraftText(widget.draft.id, value);
+          },
+          onSubmitted: (_) {
+            unawaited(widget.controller.saveDraftIfReady(widget.draft.id));
+          },
+          decoration: InputDecoration(
+            hintText: context.l10n.preMadeTileHint,
+            border: const OutlineInputBorder(),
+          ),
         ),
       ),
     );

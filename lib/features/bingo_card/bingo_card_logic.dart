@@ -274,15 +274,23 @@ class BingoCardController extends BeaconController {
     required List<String> texts,
     required bool replaceExisting,
   }) {
+    final grid = gridItems.value;
+    final existingTexts = replaceExisting
+        ? <String>{}
+        : grid
+              .expand((row) => row)
+              .map((item) => item.text.trim())
+              .where((text) => text.isNotEmpty)
+              .toSet();
     final pool =
         texts
             .map((text) => text.trim())
             .where((text) => text.isNotEmpty)
+            .where((text) => replaceExisting || !existingTexts.contains(text))
             .toList()
           ..shuffle();
     if (pool.isEmpty) return;
 
-    final grid = gridItems.value;
     final gridCount = grid.length;
     final centerIndex = gridCount ~/ 2;
     final shouldKeepCenter =

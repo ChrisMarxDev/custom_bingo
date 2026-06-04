@@ -1,11 +1,12 @@
+import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
-import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_static_preview.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/home/home_controller.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:state_beacon/state_beacon.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,14 +20,16 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.l10n.yourCardsHeader, style: context.h2),
+        actions: const [
+          BingoPopupMenu(host: BingoPopupMenuHost.home),
+          SizedBox(width: 16),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: context.primary,
         foregroundColor: context.onPrimary,
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const NewCardScreen()),
-          );
+          context.go(AppRoutePaths.root);
         },
         child: const Icon(Icons.add),
       ),
@@ -94,10 +97,7 @@ class HomeScreen extends StatelessWidget {
     await bingoCardControllerRef.of(context).loadBoard(board.name);
     if (!context.mounted) return;
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const BingoCardScreen()),
-      (route) => false,
-    );
+    context.go(AppRoutePaths.bingoCard);
   }
 }
 

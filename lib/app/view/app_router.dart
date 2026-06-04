@@ -6,7 +6,9 @@ import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:custom_bingo/features/bingo_card/import_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/share_link.dart';
+import 'package:custom_bingo/features/home/home_screen.dart';
 import 'package:custom_bingo/features/paywall/paywall_screen.dart';
+import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tiles_screen.dart';
 import 'package:custom_bingo/features/settings/settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
@@ -14,22 +16,30 @@ import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:state_beacon/state_beacon.dart';
 
 GoRouter createAppRouter() {
+  final initialLocation = getBingoCardNames().isNotEmpty
+      ? AppRoutePaths.home
+      : AppRoutePaths.root;
   logI(
     'Creating app router: platformDefaultRoute='
-    '${_describeRouteNameForLog(WidgetsBinding.instance.platformDispatcher.defaultRouteName)}',
+    '${_describeRouteNameForLog(WidgetsBinding.instance.platformDispatcher.defaultRouteName)} '
+    'initialLocation=$initialLocation',
   );
   return GoRouter(
-    navigatorKey: rootNavigatorKey,
+    initialLocation: initialLocation,
     observers: [routeContextObserver],
     errorBuilder: (_, state) =>
         _RouterErrorScreen(uri: state.uri, error: state.error),
     routes: [
       GoRoute(
-        path: AppRoutePaths.home,
-        builder: (_, __) => const _HomeRouteScreen(),
+        path: AppRoutePaths.root,
+        builder: (_, __) => const NewCardScreen(),
+      ),
+      GoRoute(path: AppRoutePaths.home, builder: (_, __) => const HomeScreen()),
+      GoRoute(
+        path: AppRoutePaths.bingoCard,
+        builder: (_, __) => const BingoCardScreen(),
       ),
       GoRoute(
         path: AppRoutePaths.importCard,
@@ -43,23 +53,16 @@ GoRouter createAppRouter() {
         path: AppRoutePaths.paywall,
         builder: (_, __) => const PaywallScreen(),
       ),
-      if (kDebugMode)
-        GoRoute(
-          path: AppRoutePaths.preMadeTiles,
-          builder: (_, __) => const PreMadeTilesScreen(),
+      GoRoute(
+        path: AppRoutePaths.preMadeTiles,
+        builder: (_, state) => PreMadeTilesScreen(
+          initialMode: state.uri.queryParameters['mode'] == 'select'
+              ? PreMadeTileMode.selecting
+              : PreMadeTileMode.editing,
         ),
+      ),
     ],
   );
-}
-
-class _HomeRouteScreen extends StatelessWidget {
-  const _HomeRouteScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    final hasBingoCard = currentSelectedBingoCardName.watch(context) != null;
-    return hasBingoCard ? const BingoCardScreen() : const NewCardScreen();
-  }
 }
 
 class _RouterErrorScreen extends StatefulWidget {
@@ -191,7 +194,7 @@ class _ImportRouteScreenState extends State<_ImportRouteScreen> {
         }
       });
     }
-    return const _HomeRouteScreen();
+    return const HomeScreen();
   }
 
   Widget _buildToastFallback(BuildContext context, String message) {
@@ -202,7 +205,7 @@ class _ImportRouteScreenState extends State<_ImportRouteScreen> {
         showRootErrorToast(message);
       });
     }
-    return const _HomeRouteScreen();
+    return const HomeScreen();
   }
 
   void _logRouteMatch(DecodedShareLink result) {

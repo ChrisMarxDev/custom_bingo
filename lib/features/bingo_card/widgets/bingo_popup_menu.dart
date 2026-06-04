@@ -2,9 +2,6 @@ import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
-import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
-import 'package:custom_bingo/features/home/home_screen.dart';
 import 'package:custom_bingo/features/settings/settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:custom_bingo/util/logger.dart';
@@ -15,7 +12,7 @@ import 'package:state_beacon/state_beacon.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_bingo/common/widgets/popup_menu.dart';
 
-enum BingoPopupMenuHost { board, newCard }
+enum BingoPopupMenuHost { board, newCard, home }
 
 class BingoPopupMenu extends StatelessWidget {
   const BingoPopupMenu({required this.host, super.key});
@@ -59,12 +56,7 @@ class BingoPopupMenu extends StatelessWidget {
                         hideOverlay();
                         await setCurrentSelectedBingoCard(null);
                         if (!context.mounted) return;
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => const NewCardScreen(),
-                          ),
-                          (route) => false,
-                        );
+                        context.go(AppRoutePaths.root);
                         logI('Selected "new bingo board" from the popup menu');
                       },
                       child: Row(
@@ -83,11 +75,7 @@ class BingoPopupMenu extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         hideOverlay();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ),
-                        );
+                        context.go(AppRoutePaths.home);
                       },
                       child: Row(
                         children: [
@@ -111,12 +99,7 @@ class BingoPopupMenu extends StatelessWidget {
                             return;
                           }
 
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const BingoCardScreen(),
-                            ),
-                            (route) => false,
-                          );
+                          context.go(AppRoutePaths.bingoCard);
                         },
                         child: Text('- $name'),
                       );
@@ -139,20 +122,19 @@ class BingoPopupMenu extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (kDebugMode)
-                      TextButton(
-                        onPressed: () {
-                          hideOverlay();
-                          context.push(AppRoutePaths.preMadeTilesEdit);
-                        },
-                        child: Row(
-                          children: [
-                            Icon(PhosphorIcons.squaresFour()),
-                            const SizedBox(width: 8),
-                            Text(l10n.preMadeTilesTitle),
-                          ],
-                        ),
+                    TextButton(
+                      onPressed: () {
+                        hideOverlay();
+                        context.push(AppRoutePaths.preMadeTilesEdit);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(PhosphorIcons.squaresFour()),
+                          const SizedBox(width: 8),
+                          Text(l10n.preMadeTilesTitle),
+                        ],
                       ),
+                    ),
                     TextButton(
                       onPressed: () async {
                         hideOverlay();
@@ -171,12 +153,8 @@ class BingoPopupMenu extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           sharedPrefsBeacon.value.clear();
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => NewCardScreen(),
-                            ),
-                          );
                           hideOverlay();
+                          context.go(AppRoutePaths.root);
                         },
                         child: const Text('Clear Settings'),
                       ),

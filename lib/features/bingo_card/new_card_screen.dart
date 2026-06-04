@@ -1,16 +1,16 @@
+import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/common/widgets/animated_number.dart';
 import 'package:custom_bingo/common/widgets/async_elevated_button.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tiles_screen.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class NewCardScreen extends StatefulWidget {
@@ -95,13 +95,9 @@ class _NewCardScreenState extends State<NewCardScreen> {
                           await addBingoCardName(name);
 
                           await bingoCardControllerRef.of(context).loadBoard();
-                          // print('Bingo Grid Name: $name, Grid Size: $gridSize');
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => BingoCardScreen(),
-                            ),
-                            (route) => false,
-                          );
+                          if (!context.mounted) return;
+
+                          context.go(AppRoutePaths.bingoCard);
                         }
                       : null,
                   child: Text(l10n.createCardButton),
@@ -109,20 +105,18 @@ class _NewCardScreenState extends State<NewCardScreen> {
               ),
               const SizedBox(height: 24),
               AnimatedGridPreview(gridSize: _gridSize),
-              if (kDebugMode) ...[
-                const SizedBox(height: 24),
-                _PreMadeItemsPickerSection(
-                  appliedTexts: _appliedPreMadeTexts,
-                  cellCount: _gridSize * _gridSize,
-                  onOpen: _openPreMadeItemsSheet,
-                  onRemove: (index) {
-                    setState(() {
-                      _appliedPreMadeTexts = [..._appliedPreMadeTexts]
-                        ..removeAt(index);
-                    });
-                  },
-                ),
-              ],
+              const SizedBox(height: 24),
+              _PreMadeItemsPickerSection(
+                appliedTexts: _appliedPreMadeTexts,
+                cellCount: _gridSize * _gridSize,
+                onOpen: _openPreMadeItemsSheet,
+                onRemove: (index) {
+                  setState(() {
+                    _appliedPreMadeTexts = [..._appliedPreMadeTexts]
+                      ..removeAt(index);
+                  });
+                },
+              ),
             ],
           ),
         ),

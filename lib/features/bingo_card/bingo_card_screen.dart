@@ -3,22 +3,22 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/rating_prompt_service.dart';
 import 'package:custom_bingo/common/services/share_card_logic.dart';
 import 'package:custom_bingo/common/widgets/popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
-import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tiles_screen.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_confetti/flutter_confetti.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 
@@ -388,15 +388,14 @@ class BoardActionsPopupMenu extends StatelessWidget {
                   shareCardPopup(context);
                 },
               ),
-              if (kDebugMode)
-                _BoardActionMenuItem(
-                  icon: PhosphorIcons.squaresFour(),
-                  label: l10n.boardActionAddPreMadeItems,
-                  onPressed: () {
-                    hideOverlay();
-                    _openPreMadeItemsSheet(context);
-                  },
-                ),
+              _BoardActionMenuItem(
+                icon: PhosphorIcons.squaresFour(),
+                label: l10n.boardActionAddPreMadeItems,
+                onPressed: () {
+                  hideOverlay();
+                  _openPreMadeItemsSheet(context);
+                },
+              ),
             ],
           ),
         );
@@ -462,9 +461,8 @@ class BoardActionsPopupMenu extends StatelessWidget {
     await setCurrentSelectedBingoCard(null);
     if (!context.mounted) return;
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const NewCardScreen()),
-      (route) => false,
+    context.go(
+      getBingoCardNames().isEmpty ? AppRoutePaths.root : AppRoutePaths.home,
     );
   }
 }

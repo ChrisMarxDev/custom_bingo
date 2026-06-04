@@ -86,19 +86,25 @@ class _PopupMenuState extends State<PopupMenu> {
   }
 
   void _hideOverlay() {
-    if (_overlayEntry != null) {
-      _overlayEntry!.markNeedsBuild();
-      Future.delayed(200.ms, () {
-        _overlayEntry?.remove();
-        _overlayEntry = null;
-        setState(() => _isOpen = false);
-      });
+    _removeOverlay(updateState: true);
+  }
+
+  void _removeOverlay({required bool updateState}) {
+    final overlayEntry = _overlayEntry;
+    if (overlayEntry == null) return;
+
+    overlayEntry.remove();
+    _overlayEntry = null;
+    if (updateState && mounted) {
+      setState(() => _isOpen = false);
+    } else {
+      _isOpen = false;
     }
   }
 
   @override
   void dispose() {
-    _hideOverlay();
+    _removeOverlay(updateState: false);
     super.dispose();
   }
 

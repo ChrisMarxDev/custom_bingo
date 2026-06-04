@@ -3,7 +3,6 @@ import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/app/view/root_navigation.dart';
 import 'package:custom_bingo/common/services/shared_prefs.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
-import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_static_preview.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
@@ -25,8 +24,7 @@ Future<void> importIncomingBingoCard(
 
   try {
     final l10n = context.l10n;
-    final navigator = Navigator.of(context);
-    final router = GoRouter.maybeOf(context);
+    final router = GoRouter.of(context);
     final hadSelectedBoard = currentSelectedBingoCardName.value != null;
 
     final existing = getBingoCardNames();
@@ -42,8 +40,7 @@ Future<void> importIncomingBingoCard(
       'existingCount=${existing.length} renamed=$renamed '
       'originalName=${_describeNameForLog(originalName)} '
       'finalName=${_describeNameForLog(finalName)} '
-      'navigatorCanPopAtStart=${navigator.canPop()} '
-      'goRouterCanPopAtStart=${router?.canPop()}',
+      'goRouterCanPopAtStart=${router.canPop()}',
     );
 
     final toSave = BingoCardState(
@@ -67,30 +64,14 @@ Future<void> importIncomingBingoCard(
 
     await bingoCardControllerRef.of(context).loadBoard(finalName);
 
-    final canPopNavigator = navigator.canPop();
-    final canPopRouter = router?.canPop();
+    final canPopRouter = router.canPop();
     logI(
       'Import[$traceId] navigation decision hadSelectedBoard=$hadSelectedBoard '
       'closeCurrentRoute=$closeCurrentRoute '
-      'navigatorCanPop=$canPopNavigator goRouterCanPop=$canPopRouter',
+      'goRouterCanPop=$canPopRouter',
     );
 
-    if (hadSelectedBoard) {
-      if (closeCurrentRoute && canPopNavigator) {
-        navigator.pop();
-      } else if (closeCurrentRoute && router != null) {
-        logW(
-          'Import[$traceId] cannot pop Navigator after import; '
-          'going home with GoRouter instead',
-        );
-        router.go(AppRoutePaths.home);
-      }
-    } else {
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const BingoCardScreen()),
-        (_) => false,
-      );
-    }
+    router.go(AppRoutePaths.bingoCard);
 
     if (renameToast != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -125,7 +106,7 @@ class _ImportCardScreenState extends State<ImportCardScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.close),
-          onPressed: _busy ? null : () => Navigator.of(context).maybePop(),
+          onPressed: _busy ? null : _close,
         ),
         title: Text(l10n.importTitle, style: context.h5),
       ),
@@ -169,9 +150,7 @@ class _ImportCardScreenState extends State<ImportCardScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: _busy
-                        ? null
-                        : () => Navigator.of(context).maybePop(),
+                    onPressed: _busy ? null : _close,
                     child: Text(l10n.importCancel),
                   ),
                   const SizedBox(width: 16),
@@ -198,6 +177,17 @@ class _ImportCardScreenState extends State<ImportCardScreen> {
     final width = MediaQuery.sizeOf(context).width - 64;
     final raw = width / size;
     return raw.clamp(36, 80).toDouble();
+  }
+
+  void _close() {
+    if (context.canPop()) {
+      context.pop();
+      return;
+    }
+
+    context.go(
+      getBingoCardNames().isEmpty ? AppRoutePaths.root : AppRoutePaths.home,
+    );
   }
 
   Future<void> _onConfirm() async {
