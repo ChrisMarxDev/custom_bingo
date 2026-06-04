@@ -33,6 +33,24 @@ tasks:
         vars:
           RUN_ARGS: --flavor production --target lib/main_production.dart --release
 
+  # ── SimDeck ───────────────────────────────────────────────────────────
+
+  simdeck:
+    desc: Open SimDeck UI on port 4310
+    cmd: npx --yes simdeck@latest --open -p 4310
+
+  simdeck:status:
+    desc: Show SimDeck service status
+    cmd: npx --yes simdeck@latest service status
+
+  simdeck:list:
+    desc: List SimDeck-managed simulators and emulators
+    cmd: npx --yes simdeck@latest list
+
+  simdeck:describe:flutter:
+    desc: Describe the current UI through the Flutter inspector
+    cmd: npx --yes simdeck@latest describe --source flutter --format agent --max-depth 3 --interactive
+
   _run_with_pid:
     internal: true
     requires:

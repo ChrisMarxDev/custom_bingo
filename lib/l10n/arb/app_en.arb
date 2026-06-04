@@ -83,13 +83,16 @@
     "shuffle": "Shuffle",
     "@shuffle": { "description": "Confirm button to shuffle the card" },
 
-    "ratingPromptTitle": "How do you like the app?",
+    "ratingPromptTitle": "Do you like Custom Bingo?",
     "@ratingPromptTitle": { "description": "Title of the dialog shown before asking for an app store review" },
 
-    "ratingPromptNo": "Not now",
+    "ratingPromptBody": "If so, a quick store review helps others find it.",
+    "@ratingPromptBody": { "description": "Body of the dialog shown before asking for an app store review" },
+
+    "ratingPromptNo": "Not really",
     "@ratingPromptNo": { "description": "Dismiss button for the rating prompt dialog" },
 
-    "ratingPromptYes": "Yes",
+    "ratingPromptYes": "Yes, I like it",
     "@ratingPromptYes": { "description": "Confirm button that continues to the native app store review flow" },
 
     "boardActionShare": "Share",
@@ -187,6 +190,30 @@
 
     "proposeFeatures": "Propose Features",
     "@proposeFeatures": { "description": "Menu item that opens the UserOrient feedback board" },
+
+    "userEmailPromptTitle": "Want us to follow up?",
+    "@userEmailPromptTitle": { "description": "Title of the optional email prompt before opening UserOrient" },
+
+    "userEmailPromptBody": "Add your email address if you'd like us to reply about your feedback.",
+    "@userEmailPromptBody": { "description": "Body copy explaining the optional email prompt before opening UserOrient" },
+
+    "userEmailPromptFieldLabel": "Email address",
+    "@userEmailPromptFieldLabel": { "description": "Label for the optional email field before opening UserOrient" },
+
+    "userEmailPromptFieldHint": "you@example.com",
+    "@userEmailPromptFieldHint": { "description": "Hint text for the optional email field before opening UserOrient" },
+
+    "userEmailPromptDontAskAgain": "Don't ask me again",
+    "@userEmailPromptDontAskAgain": { "description": "Checkbox label for opting out of future optional email prompts" },
+
+    "userEmailPromptSkip": "Skip",
+    "@userEmailPromptSkip": { "description": "Button label to skip the optional email prompt" },
+
+    "userEmailPromptContinue": "Continue",
+    "@userEmailPromptContinue": { "description": "Button label to continue after optionally entering an email" },
+
+    "userEmailPromptInvalidEmail": "Enter a valid email address.",
+    "@userEmailPromptInvalidEmail": { "description": "Validation error shown when the optional email field has an invalid email address" },
 
     "supportKoFi": "Support me on Ko-Fi",
     "@supportKoFi": { "description": "Label on the Ko-Fi support button" },

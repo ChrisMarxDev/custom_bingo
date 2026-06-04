@@ -116,7 +116,7 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
                     l10n.preMadeTilesDescription,
                     style: context.p1.copyWith(color: context.weakTextColor),
                   ),
-                  if (isSelecting && totalCount > 0) ...[
+                  if (isSelecting) ...[
                     const SizedBox(height: 16),
                     _SelectAllRow(
                       selectedCount: selectedCount,
@@ -141,6 +141,8 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               sliver: SliverList.separated(
                 itemCount: tiles.length + drafts.length,
+                findItemIndexCallback: (key) =>
+                    _findTileRowIndex(key, tiles, drafts),
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   if (index < tiles.length) {
@@ -199,6 +201,33 @@ class _PreMadeTilesScreenState extends State<PreMadeTilesScreen> {
 
       controller.addDraft();
     });
+  }
+
+  int? _findTileRowIndex(
+    Key key,
+    List<PreMadeTile> tiles,
+    List<PreMadeTileDraft> drafts,
+  ) {
+    if (key is! ValueKey<String>) return null;
+
+    final value = key.value;
+    const savedPrefix = 'saved-tile-';
+    if (value.startsWith(savedPrefix)) {
+      final id = int.tryParse(value.substring(savedPrefix.length));
+      if (id == null) return null;
+      final tileIndex = tiles.indexWhere((tile) => tile.id == id);
+      return tileIndex == -1 ? null : tileIndex;
+    }
+
+    const draftPrefix = 'draft-tile-';
+    if (value.startsWith(draftPrefix)) {
+      final id = int.tryParse(value.substring(draftPrefix.length));
+      if (id == null) return null;
+      final draftIndex = drafts.indexWhere((draft) => draft.id == id);
+      return draftIndex == -1 ? null : tiles.length + draftIndex;
+    }
+
+    return null;
   }
 }
 

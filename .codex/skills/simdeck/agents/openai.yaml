@@ -1,0 +1,7 @@
+interface:
+  display_name: "SimDeck"
+  short_description: "Control and inspect mobile simulators"
+  default_prompt: "Use $simdeck to inspect and control the current Flutter app in SimDeck."
+
+policy:
+  allow_implicit_invocation: true

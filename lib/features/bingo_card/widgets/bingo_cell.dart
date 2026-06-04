@@ -207,7 +207,7 @@ class RawBingoCell extends StatelessWidget {
                       focusedErrorBorder: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
-                      hintText: context.l10n.cellHint,
+                      hintText: isEditing ? context.l10n.cellHint : null,
                       hintStyle: TextStyle(color: context.weakTextColor),
                     ),
                     onChanged: isEditing

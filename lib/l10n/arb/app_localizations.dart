@@ -233,19 +233,25 @@ abstract class AppLocalizations {
   /// Title of the dialog shown before asking for an app store review
   ///
   /// In en, this message translates to:
-  /// **'How do you like the app?'**
+  /// **'Do you like Custom Bingo?'**
   String get ratingPromptTitle;
+
+  /// Body of the dialog shown before asking for an app store review
+  ///
+  /// In en, this message translates to:
+  /// **'If so, a quick store review helps others find it.'**
+  String get ratingPromptBody;
 
   /// Dismiss button for the rating prompt dialog
   ///
   /// In en, this message translates to:
-  /// **'Not now'**
+  /// **'Not really'**
   String get ratingPromptNo;
 
   /// Confirm button that continues to the native app store review flow
   ///
   /// In en, this message translates to:
-  /// **'Yes'**
+  /// **'Yes, I like it'**
   String get ratingPromptYes;
 
   /// Menu item that opens the share dialog from the board action bar
@@ -427,6 +433,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Propose Features'**
   String get proposeFeatures;
+
+  /// Title of the optional email prompt before opening UserOrient
+  ///
+  /// In en, this message translates to:
+  /// **'Want us to follow up?'**
+  String get userEmailPromptTitle;
+
+  /// Body copy explaining the optional email prompt before opening UserOrient
+  ///
+  /// In en, this message translates to:
+  /// **'Add your email address if you\'d like us to reply about your feedback.'**
+  String get userEmailPromptBody;
+
+  /// Label for the optional email field before opening UserOrient
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get userEmailPromptFieldLabel;
+
+  /// Hint text for the optional email field before opening UserOrient
+  ///
+  /// In en, this message translates to:
+  /// **'you@example.com'**
+  String get userEmailPromptFieldHint;
+
+  /// Checkbox label for opting out of future optional email prompts
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t ask me again'**
+  String get userEmailPromptDontAskAgain;
+
+  /// Button label to skip the optional email prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get userEmailPromptSkip;
+
+  /// Button label to continue after optionally entering an email
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get userEmailPromptContinue;
+
+  /// Validation error shown when the optional email field has an invalid email address
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get userEmailPromptInvalidEmail;
 
   /// Label on the Ko-Fi support button
   ///

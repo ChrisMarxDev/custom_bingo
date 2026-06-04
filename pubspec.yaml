@@ -43,6 +43,7 @@ dependencies:
   drift_flutter: 0.2.8
   auto_size_text_field: ^2.3.0
   purchases_flutter: ^10.2.0
+  simdeck_flutter_inspector: ^0.1.1
 
 dev_dependencies:
   build_runner: ^2.4.15

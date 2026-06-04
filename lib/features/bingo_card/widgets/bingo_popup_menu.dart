@@ -4,6 +4,7 @@ import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_screen.dart';
 import 'package:custom_bingo/features/bingo_card/new_card_screen.dart';
+import 'package:custom_bingo/features/home/home_screen.dart';
 import 'package:custom_bingo/features/settings/settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:custom_bingo/util/logger.dart';
@@ -78,7 +79,24 @@ class BingoPopupMenu extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8.0, top: 12.0),
                       child: Text(l10n.yourCardsHeader),
                     ),
-                    if (bingoCardNames.isNotEmpty) const Divider(),
+                    const Divider(),
+                    TextButton(
+                      onPressed: () {
+                        hideOverlay();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(PhosphorIcons.squaresFour()),
+                          const SizedBox(width: 8),
+                          const Text('All boards'),
+                        ],
+                      ),
+                    ),
                     ...bingoCardNames.map((name) {
                       return TextButton(
                         onPressed: () async {
@@ -138,7 +156,7 @@ class BingoPopupMenu extends StatelessWidget {
                     TextButton(
                       onPressed: () async {
                         hideOverlay();
-                        openUserOrient(context);
+                        await openUserOrient(context);
                       },
                       child: Row(
                         children: [

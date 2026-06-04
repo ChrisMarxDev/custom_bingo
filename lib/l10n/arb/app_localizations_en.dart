@@ -82,13 +82,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shuffle => 'Shuffle';
 
   @override
-  String get ratingPromptTitle => 'How do you like the app?';
+  String get ratingPromptTitle => 'Do you like Custom Bingo?';
 
   @override
-  String get ratingPromptNo => 'Not now';
+  String get ratingPromptBody =>
+      'If so, a quick store review helps others find it.';
 
   @override
-  String get ratingPromptYes => 'Yes';
+  String get ratingPromptNo => 'Not really';
+
+  @override
+  String get ratingPromptYes => 'Yes, I like it';
 
   @override
   String get boardActionShare => 'Share';
@@ -185,6 +189,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get proposeFeatures => 'Propose Features';
+
+  @override
+  String get userEmailPromptTitle => 'Want us to follow up?';
+
+  @override
+  String get userEmailPromptBody =>
+      'Add your email address if you\'d like us to reply about your feedback.';
+
+  @override
+  String get userEmailPromptFieldLabel => 'Email address';
+
+  @override
+  String get userEmailPromptFieldHint => 'you@example.com';
+
+  @override
+  String get userEmailPromptDontAskAgain => 'Don\'t ask me again';
+
+  @override
+  String get userEmailPromptSkip => 'Skip';
+
+  @override
+  String get userEmailPromptContinue => 'Continue';
+
+  @override
+  String get userEmailPromptInvalidEmail => 'Enter a valid email address.';
 
   @override
   String get supportKoFi => 'Support me on Ko-Fi';

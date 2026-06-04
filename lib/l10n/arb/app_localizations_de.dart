@@ -83,13 +83,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shuffle => 'Mischen';
 
   @override
-  String get ratingPromptTitle => 'Wie gefällt dir die App?';
+  String get ratingPromptTitle => 'Gefällt dir Custom Bingo?';
 
   @override
-  String get ratingPromptNo => 'Nicht jetzt';
+  String get ratingPromptBody =>
+      'Wenn ja, hilft eine kurze Bewertung im Store anderen, die App zu finden.';
 
   @override
-  String get ratingPromptYes => 'Ja';
+  String get ratingPromptNo => 'Nicht wirklich';
+
+  @override
+  String get ratingPromptYes => 'Ja, gefällt mir';
 
   @override
   String get boardActionShare => 'Teilen';
@@ -186,6 +190,32 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get proposeFeatures => 'Funktion vorschlagen';
+
+  @override
+  String get userEmailPromptTitle => 'Möchtest du eine Rückmeldung?';
+
+  @override
+  String get userEmailPromptBody =>
+      'Füge deine E-Mail-Adresse hinzu, wenn wir dir zu deinem Feedback antworten sollen.';
+
+  @override
+  String get userEmailPromptFieldLabel => 'E-Mail-Adresse';
+
+  @override
+  String get userEmailPromptFieldHint => 'du@example.com';
+
+  @override
+  String get userEmailPromptDontAskAgain => 'Nicht erneut fragen';
+
+  @override
+  String get userEmailPromptSkip => 'Überspringen';
+
+  @override
+  String get userEmailPromptContinue => 'Weiter';
+
+  @override
+  String get userEmailPromptInvalidEmail =>
+      'Gib eine gültige E-Mail-Adresse ein.';
 
   @override
   String get supportKoFi => 'Auf Ko-Fi unterstützen';

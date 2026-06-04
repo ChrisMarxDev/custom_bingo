@@ -38,6 +38,7 @@ class PreMadeTileController extends BeaconController {
 
   final AppDatabase _database;
   StreamSubscription<List<PreMadeTile>>? _subscription;
+  final _savingDraftIds = <int>{};
   var _nextDraftId = 0;
 
   late final tiles = Beacon.writable<List<PreMadeTile>>([]);
@@ -72,26 +73,32 @@ class PreMadeTileController extends BeaconController {
   }
 
   Future<void> saveDraftIfReady(int id) async {
-    PreMadeTileDraft? draft;
-    for (final candidate in drafts.value) {
-      if (candidate.id == id) {
-        draft = candidate;
-        break;
+    if (!_savingDraftIds.add(id)) return;
+
+    try {
+      PreMadeTileDraft? draft;
+      for (final candidate in drafts.value) {
+        if (candidate.id == id) {
+          draft = candidate;
+          break;
+        }
       }
+      if (draft == null) return;
+
+      final text = draft.text.trim();
+      if (text.isEmpty) return;
+
+      await _database.createPreMadeTile(
+        text: text,
+        isSelected: draft.isSelected,
+        sortOrder: _nextSortOrder(),
+      );
+      drafts.value = drafts.value
+          .where((candidate) => candidate.id != id)
+          .toList();
+    } finally {
+      _savingDraftIds.remove(id);
     }
-    if (draft == null) return;
-
-    final text = draft.text.trim();
-    if (text.isEmpty) return;
-
-    await _database.createPreMadeTile(
-      text: text,
-      isSelected: draft.isSelected,
-      sortOrder: _nextSortOrder(),
-    );
-    drafts.value = drafts.value
-        .where((candidate) => candidate.id != id)
-        .toList();
   }
 
   Future<List<String>> selectedTextsSnapshot() async {

@@ -402,6 +402,20 @@ ThemeData getThemeData({bool isDarkMode = false, AppThemePalette? palette}) {
         borderSide: BorderSide(width: 2, color: scheme.primary),
       ),
     ),
+    checkboxTheme: CheckboxThemeData(
+      checkColor: WidgetStatePropertyAll(scheme.onPrimary),
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return kGrey3;
+        }
+        if (states.contains(WidgetState.selected)) {
+          return scheme.primary;
+        }
+        return Colors.transparent;
+      }),
+      side: BorderSide(color: mutedBorderColor, width: 2),
+      shape: RoundedRectangleBorder(borderRadius: kBorderradiusSmall),
+    ),
     switchTheme: SwitchThemeData(
       mouseCursor: WidgetStateMouseCursor.clickable,
       thumbColor: WidgetStateProperty.resolveWith((states) {

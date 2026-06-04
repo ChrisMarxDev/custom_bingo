@@ -1,9 +1,12 @@
 import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/revenue_cat_service.dart';
+import 'package:custom_bingo/common/services/user_email.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
+import 'package:custom_bingo/common/services/userorient_service.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
+import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -11,10 +14,42 @@ import 'package:state_beacon/state_beacon.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:userorient_flutter/userorient_flutter.dart';
 
-void openUserOrient(BuildContext context) {
-  UserOrient.setUser(uniqueIdentifier: userIdBeacon.value);
+Future<void> openUserOrient(BuildContext context) async {
+  final email = await _resolveUserOrientEmail(context);
+  if (!context.mounted) return;
 
-  UserOrient.openBoard(context);
+  final userId = userIdBeacon.value;
+  UserOrient.setUser(uniqueIdentifier: userId, email: email);
+
+  if (email != null) {
+    try {
+      await syncUserOrientUserEmail(uniqueIdentifier: userId, email: email);
+    } catch (error, stackTrace) {
+      logError('Failed to sync UserOrient user email', error, stackTrace);
+    }
+    if (!context.mounted) return;
+  }
+
+  await UserOrient.openBoard(context);
+}
+
+Future<String?> _resolveUserOrientEmail(BuildContext context) async {
+  final storedEmail = getStoredUserEmail();
+  if (storedEmail != null) return storedEmail;
+  if (!shouldAskForUserEmail()) return null;
+
+  final result = await showDialog<_UserEmailPromptResult>(
+    context: context,
+    builder: (context) =>
+        _UserEmailPromptDialog(showDontAskAgain: hasAskedForUserEmail()),
+  );
+
+  await saveUserEmailPromptResult(
+    email: result?.email,
+    dontAskAgain: result?.dontAskAgain ?? false,
+  );
+
+  return result?.email;
 }
 
 class SettingsScreen extends StatelessWidget {
@@ -214,6 +249,130 @@ class _PaletteDot extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _UserEmailPromptResult {
+  const _UserEmailPromptResult({
+    required this.email,
+    required this.dontAskAgain,
+  });
+
+  final String? email;
+  final bool dontAskAgain;
+}
+
+class _UserEmailPromptDialog extends StatefulWidget {
+  const _UserEmailPromptDialog({required this.showDontAskAgain});
+
+  final bool showDontAskAgain;
+
+  @override
+  State<_UserEmailPromptDialog> createState() => _UserEmailPromptDialogState();
+}
+
+class _UserEmailPromptDialogState extends State<_UserEmailPromptDialog> {
+  final _controller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  bool _dontAskAgain = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AlertDialog(
+      title: Text(l10n.userEmailPromptTitle),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.userEmailPromptBody),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _controller,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.done,
+              autofillHints: const [AutofillHints.email],
+              decoration: InputDecoration(
+                labelText: l10n.userEmailPromptFieldLabel,
+                hintText: l10n.userEmailPromptFieldHint,
+              ),
+              validator: (value) {
+                final email = value?.trim() ?? '';
+                if (email.isEmpty || _isValidEmail(email)) return null;
+                return l10n.userEmailPromptInvalidEmail;
+              },
+              onFieldSubmitted: (_) => _submit(),
+            ),
+            if (widget.showDontAskAgain) ...[
+              const SizedBox(height: 8),
+              InkWell(
+                borderRadius: kBorderradiusSmall,
+                onTap: () {
+                  setState(() => _dontAskAgain = !_dontAskAgain);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: _dontAskAgain,
+                        activeColor: context.primary,
+                        checkColor: context.onPrimary,
+                        onChanged: (value) {
+                          setState(() => _dontAskAgain = value ?? false);
+                        },
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(child: Text(l10n.userEmailPromptDontAskAgain)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(
+              _UserEmailPromptResult(email: null, dontAskAgain: _dontAskAgain),
+            );
+          },
+          child: Text(l10n.userEmailPromptSkip),
+        ),
+        FilledButton(
+          onPressed: _submit,
+          child: Text(l10n.userEmailPromptContinue),
+        ),
+      ],
+    );
+  }
+
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final email = _controller.text.trim();
+    Navigator.of(context).pop(
+      _UserEmailPromptResult(
+        email: email.isEmpty ? null : email,
+        dontAskAgain: _dontAskAgain,
+      ),
+    );
+  }
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email);
   }
 }
 

@@ -30,15 +30,18 @@ class RatingPromptService {
       final l10n = context.l10n;
       final wantsReview = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (dialogContext) => AlertDialog(
           title: Text(l10n.ratingPromptTitle),
+          content: Text(l10n.ratingPromptBody),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () =>
+                  Navigator.of(dialogContext, rootNavigator: true).pop(false),
               child: Text(l10n.ratingPromptNo),
             ),
             FilledButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () =>
+                  Navigator.of(dialogContext, rootNavigator: true).pop(true),
               child: Text(l10n.ratingPromptYes),
             ),
           ],
@@ -47,6 +50,9 @@ class RatingPromptService {
 
       await prefs.setBool(_requestedKey, true);
       if (wantsReview != true) return;
+
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+      if (!context.mounted) return;
       if (!await _inAppReview.isAvailable()) return;
 
       await _inAppReview.requestReview();
