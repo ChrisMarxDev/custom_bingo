@@ -1,6 +1,4 @@
-import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
-import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/services/user_email.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/common/services/userorient_service.dart';
@@ -8,10 +6,7 @@ import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:state_beacon/state_beacon.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:userorient_flutter/userorient_flutter.dart';
 
 Future<void> openUserOrient(BuildContext context) async {
@@ -60,7 +55,6 @@ class SettingsScreen extends StatelessWidget {
     final l10n = context.l10n;
     final themeMode = appThemeModeBeacon.watch(context);
     final themePalette = appThemePaletteBeacon.watch(context);
-    final revenueCatState = revenueCatStateBeacon.watch(context);
     final isDarkMode = themeMode == ThemeMode.dark;
 
     return Scaffold(
@@ -103,25 +97,6 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          _SettingsSection(
-            title: 'Custom Bingo Pro',
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.workspace_premium),
-              title: Text(
-                revenueCatState.hasProAccess ? 'Pro active' : 'Lifetime',
-                style: context.p1.copyWith(fontWeight: FontWeight.w700),
-              ),
-              subtitle: Text(
-                revenueCatState.hasProAccess
-                    ? 'Lifetime access is unlocked.'
-                    : 'One lifetime option for Pro access.',
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push(AppRoutePaths.paywall),
             ),
           ),
         ],
@@ -373,26 +348,5 @@ class _UserEmailPromptDialogState extends State<_UserEmailPromptDialog> {
 
   bool _isValidEmail(String email) {
     return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email);
-  }
-}
-
-class KoFiButton extends StatelessWidget {
-  const KoFiButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FilledButton(
-      onPressed: () {
-        launchUrl(Uri.parse('https://ko-fi.com/chrismarx'));
-      },
-      style: FilledButton.styleFrom(),
-      child: Row(
-        children: [
-          SvgPicture.asset('assets/images/ko-fi.svg', height: 24),
-          const SizedBox(width: 8),
-          Text(context.l10n.supportKoFi),
-        ],
-      ),
-    );
   }
 }

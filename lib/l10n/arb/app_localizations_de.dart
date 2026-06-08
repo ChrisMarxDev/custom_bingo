@@ -218,7 +218,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gib eine gültige E-Mail-Adresse ein.';
 
   @override
-  String get supportKoFi => 'Auf Ko-Fi unterstützen';
+  String get supportMeDirectly => 'Direkt unterstützen';
 
   @override
   String get shareTitle => 'Bingo-Karte teilen';

@@ -4,21 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
 
-const revenueCatIosApiKey = String.fromEnvironment('REVENUECAT_IOS_API_KEY');
-const revenueCatAndroidApiKey = String.fromEnvironment(
-  'REVENUECAT_ANDROID_API_KEY',
-);
-const revenueCatWebApiKey = String.fromEnvironment('REVENUECAT_WEB_API_KEY');
-const revenueCatEntitlementId = String.fromEnvironment(
-  'REVENUECAT_ENTITLEMENT_ID',
-  defaultValue: 'pro',
-);
-const revenueCatOfferingId = String.fromEnvironment('REVENUECAT_OFFERING_ID');
-const revenueCatPackageId = String.fromEnvironment('REVENUECAT_PACKAGE_ID');
-const revenueCatLifetimeProductId = String.fromEnvironment(
-  'REVENUECAT_LIFETIME_PRODUCT_ID',
-  defaultValue: 'lifetime',
-);
+const revenueCatIosApiKey = 'appl_ygcZivPvGFbMTHCrwZezbPVaLDY';
+const revenueCatAndroidApiKey = 'goog_sQfDdrGZswghIStnVtuRoSPVVEe';
+const revenueCatWebApiKey = '';
+const revenueCatEntitlementId = 'pro';
+const revenueCatOfferingId = 'default';
+const revenueCatPackageId = '';
+const revenueCatLifetimeProductId = 'lifetime';
 
 final revenueCatStateBeacon = Beacon.writable<RevenueCatState>(
   const RevenueCatState(
@@ -161,32 +153,49 @@ Future<void> refreshRevenueCatCustomerInfo() async {
 Future<RevenueCatPurchaseOption?> fetchRevenueCatLifetimeOption() async {
   _assertConfigured();
 
-  final offerings = await Purchases.getOfferings();
-  final selectedOffering = revenueCatOfferingId.isEmpty
-      ? offerings.current
-      : offerings.getOffering(revenueCatOfferingId) ?? offerings.current;
+  try {
+    final offerings = await Purchases.getOfferings();
+    final selectedOffering = revenueCatOfferingId.isEmpty
+        ? offerings.current
+        : offerings.getOffering(revenueCatOfferingId) ?? offerings.current;
 
-  Package? package;
-  if (selectedOffering != null) {
-    if (revenueCatPackageId.isNotEmpty) {
-      package = selectedOffering.getPackage(revenueCatPackageId);
-    }
-    package ??= selectedOffering.lifetime;
-    package ??= _findPackage(selectedOffering.availablePackages);
+    Package? package;
+    if (selectedOffering != null) {
+      if (revenueCatPackageId.isNotEmpty) {
+        package = selectedOffering.getPackage(revenueCatPackageId);
+      }
+      package ??= selectedOffering.lifetime;
+      package ??= _findPackage(selectedOffering.availablePackages);
 
-    if (package != null) {
-      return RevenueCatPurchaseOption.package(package);
+      if (package != null) {
+        return RevenueCatPurchaseOption.package(package);
+      }
     }
+
+    if (kIsWeb) return null;
+
+    final products = await Purchases.getProducts([
+      revenueCatLifetimeProductId,
+    ], productCategory: ProductCategory.nonSubscription);
+    if (products.isEmpty) {
+      _handleRevenueCatError(
+        const RevenueCatException(
+          'No purchase option is available for this app build.',
+        ),
+      );
+      return null;
+    }
+
+    return RevenueCatPurchaseOption.storeProduct(products.first);
+  } on PlatformException catch (error) {
+    final exception = _exceptionFrom(error);
+    _handleRevenueCatError(exception);
+    throw exception;
+  } on Object catch (error) {
+    final exception = RevenueCatException(_messageFrom(error), error);
+    _handleRevenueCatError(exception);
+    throw exception;
   }
-
-  if (kIsWeb) return null;
-
-  final products = await Purchases.getProducts([
-    revenueCatLifetimeProductId,
-  ], productCategory: ProductCategory.nonSubscription);
-  if (products.isEmpty) return null;
-
-  return RevenueCatPurchaseOption.storeProduct(products.first);
 }
 
 Future<CustomerInfo> purchaseRevenueCatOption(
@@ -253,13 +262,15 @@ void _handleCustomerInfoUpdate(CustomerInfo customerInfo) {
   );
 }
 
+void _handleRevenueCatError(RevenueCatException error) {
+  revenueCatStateBeacon.value = revenueCatStateBeacon.value.copyWith(
+    status: RevenueCatStatus.error,
+    message: error.message,
+  );
+}
+
 RevenueCatException _exceptionFrom(PlatformException error) {
-  PurchasesErrorCode? code;
-  try {
-    code = PurchasesErrorHelper.getErrorCode(error);
-  } on Object {
-    code = null;
-  }
+  final code = _errorCodeFrom(error);
 
   if (code == PurchasesErrorCode.purchaseCancelledError) {
     return RevenueCatPurchaseCancelled(error);
@@ -271,9 +282,22 @@ RevenueCatException _exceptionFrom(PlatformException error) {
 String _messageFrom(Object error) {
   if (error is RevenueCatException) return error.message;
   if (error is PlatformException) {
+    final code = _errorCodeFrom(error);
+    if (code == PurchasesErrorCode.configurationError) {
+      return 'Purchases are not available yet. The store product is not '
+          'available for this app build.';
+    }
     return error.message ?? 'RevenueCat returned an unknown error.';
   }
   return 'RevenueCat returned an unknown error.';
+}
+
+PurchasesErrorCode? _errorCodeFrom(PlatformException error) {
+  try {
+    return PurchasesErrorHelper.getErrorCode(error);
+  } on Object {
+    return null;
+  }
 }
 
 String _apiKeyForCurrentPlatform() {
@@ -288,7 +312,7 @@ String _apiKeyForCurrentPlatform() {
 
 String _configurationMessageForCurrentPlatform() {
   if (kIsWeb) {
-    return 'Set REVENUECAT_WEB_API_KEY to enable purchases on web.';
+    return 'RevenueCat purchases are not configured for web.';
   }
 
   return switch (defaultTargetPlatform) {

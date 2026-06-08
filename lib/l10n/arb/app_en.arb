@@ -215,8 +215,8 @@
     "userEmailPromptInvalidEmail": "Enter a valid email address.",
     "@userEmailPromptInvalidEmail": { "description": "Validation error shown when the optional email field has an invalid email address" },
 
-    "supportKoFi": "Support me on Ko-Fi",
-    "@supportKoFi": { "description": "Label on the Ko-Fi support button" },
+    "supportMeDirectly": "Support me directly",
+    "@supportMeDirectly": { "description": "Menu item that opens the direct-support paywall" },
 
     "shareTitle": "Share the bingo card",
     "@shareTitle": { "description": "Title of the share dialog" },

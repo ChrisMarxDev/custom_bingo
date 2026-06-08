@@ -148,7 +148,19 @@ class BingoPopupMenu extends StatelessWidget {
                         ],
                       ),
                     ),
-                    KoFiButton(),
+                    TextButton(
+                      onPressed: () {
+                        hideOverlay();
+                        context.push(AppRoutePaths.paywall);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(PhosphorIcons.money()),
+                          const SizedBox(width: 8),
+                          Text(l10n.supportMeDirectly),
+                        ],
+                      ),
+                    ),
                     if (kDebugMode)
                       TextButton(
                         onPressed: () {

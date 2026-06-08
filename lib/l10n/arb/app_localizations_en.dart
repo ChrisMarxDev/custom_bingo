@@ -216,7 +216,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get userEmailPromptInvalidEmail => 'Enter a valid email address.';
 
   @override
-  String get supportKoFi => 'Support me on Ko-Fi';
+  String get supportMeDirectly => 'Support me directly';
 
   @override
   String get shareTitle => 'Share the bingo card';

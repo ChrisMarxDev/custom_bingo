@@ -40,6 +40,10 @@
 | T-025 | [DONE] | 2026-05-21 | Update repository instructions for the live web app target | Added explicit web-compatibility and hosted-import-link guidance to `agent.md` and `CLAUDE.md`. |
 | T-026 | [DONE] | 2026-06-02 | Design and implement randomized item pools for bingo boards | Added global "Pre-made tiles" settings library with Drift-backed persisted selection and passive watch updates; verified with build_runner, `dart analyze .`, `flutter test`, and production web build. Board creation integration remains intentionally out of scope for this pass. |
 | T-027 | [OPEN] | 2026-06-02 | Explore image support for bingo squares | Candidate feature; needs a web-safe storage/share approach before implementation. |
+| T-028 | [DONE] | 2026-06-08 | Wire RevenueCat keys into production mobile builds | Completed 2026-06-08. Hardcoded mobile RevenueCat keys, set offering `default`, fixed Android purchase launch behavior, and verified with `task lint`. |
+| T-029 | [DONE] | 2026-06-08 | Simplify the paywall screen | Completed 2026-06-08. Replaced the scrolling paywall with a single support-focused screen and verified with `task lint` and `flutter test`. |
+| T-030 | [DONE] | 2026-06-08 | Move support purchase link into settings popup | Completed 2026-06-08. Removed support purchase from the settings screen, replaced Ko-fi with a direct paywall link, regenerated l10n, and verified with `task lint`. |
+| T-031 | [DONE] | 2026-06-08 | Handle RevenueCat configuration errors in the paywall | Completed 2026-06-08. Converted offering/product fetch failures into normal unavailable paywall state instead of Flutter framework errors; verified with `task lint` and `flutter test`. |
 
 ## Feature Concepts
 

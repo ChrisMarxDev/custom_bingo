@@ -482,11 +482,11 @@ abstract class AppLocalizations {
   /// **'Enter a valid email address.'**
   String get userEmailPromptInvalidEmail;
 
-  /// Label on the Ko-Fi support button
+  /// Menu item that opens the direct-support paywall
   ///
   /// In en, this message translates to:
-  /// **'Support me on Ko-Fi'**
-  String get supportKoFi;
+  /// **'Support me directly'**
+  String get supportMeDirectly;
 
   /// Title of the share dialog
   ///
