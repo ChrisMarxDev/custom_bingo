@@ -44,6 +44,8 @@
 | T-029 | [DONE] | 2026-06-08 | Simplify the paywall screen | Completed 2026-06-08. Replaced the scrolling paywall with a single support-focused screen and verified with `task lint` and `flutter test`. |
 | T-030 | [DONE] | 2026-06-08 | Move support purchase link into settings popup | Completed 2026-06-08. Removed support purchase from the settings screen, replaced Ko-fi with a direct paywall link, regenerated l10n, and verified with `task lint`. |
 | T-031 | [DONE] | 2026-06-08 | Handle RevenueCat configuration errors in the paywall | Completed 2026-06-08. Converted offering/product fetch failures into normal unavailable paywall state instead of Flutter framework errors; verified with `task lint` and `flutter test`. |
+| T-032 | [DONE] | 2026-06-08 | Toggle locked bingo cells on tap | Completed 2026-06-08. Locked cells now mark/unmark on tap while edit mode still taps to focus; verified with `task lint` and `flutter test test/features/bingo_card`. |
+| T-033 | [DONE] | 2026-06-08 | Preserve long-press bingo cell toggling | Completed 2026-06-08. Long press still toggles cells in both edit and locked modes, with locked tap toggling retained; verified with `task lint` and `flutter test test/features/bingo_card`. |
 
 ## Feature Concepts
 

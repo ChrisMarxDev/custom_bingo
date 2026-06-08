@@ -161,7 +161,9 @@ class RawBingoCell extends StatelessWidget {
               ? () {
                   focusNode.requestFocus();
                 }
-              : null,
+              : () {
+                  controller.toggleDoneStatus(widget.item.id);
+                },
           onLongPress: () {
             controller.toggleDoneStatus(widget.item.id);
           },
@@ -188,6 +190,11 @@ class RawBingoCell extends StatelessWidget {
                     maxFontSize: _cellTextMaxFontSize,
                     readOnly: !isEditing,
                     showCursor: isEditing,
+                    cursorColor: Color.lerp(
+                      context.primary,
+                      Colors.white,
+                      0.45,
+                    ),
                     enableInteractiveSelection: isEditing,
                     textAlign: TextAlign.center,
                     maxLines: null,
