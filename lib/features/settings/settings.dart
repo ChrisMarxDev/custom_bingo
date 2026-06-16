@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/premium_service.dart';
+import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/common/services/userorient_service.dart';
 import 'package:custom_bingo/common/widgets/premium_gate.dart';
@@ -10,6 +11,7 @@ import 'package:custom_bingo/features/settings/settings_preferences.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -84,12 +86,6 @@ class SettingsScreen extends StatelessWidget {
                 selectedPalette: effectiveThemePalette,
                 onPaletteSelected: setAppThemePalette,
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _SettingsSection(
-            title: l10n.settingsPreferencesSection,
-            children: [
               _SettingsTile(
                 title: l10n.enableConfettiLabel,
                 subtitle: l10n.enableConfettiSettingsDescription,
@@ -99,18 +95,6 @@ class SettingsScreen extends StatelessWidget {
                   value: enableConfetti,
                   onChanged: setEnableConfetti,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _SettingsSection(
-            title: l10n.settingsBoardsSection,
-            children: [
-              _SettingsTile(
-                title: l10n.preMadeTilesTitle,
-                subtitle: l10n.preMadeTilesSettingsDescription,
-                icon: PhosphorIcons.squaresFour(),
-                onTap: () => context.push(AppRoutePaths.preMadeTilesEdit),
               ),
             ],
           ),
@@ -138,6 +122,8 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          const _RevenueCatUserIdFooter(),
         ],
       ),
     );
@@ -155,6 +141,46 @@ Future<void> _contactMe() async {
   await launchUrl(
     Uri(scheme: 'mailto', path: 'custombingo@christopher-marx.de'),
   );
+}
+
+class _RevenueCatUserIdFooter extends StatelessWidget {
+  const _RevenueCatUserIdFooter();
+
+  @override
+  Widget build(BuildContext context) {
+    final revenueCatState = revenueCatStateBeacon.watch(context);
+    final userId =
+        revenueCatState.customerInfo?.originalAppUserId ?? userIdBeacon.value;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: SelectableText(
+              'RevenueCat user id: $userId',
+              style: context.caption.copyWith(color: context.weakTextColor),
+            ),
+          ),
+          IconButton(
+            visualDensity: VisualDensity.compact,
+            tooltip: 'Copy RevenueCat user id',
+            iconSize: 16,
+            color: context.weakTextColor,
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: userId));
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('RevenueCat user id copied.')),
+              );
+            },
+            icon: Icon(PhosphorIcons.copy()),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _SettingsSection extends StatelessWidget {
