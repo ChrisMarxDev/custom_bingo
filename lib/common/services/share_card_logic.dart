@@ -173,12 +173,14 @@ Future<void> _shareImage(
 
   final fileName = 'bingo_share_${DateTime.now().millisecondsSinceEpoch}.png';
 
-  await Share.shareXFiles(
-    [XFile.fromData(imageData, mimeType: 'image/png')],
-    subject: l10n.shareSubject,
-    text: l10n.shareSubject,
-    sharePositionOrigin: _sharePositionOrigin(buttonContext),
-    fileNameOverrides: [fileName],
+  await SharePlus.instance.share(
+    ShareParams(
+      files: [XFile.fromData(imageData, mimeType: 'image/png')],
+      subject: l10n.shareSubject,
+      text: l10n.shareSubject,
+      sharePositionOrigin: _sharePositionOrigin(buttonContext),
+      fileNameOverrides: [fileName],
+    ),
   );
 }
 
@@ -248,10 +250,12 @@ Future<void> _shareInvite(BuildContext buttonContext, bool includeMarks) async {
   final link = encodeShareLink(state, includeMarks: includeMarks).toString();
   final body = l10n.shareInviteText(name, link);
 
-  await Share.share(
-    body,
-    subject: l10n.shareSubject,
-    sharePositionOrigin: _sharePositionOrigin(buttonContext),
+  await SharePlus.instance.share(
+    ShareParams(
+      text: body,
+      subject: l10n.shareSubject,
+      sharePositionOrigin: _sharePositionOrigin(buttonContext),
+    ),
   );
 }
 

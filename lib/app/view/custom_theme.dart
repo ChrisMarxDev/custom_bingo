@@ -71,6 +71,7 @@ class AppThemePalette {
     required this.onPrimary,
     required this.secondary,
     required this.onSecondary,
+    this.isPremium = false,
     this.darkPrimary,
     this.darkOnPrimary,
     this.darkSecondary,
@@ -82,6 +83,7 @@ class AppThemePalette {
   final Color onPrimary;
   final Color secondary;
   final Color onSecondary;
+  final bool isPremium;
   final Color? darkPrimary;
   final Color? darkOnPrimary;
   final Color? darkSecondary;
@@ -136,6 +138,7 @@ const appThemePalettes = <AppThemePalette>[
     onPrimary: kWhite,
     secondary: Color(0xFFFBBF24),
     onSecondary: kDarkBlack,
+    isPremium: true,
   ),
   AppThemePalette(
     id: 'berry',
@@ -143,6 +146,7 @@ const appThemePalettes = <AppThemePalette>[
     onPrimary: kWhite,
     secondary: Color(0xFFF9A8D4),
     onSecondary: kDarkBlack,
+    isPremium: true,
   ),
   AppThemePalette(
     id: 'forest',
@@ -150,6 +154,7 @@ const appThemePalettes = <AppThemePalette>[
     onPrimary: kWhite,
     secondary: Color(0xFFA3E635),
     onSecondary: kDarkBlack,
+    isPremium: true,
   ),
   AppThemePalette(
     id: 'lagoon',
@@ -157,6 +162,7 @@ const appThemePalettes = <AppThemePalette>[
     onPrimary: kWhite,
     secondary: Color(0xFF67E8F9),
     onSecondary: kDarkBlack,
+    isPremium: true,
   ),
 ];
 

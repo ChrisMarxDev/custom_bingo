@@ -1,50 +1,31 @@
+import 'dart:async';
+
+import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
-import 'package:custom_bingo/common/services/user_email.dart';
+import 'package:custom_bingo/common/services/premium_service.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/common/services/userorient_service.dart';
+import 'package:custom_bingo/common/widgets/premium_gate.dart';
+import 'package:custom_bingo/features/settings/settings_preferences.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
-import 'package:custom_bingo/util/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:state_beacon/state_beacon.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:userorient_flutter/userorient_flutter.dart';
 
 Future<void> openUserOrient(BuildContext context) async {
-  final email = await _resolveUserOrientEmail(context);
-  if (!context.mounted) return;
-
   final userId = userIdBeacon.value;
-  UserOrient.setUser(uniqueIdentifier: userId, email: email);
-
-  if (email != null) {
-    try {
-      await syncUserOrientUserEmail(uniqueIdentifier: userId, email: email);
-    } catch (error, stackTrace) {
-      logError('Failed to sync UserOrient user email', error, stackTrace);
-    }
-    if (!context.mounted) return;
-  }
+  final isPremiumUser = isPremiumUserBeacon.value;
+  UserOrient.setUser(
+    uniqueIdentifier: userId,
+    extra: userOrientUserExtra(isPremiumUser: isPremiumUser),
+  );
 
   await UserOrient.openBoard(context);
-}
-
-Future<String?> _resolveUserOrientEmail(BuildContext context) async {
-  final storedEmail = getStoredUserEmail();
-  if (storedEmail != null) return storedEmail;
-  if (!shouldAskForUserEmail()) return null;
-
-  final result = await showDialog<_UserEmailPromptResult>(
-    context: context,
-    builder: (context) =>
-        _UserEmailPromptDialog(showDontAskAgain: hasAskedForUserEmail()),
-  );
-
-  await saveUserEmailPromptResult(
-    email: result?.email,
-    dontAskAgain: result?.dontAskAgain ?? false,
-  );
-
-  return result?.email;
 }
 
 class SettingsScreen extends StatelessWidget {
@@ -55,49 +36,107 @@ class SettingsScreen extends StatelessWidget {
     final l10n = context.l10n;
     final themeMode = appThemeModeBeacon.watch(context);
     final themePalette = appThemePaletteBeacon.watch(context);
+    final isPremiumUser = isPremiumUserBeacon.watch(context);
+    final enableConfetti = enableConfettiBeacon.watch(context);
+    final effectiveThemePalette = availableAppThemePalette(
+      themePalette,
+      isPremiumUser: isPremiumUser,
+    );
     final isDarkMode = themeMode == ThemeMode.dark;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsHeader, style: context.h2)),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: [
           _SettingsSection(
-            title: l10n.appearanceMenuItem,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.themeColorLabel,
-                  style: context.h5.copyWith(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
-                  children: [
-                    for (final palette in appThemePalettes)
-                      _ThemePaletteOption(
-                        palette: palette,
-                        isSelected: palette.id == themePalette.id,
-                        onTap: () => setAppThemePalette(palette),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                SwitchListTile.adaptive(
-                  contentPadding: EdgeInsets.zero,
+            title: l10n.settingsSupportSection,
+            children: [
+              _SettingsTile(
+                title: l10n.supportMeDirectly,
+                subtitle: l10n.supportMeDirectlySettingsDescription,
+                icon: PhosphorIcons.heart(),
+                onTap: () => context.push(AppRoutePaths.paywall),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _SettingsSection(
+            title: l10n.settingsAppearanceSection,
+            children: [
+              _SettingsTile(
+                title: l10n.darkModeLabel,
+                subtitle: l10n.darkModeSettingsDescription,
+                icon: PhosphorIcons.moon(),
+                onTap: () {
+                  setAppThemeMode(
+                    isDarkMode ? ThemeMode.light : ThemeMode.dark,
+                  );
+                },
+                trailing: Switch.adaptive(
                   value: isDarkMode,
                   onChanged: (value) {
                     setAppThemeMode(value ? ThemeMode.dark : ThemeMode.light);
                   },
-                  title: Text(
-                    l10n.darkModeLabel,
-                    style: context.p1.copyWith(fontWeight: FontWeight.w700),
-                  ),
                 ),
-              ],
-            ),
+              ),
+              _ThemePaletteSettingsTile(
+                selectedPalette: effectiveThemePalette,
+                onPaletteSelected: setAppThemePalette,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _SettingsSection(
+            title: l10n.settingsPreferencesSection,
+            children: [
+              _SettingsTile(
+                title: l10n.enableConfettiLabel,
+                subtitle: l10n.enableConfettiSettingsDescription,
+                icon: PhosphorIcons.sparkle(),
+                onTap: () => setEnableConfetti(!enableConfetti),
+                trailing: Switch.adaptive(
+                  value: enableConfetti,
+                  onChanged: setEnableConfetti,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _SettingsSection(
+            title: l10n.settingsBoardsSection,
+            children: [
+              _SettingsTile(
+                title: l10n.preMadeTilesTitle,
+                subtitle: l10n.preMadeTilesSettingsDescription,
+                icon: PhosphorIcons.squaresFour(),
+                onTap: () => context.push(AppRoutePaths.preMadeTilesEdit),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _SettingsSection(
+            title: l10n.settingsHelpSection,
+            children: [
+              _SettingsTile(
+                title: l10n.proposeFeatures,
+                subtitle: l10n.proposeFeaturesSettingsDescription,
+                icon: PhosphorIcons.chats(),
+                onTap: () => unawaited(openUserOrient(context)),
+              ),
+              _SettingsTile(
+                title: l10n.rateTheApp,
+                subtitle: l10n.rateTheAppSettingsDescription,
+                icon: PhosphorIcons.star(),
+                onTap: () => unawaited(_rateTheApp()),
+              ),
+              _SettingsTile(
+                title: l10n.contactMe,
+                subtitle: l10n.contactMeSettingsDescription,
+                icon: PhosphorIcons.envelopeSimple(),
+                onTap: () => unawaited(_contactMe()),
+              ),
+            ],
           ),
         ],
       ),
@@ -105,28 +144,182 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+Future<void> _rateTheApp() async {
+  final inAppReview = InAppReview.instance;
+  if (await inAppReview.isAvailable()) {
+    await inAppReview.requestReview();
+  }
+}
+
+Future<void> _contactMe() async {
+  await launchUrl(
+    Uri(scheme: 'mailto', path: 'custombingo@christopher-marx.de'),
+  );
+}
+
 class _SettingsSection extends StatelessWidget {
-  const _SettingsSection({required this.title, required this.child});
+  const _SettingsSection({required this.title, required this.children});
 
   final String title;
-  final Widget child;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(
+            title.toUpperCase(),
+            style: context.caption.copyWith(
+              color: context.weakTextColor,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        Card(
+          child: Column(
+            children: [
+              for (var index = 0; index < children.length; index++) ...[
+                children[index],
+                if (index < children.length - 1)
+                  Divider(height: 1, indent: 66, color: context.outlineColor),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SettingsTile extends StatelessWidget {
+  const _SettingsTile({
+    required this.title,
+    required this.icon,
+    this.subtitle,
+    this.onTap,
+    this.trailing,
+    this.child,
+  });
+
+  final String title;
+  final String? subtitle;
+  final IconData icon;
+  final VoidCallback? onTap;
+  final Widget? trailing;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    final tile = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              _SettingsIcon(icon: icon),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: context.p1.copyWith(fontWeight: FontWeight.w800),
+                    ),
+                    if (subtitle != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle!,
+                        style: context.p2.copyWith(
+                          color: context.weakTextColor,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (trailing != null) trailing!,
+              if (onTap != null && trailing == null)
+                Icon(PhosphorIcons.caretRight(), color: context.weakTextColor),
+            ],
+          ),
+          if (child != null) ...[
+            const SizedBox(height: 12),
+            Align(alignment: Alignment.centerLeft, child: child),
+          ],
+        ],
+      ),
+    );
+
+    if (onTap == null) return tile;
+
+    return InkWell(onTap: onTap, borderRadius: kBorderRadius, child: tile);
+  }
+}
+
+class _SettingsIcon extends StatelessWidget {
+  const _SettingsIcon({required this.icon});
+
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
-        color: context.cardColor,
-        borderRadius: kBorderRadius,
-        border: Border.all(color: context.weakestTextColor),
+        color: context.primary.withValues(alpha: 0.14),
+        borderRadius: kBorderradiusSmall,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: context.h4.copyWith(fontWeight: FontWeight.w800)),
-          const SizedBox(height: 16),
-          child,
-        ],
+      child: Icon(icon, color: context.primary, size: 22),
+    );
+  }
+}
+
+class _ThemePaletteSettingsTile extends StatelessWidget {
+  const _ThemePaletteSettingsTile({
+    required this.selectedPalette,
+    required this.onPaletteSelected,
+  });
+
+  final AppThemePalette selectedPalette;
+  final ValueChanged<AppThemePalette> onPaletteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return _SettingsTile(
+      title: l10n.themeColorLabel,
+      subtitle: l10n.themeColorSettingsDescription,
+      icon: PhosphorIcons.paintBrush(),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          const spacing = 12.0;
+          final columnCount = constraints.maxWidth >= 320 ? 3 : 2;
+          final tileWidth =
+              (constraints.maxWidth - spacing * (columnCount - 1)) /
+              columnCount;
+
+          return Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: [
+              for (final palette in appThemePalettes)
+                SizedBox(
+                  width: tileWidth,
+                  child: _ThemePaletteOption(
+                    palette: palette,
+                    isSelected: palette.id == selectedPalette.id,
+                    onTap: () => onPaletteSelected(palette),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -145,50 +338,51 @@ class _ThemePaletteOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: kBorderRadius,
-      child: AnimatedContainer(
-        duration: kDurationQuick,
-        curve: Curves.easeInOut,
-        width: 92,
-        height: 56,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        decoration: BoxDecoration(
-          color: context.cardColor,
-          borderRadius: kBorderRadius,
-          border: Border.all(
-            color: isSelected ? palette.primary : context.outlineColor,
-            width: isSelected ? 2.5 : 1,
+    final swatch = AnimatedContainer(
+      duration: kDurationQuick,
+      curve: Curves.easeInOut,
+      height: 56,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: context.cardColor,
+        borderRadius: kBorderRadius,
+        border: Border.all(
+          color: isSelected ? palette.primary : context.outlineColor,
+          width: isSelected ? 2.5 : 1,
+        ),
+        boxShadow: [
+          if (isSelected)
+            BoxShadow(
+              color: palette.primary.withValues(alpha: 0.35),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _PaletteDot(
+            color: palette.primary,
+            foregroundColor: palette.onPrimary,
+            label: 'Aa',
+            isSelected: isSelected,
           ),
-          boxShadow: [
-            if (isSelected)
-              BoxShadow(
-                color: palette.primary.withValues(alpha: 0.35),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _PaletteDot(
-              color: palette.primary,
-              foregroundColor: palette.onPrimary,
-              label: 'Aa',
-              isSelected: isSelected,
-            ),
-            const SizedBox(width: 8),
-            _PaletteDot(
-              color: palette.secondary,
-              foregroundColor: palette.onSecondary,
-              label: 'Aa',
-            ),
-          ],
-        ),
+          const SizedBox(width: 8),
+          _PaletteDot(
+            color: palette.secondary,
+            foregroundColor: palette.onSecondary,
+            label: 'Aa',
+          ),
+        ],
       ),
     );
+
+    if (palette.isPremium) {
+      return PremiumGate(onUnlockedTap: onTap, child: swatch);
+    }
+
+    return InkWell(onTap: onTap, borderRadius: kBorderRadius, child: swatch);
   }
 }
 
@@ -224,129 +418,5 @@ class _PaletteDot extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _UserEmailPromptResult {
-  const _UserEmailPromptResult({
-    required this.email,
-    required this.dontAskAgain,
-  });
-
-  final String? email;
-  final bool dontAskAgain;
-}
-
-class _UserEmailPromptDialog extends StatefulWidget {
-  const _UserEmailPromptDialog({required this.showDontAskAgain});
-
-  final bool showDontAskAgain;
-
-  @override
-  State<_UserEmailPromptDialog> createState() => _UserEmailPromptDialogState();
-}
-
-class _UserEmailPromptDialogState extends State<_UserEmailPromptDialog> {
-  final _controller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  bool _dontAskAgain = false;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return AlertDialog(
-      title: Text(l10n.userEmailPromptTitle),
-      content: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n.userEmailPromptBody),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _controller,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.done,
-              autofillHints: const [AutofillHints.email],
-              decoration: InputDecoration(
-                labelText: l10n.userEmailPromptFieldLabel,
-                hintText: l10n.userEmailPromptFieldHint,
-              ),
-              validator: (value) {
-                final email = value?.trim() ?? '';
-                if (email.isEmpty || _isValidEmail(email)) return null;
-                return l10n.userEmailPromptInvalidEmail;
-              },
-              onFieldSubmitted: (_) => _submit(),
-            ),
-            if (widget.showDontAskAgain) ...[
-              const SizedBox(height: 8),
-              InkWell(
-                borderRadius: kBorderradiusSmall,
-                onTap: () {
-                  setState(() => _dontAskAgain = !_dontAskAgain);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      Checkbox(
-                        value: _dontAskAgain,
-                        activeColor: context.primary,
-                        checkColor: context.onPrimary,
-                        onChanged: (value) {
-                          setState(() => _dontAskAgain = value ?? false);
-                        },
-                      ),
-                      const SizedBox(width: 4),
-                      Expanded(child: Text(l10n.userEmailPromptDontAskAgain)),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(
-              _UserEmailPromptResult(email: null, dontAskAgain: _dontAskAgain),
-            );
-          },
-          child: Text(l10n.userEmailPromptSkip),
-        ),
-        FilledButton(
-          onPressed: _submit,
-          child: Text(l10n.userEmailPromptContinue),
-        ),
-      ],
-    );
-  }
-
-  void _submit() {
-    if (!_formKey.currentState!.validate()) return;
-
-    final email = _controller.text.trim();
-    Navigator.of(context).pop(
-      _UserEmailPromptResult(
-        email: email.isEmpty ? null : email,
-        dontAskAgain: _dontAskAgain,
-      ),
-    );
-  }
-
-  bool _isValidEmail(String email) {
-    return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email);
   }
 }

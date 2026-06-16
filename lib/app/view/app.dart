@@ -4,6 +4,7 @@ import 'package:app_links/app_links.dart';
 import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/app_router.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/common/services/premium_service.dart';
 import 'package:custom_bingo/features/bingo_card/share_link.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/arb/app_localizations.dart';
@@ -94,10 +95,15 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final themeMode = appThemeModeBeacon.watch(context);
     final palette = appThemePaletteBeacon.watch(context);
+    final isPremiumUser = isPremiumUserBeacon.watch(context);
+    final effectivePalette = availableAppThemePalette(
+      palette,
+      isPremiumUser: isPremiumUser,
+    );
     return MaterialApp.router(
       routerConfig: _router,
-      theme: getThemeData(palette: palette),
-      darkTheme: getThemeData(isDarkMode: true, palette: palette),
+      theme: getThemeData(palette: effectivePalette),
+      darkTheme: getThemeData(isDarkMode: true, palette: effectivePalette),
       themeMode: themeMode,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

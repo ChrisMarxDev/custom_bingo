@@ -14,7 +14,9 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class NewCardScreen extends StatefulWidget {
-  const NewCardScreen({super.key});
+  const NewCardScreen({this.initialBoardState, super.key});
+
+  final BingoCardState? initialBoardState;
 
   @override
   State<NewCardScreen> createState() => _NewCardScreenState();
@@ -25,6 +27,22 @@ class _NewCardScreenState extends State<NewCardScreen> {
   final _nameController = TextEditingController();
   var _appliedPreMadeTexts = <String>[];
   int _gridSize = 5;
+  BingoCardState? get _initialBoardState => widget.initialBoardState;
+  bool get _isEditingExistingBoard => _initialBoardState != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialBoardState = _initialBoardState;
+    if (initialBoardState == null) return;
+
+    _nameController.text = initialBoardState.name;
+    if (initialBoardState.gridItems.isNotEmpty) {
+      _gridSize = initialBoardState.gridItems.length
+          .clamp(2, _maxGridSize)
+          .toInt();
+    }
+  }
 
   @override
   void dispose() {
@@ -34,11 +52,14 @@ class _NewCardScreenState extends State<NewCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final hasName = _nameController.text.isNotEmpty;
+    final hasName = _nameController.text.trim().isNotEmpty;
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.newCardTitle, style: context.h2),
+        title: Text(
+          _isEditingExistingBoard ? l10n.editCardTitle : l10n.newCardTitle,
+          style: context.h2,
+        ),
         actions: [
           const BingoPopupMenu(host: BingoPopupMenuHost.newCard),
           SizedBox(width: 16),
@@ -78,19 +99,31 @@ class _NewCardScreenState extends State<NewCardScreen> {
                 child: AsyncFilledButton(
                   onPressed: hasName
                       ? () async {
-                          final name = _nameController.text;
+                          final name = _nameController.text.trim();
                           final gridSize = _gridSize;
                           final sharedPrefs = sharedPrefsBeacon.value;
-                          final gridItems = _createGridItems(gridSize);
+                          final initialBoardState = _initialBoardState;
+                          final gridItems = initialBoardState == null
+                              ? _createGridItems(gridSize)
+                              : _createEditedGridItems(
+                                  initialBoardState.gridItems,
+                                  gridSize,
+                                );
                           await saveBingoCard(
                             sharedPrefs,
                             BingoCardState(
                               name: name,
                               gridItems: gridItems,
                               lastChangeDateTime: DateTime.now(),
+                              isEditing: initialBoardState?.isEditing,
                             ),
                           );
 
+                          if (initialBoardState != null &&
+                              initialBoardState.name != name) {
+                            await deleteBingoCard(initialBoardState.name);
+                            await deleteBingoCardName(initialBoardState.name);
+                          }
                           await setCurrentSelectedBingoCard(name);
                           await addBingoCardName(name);
 
@@ -100,23 +133,29 @@ class _NewCardScreenState extends State<NewCardScreen> {
                           context.go(AppRoutePaths.bingoCard);
                         }
                       : null,
-                  child: Text(l10n.createCardButton),
+                  child: Text(
+                    _isEditingExistingBoard
+                        ? l10n.updateCardButton
+                        : l10n.createCardButton,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
               AnimatedGridPreview(gridSize: _gridSize),
-              const SizedBox(height: 24),
-              _PreMadeItemsPickerSection(
-                appliedTexts: _appliedPreMadeTexts,
-                cellCount: _gridSize * _gridSize,
-                onOpen: _openPreMadeItemsSheet,
-                onRemove: (index) {
-                  setState(() {
-                    _appliedPreMadeTexts = [..._appliedPreMadeTexts]
-                      ..removeAt(index);
-                  });
-                },
-              ),
+              if (!_isEditingExistingBoard) ...[
+                const SizedBox(height: 24),
+                _PreMadeItemsPickerSection(
+                  appliedTexts: _appliedPreMadeTexts,
+                  cellCount: _gridSize * _gridSize,
+                  onOpen: _openPreMadeItemsSheet,
+                  onRemove: (index) {
+                    setState(() {
+                      _appliedPreMadeTexts = [..._appliedPreMadeTexts]
+                        ..removeAt(index);
+                    });
+                  },
+                ),
+              ],
             ],
           ),
         ),
@@ -174,6 +213,25 @@ class _NewCardScreenState extends State<NewCardScreen> {
           text: cellTexts[row * gridSize + column],
         ),
       ),
+    );
+  }
+
+  List<List<BingoItem>> _createEditedGridItems(
+    List<List<BingoItem>> initialGridItems,
+    int gridSize,
+  ) {
+    final existingItems = initialGridItems.expand((row) => row).toList();
+    var nextExistingItemIndex = 0;
+
+    return List.generate(
+      gridSize,
+      (_) => List.generate(gridSize, (_) {
+        if (nextExistingItemIndex < existingItems.length) {
+          return existingItems[nextExistingItemIndex++];
+        }
+
+        return BingoItem(id: Uuid().v4());
+      }),
     );
   }
 }

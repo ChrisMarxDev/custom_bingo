@@ -7,7 +7,8 @@
       "namespace": "android_app",
       "package_name": "de.christophermarx.bingo.custom_bingo",
       "sha256_cert_fingerprints": [
-        "5B:1F:24:AC:65:8C:30:46:C0:B2:32:01:4E:AA:D2:EB:99:00:F0:18:F4:8D:00:09:80:BE:41:00:F9:B2:3E:A8"
+        "5B:1F:24:AC:65:8C:30:46:C0:B2:32:01:4E:AA:D2:EB:99:00:F0:18:F4:8D:00:09:80:BE:41:00:F9:B2:3E:A8",
+        "DB:54:4D:D3:60:9B:68:88:3E:2F:B6:6A:0F:56:BD:E0:33:89:AF:81:AB:57:A6:B5:DD:59:6B:4E:CF:16:86:24"
       ]
     }
   },

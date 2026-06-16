@@ -116,9 +116,9 @@ class BingoPopupMenu extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Icon(PhosphorIcons.palette()),
+                          Icon(PhosphorIcons.gear()),
                           const SizedBox(width: 8),
-                          Text(l10n.appearanceMenuItem),
+                          Text(l10n.settingsHeader),
                         ],
                       ),
                     ),

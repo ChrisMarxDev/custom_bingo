@@ -12,6 +12,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get newCardTitle => 'Neues Bingo erstellen';
 
   @override
+  String get editCardTitle => 'Bingo bearbeiten';
+
+  @override
   String get cardNameLabel => 'Name des Bingos *';
 
   @override
@@ -19,6 +22,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get createCardButton => 'Bingo erstellen';
+
+  @override
+  String get updateCardButton => 'Bingo aktualisieren';
 
   @override
   String get newBoardPreMadeSectionTitle => 'Deine vorbereiteten Einträge';
@@ -99,6 +105,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boardActionShare => 'Teilen';
 
   @override
+  String get boardActionEditBoard => 'Board bearbeiten';
+
+  @override
   String get boardActionAddPreMadeItems => 'Vorbereitete Einträge hinzufügen';
 
   @override
@@ -126,10 +135,40 @@ class AppLocalizationsDe extends AppLocalizations {
   String get appearanceMenuItem => 'Design';
 
   @override
+  String get settingsAppearanceSection => 'Design';
+
+  @override
+  String get settingsPreferencesSection => 'Einstellungen';
+
+  @override
+  String get settingsBoardsSection => 'Boards';
+
+  @override
+  String get settingsHelpSection => 'Mehr';
+
+  @override
+  String get settingsSupportSection => 'Unterstützen';
+
+  @override
   String get themeColorLabel => 'Themenfarbe';
 
   @override
+  String get themeColorSettingsDescription =>
+      'Wähle die Farbpalette für die App.';
+
+  @override
   String get darkModeLabel => 'Dunkler Modus';
+
+  @override
+  String get darkModeSettingsDescription =>
+      'Verwende eine dunklere Oberfläche.';
+
+  @override
+  String get enableConfettiLabel => 'Konfetti';
+
+  @override
+  String get enableConfettiSettingsDescription =>
+      'Zeige eine Feier, wenn du ein Bingo abschließt.';
 
   @override
   String get preMadeTilesTitle => 'Vorbereitete Felder';
@@ -192,33 +231,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get proposeFeatures => 'Funktion vorschlagen';
 
   @override
-  String get userEmailPromptTitle => 'Möchtest du eine Rückmeldung?';
+  String get proposeFeaturesSettingsDescription =>
+      'Stimme über Ideen ab und schlage vor, was als Nächstes gebaut werden soll.';
 
   @override
-  String get userEmailPromptBody =>
-      'Füge deine E-Mail-Adresse hinzu, wenn wir dir zu deinem Feedback antworten sollen.';
+  String get supportMeDirectly => 'Entwickler unterstützen';
 
   @override
-  String get userEmailPromptFieldLabel => 'E-Mail-Adresse';
+  String get supportMeDirectlySettingsDescription =>
+      'Hilf, die Entwicklung zu finanzieren und die App weiter zu verbessern.';
 
   @override
-  String get userEmailPromptFieldHint => 'du@example.com';
+  String get rateTheApp => 'App bewerten';
 
   @override
-  String get userEmailPromptDontAskAgain => 'Nicht erneut fragen';
+  String get rateTheAppSettingsDescription => 'Öffne die Bewertung im Store.';
 
   @override
-  String get userEmailPromptSkip => 'Überspringen';
+  String get contactMe => 'Kontakt';
 
   @override
-  String get userEmailPromptContinue => 'Weiter';
-
-  @override
-  String get userEmailPromptInvalidEmail =>
-      'Gib eine gültige E-Mail-Adresse ein.';
-
-  @override
-  String get supportMeDirectly => 'Direkt unterstützen';
+  String get contactMeSettingsDescription =>
+      'Sende Feedback, Fragen oder Fehlerberichte per E-Mail.';
 
   @override
   String get shareTitle => 'Bingo-Karte teilen';

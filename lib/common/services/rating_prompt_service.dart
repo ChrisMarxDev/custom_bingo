@@ -18,12 +18,17 @@ class RatingPromptService {
   static const _requestedKey = 'rating_prompt_requested';
 
   final InAppReview _inAppReview;
+  bool _requestInProgress = false;
 
   Future<void> maybeRequestAfterBingo(BuildContext context) async {
+    if (_requestInProgress) return;
+
     final prefs = sharedPrefsBeacon.value;
     if (prefs.getBool(_requestedKey) ?? false) return;
 
+    _requestInProgress = true;
     try {
+      await prefs.setBool(_requestedKey, true);
       await Future<void>.delayed(const Duration(seconds: 2));
       if (!context.mounted) return;
 
@@ -48,7 +53,6 @@ class RatingPromptService {
         ),
       );
 
-      await prefs.setBool(_requestedKey, true);
       if (wantsReview != true) return;
 
       await Future<void>.delayed(const Duration(milliseconds: 250));
@@ -58,6 +62,8 @@ class RatingPromptService {
       await _inAppReview.requestReview();
     } catch (error, stackTrace) {
       logError('Failed to request app review', error, stackTrace);
+    } finally {
+      _requestInProgress = false;
     }
   }
 }

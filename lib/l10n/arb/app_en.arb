@@ -4,6 +4,9 @@
     "newCardTitle": "Create New Bingo Grid",
     "@newCardTitle": { "description": "AppBar title of the new-card screen" },
 
+    "editCardTitle": "Edit Bingo Grid",
+    "@editCardTitle": { "description": "AppBar title of the edit-card screen" },
+
     "cardNameLabel": "Bingo Grid Name *",
     "@cardNameLabel": { "description": "Label of the card-name text field" },
 
@@ -12,6 +15,9 @@
 
     "createCardButton": "Create Bingo Grid",
     "@createCardButton": { "description": "Confirm button on the new-card screen" },
+
+    "updateCardButton": "Update Bingo Grid",
+    "@updateCardButton": { "description": "Confirm button on the edit-card screen" },
 
     "newBoardPreMadeSectionTitle": "Your pre-made items",
     "@newBoardPreMadeSectionTitle": { "description": "Expandable section title for pre-made items on the new-board screen" },
@@ -98,6 +104,9 @@
     "boardActionShare": "Share",
     "@boardActionShare": { "description": "Menu item that opens the share dialog from the board action bar" },
 
+    "boardActionEditBoard": "Edit board",
+    "@boardActionEditBoard": { "description": "Menu item that opens the board edit flow from the board action bar" },
+
     "boardActionAddPreMadeItems": "Add pre-made items",
     "@boardActionAddPreMadeItems": { "description": "Debug menu item placeholder for filling a board with pre-made items" },
 
@@ -125,11 +134,38 @@
     "appearanceMenuItem": "Appearance",
     "@appearanceMenuItem": { "description": "Menu item that opens the appearance settings screen" },
 
+    "settingsAppearanceSection": "Appearance",
+    "@settingsAppearanceSection": { "description": "Section title for appearance settings" },
+
+    "settingsPreferencesSection": "Preferences",
+    "@settingsPreferencesSection": { "description": "Section title for general preference settings" },
+
+    "settingsBoardsSection": "Boards",
+    "@settingsBoardsSection": { "description": "Section title for board-related settings" },
+
+    "settingsHelpSection": "More",
+    "@settingsHelpSection": { "description": "Section title for additional settings, help, and support entries" },
+
+    "settingsSupportSection": "Support",
+    "@settingsSupportSection": { "description": "Section title for supporting the developer" },
+
     "themeColorLabel": "Theme color",
     "@themeColorLabel": { "description": "Label above the theme color selector in settings" },
 
+    "themeColorSettingsDescription": "Choose the palette used across the app.",
+    "@themeColorSettingsDescription": { "description": "Settings helper text for the theme color selector" },
+
     "darkModeLabel": "Dark mode",
     "@darkModeLabel": { "description": "Label for the dark mode switch in settings" },
+
+    "darkModeSettingsDescription": "Use a darker interface.",
+    "@darkModeSettingsDescription": { "description": "Settings helper text for the dark mode switch" },
+
+    "enableConfettiLabel": "Confetti",
+    "@enableConfettiLabel": { "description": "Label for the confetti preference switch" },
+
+    "enableConfettiSettingsDescription": "Show a celebration when you complete a bingo.",
+    "@enableConfettiSettingsDescription": { "description": "Settings helper text for the confetti preference switch" },
 
     "preMadeTilesTitle": "Pre-made tiles",
     "@preMadeTilesTitle": { "description": "Title of the pre-made tiles settings screen and menu entry" },
@@ -191,32 +227,26 @@
     "proposeFeatures": "Propose Features",
     "@proposeFeatures": { "description": "Menu item that opens the UserOrient feedback board" },
 
-    "userEmailPromptTitle": "Want us to follow up?",
-    "@userEmailPromptTitle": { "description": "Title of the optional email prompt before opening UserOrient" },
+    "proposeFeaturesSettingsDescription": "Vote on ideas and suggest what to build next.",
+    "@proposeFeaturesSettingsDescription": { "description": "Settings helper text for the feature request entry" },
 
-    "userEmailPromptBody": "Add your email address if you'd like us to reply about your feedback.",
-    "@userEmailPromptBody": { "description": "Body copy explaining the optional email prompt before opening UserOrient" },
-
-    "userEmailPromptFieldLabel": "Email address",
-    "@userEmailPromptFieldLabel": { "description": "Label for the optional email field before opening UserOrient" },
-
-    "userEmailPromptFieldHint": "you@example.com",
-    "@userEmailPromptFieldHint": { "description": "Hint text for the optional email field before opening UserOrient" },
-
-    "userEmailPromptDontAskAgain": "Don't ask me again",
-    "@userEmailPromptDontAskAgain": { "description": "Checkbox label for opting out of future optional email prompts" },
-
-    "userEmailPromptSkip": "Skip",
-    "@userEmailPromptSkip": { "description": "Button label to skip the optional email prompt" },
-
-    "userEmailPromptContinue": "Continue",
-    "@userEmailPromptContinue": { "description": "Button label to continue after optionally entering an email" },
-
-    "userEmailPromptInvalidEmail": "Enter a valid email address.",
-    "@userEmailPromptInvalidEmail": { "description": "Validation error shown when the optional email field has an invalid email address" },
-
-    "supportMeDirectly": "Support me directly",
+    "supportMeDirectly": "Support the developer",
     "@supportMeDirectly": { "description": "Menu item that opens the direct-support paywall" },
+
+    "supportMeDirectlySettingsDescription": "Help fund development and keep the app improving.",
+    "@supportMeDirectlySettingsDescription": { "description": "Settings helper text for the direct support entry" },
+
+    "rateTheApp": "Rate the app",
+    "@rateTheApp": { "description": "Settings entry that opens the native store rating dialog" },
+
+    "rateTheAppSettingsDescription": "Open the store rating prompt.",
+    "@rateTheAppSettingsDescription": { "description": "Settings helper text for the app rating entry" },
+
+    "contactMe": "Contact me",
+    "@contactMe": { "description": "Settings entry that opens an email composer" },
+
+    "contactMeSettingsDescription": "Send feedback, questions, or bug reports by email.",
+    "@contactMeSettingsDescription": { "description": "Settings helper text for the contact email entry" },
 
     "shareTitle": "Share the bingo card",
     "@shareTitle": { "description": "Title of the share dialog" },

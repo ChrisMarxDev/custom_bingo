@@ -15,6 +15,7 @@ import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/edit_hint.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tile_controller.dart';
 import 'package:custom_bingo/features/settings/pre_made_tiles/pre_made_tiles_screen.dart';
+import 'package:custom_bingo/features/settings/settings_preferences.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_confetti/flutter_confetti.dart';
@@ -114,14 +115,16 @@ class _BingoCardScreenState extends State<BingoCardScreen> {
 
     controller.hasBingoTime.observe(context, (prev, next) {
       if (next != null) {
-        Confetti.launch(
-          context,
-          options: const ConfettiOptions(
-            particleCount: 100,
-            spread: 70,
-            y: 0.6,
-          ),
-        );
+        if (enableConfettiBeacon.value) {
+          Confetti.launch(
+            context,
+            options: const ConfettiOptions(
+              particleCount: 100,
+              spread: 70,
+              y: 0.6,
+            ),
+          );
+        }
         unawaited(
           ratingPromptServiceBeacon.value.maybeRequestAfterBingo(context),
         );
@@ -373,6 +376,14 @@ class BoardActionsPopupMenu extends StatelessWidget {
                 },
               ),
               _BoardActionMenuItem(
+                icon: PhosphorIcons.pencilSimple(),
+                label: l10n.boardActionEditBoard,
+                onPressed: () {
+                  hideOverlay();
+                  _editBoard(context);
+                },
+              ),
+              _BoardActionMenuItem(
                 icon: PhosphorIcons.shuffle(),
                 label: l10n.shuffle,
                 onPressed: () {
@@ -400,6 +411,22 @@ class BoardActionsPopupMenu extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _editBoard(BuildContext context) {
+    final name = currentSelectedBingoCardName.value;
+    if (name == null) return;
+
+    final controller = bingoCardControllerRef.of(context);
+    context.go(
+      AppRoutePaths.root,
+      extra: BingoCardState(
+        name: name,
+        gridItems: controller.gridItems.value,
+        lastChangeDateTime: controller.lastChangeDateTime.value,
+        isEditing: controller.isEditing.value,
+      ),
     );
   }
 

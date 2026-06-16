@@ -37,7 +37,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         return true;
       };
 
-      UserOrient.configure(apiKey: userOrientApiKey, languageCode: 'en');
+      UserOrient.configure(apiKey: userOrientApiKey);
+      UserOrient.setLanguage(Language.en);
 
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,

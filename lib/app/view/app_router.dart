@@ -34,7 +34,11 @@ GoRouter createAppRouter() {
     routes: [
       GoRoute(
         path: AppRoutePaths.root,
-        builder: (_, __) => const NewCardScreen(),
+        builder: (_, state) => NewCardScreen(
+          initialBoardState: state.extra is BingoCardState
+              ? state.extra! as BingoCardState
+              : null,
+        ),
       ),
       GoRoute(path: AppRoutePaths.home, builder: (_, __) => const HomeScreen()),
       GoRoute(

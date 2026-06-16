@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'Create New Bingo Grid'**
   String get newCardTitle;
 
+  /// AppBar title of the edit-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Bingo Grid'**
+  String get editCardTitle;
+
   /// Label of the card-name text field
   ///
   /// In en, this message translates to:
@@ -121,6 +127,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create Bingo Grid'**
   String get createCardButton;
+
+  /// Confirm button on the edit-card screen
+  ///
+  /// In en, this message translates to:
+  /// **'Update Bingo Grid'**
+  String get updateCardButton;
 
   /// Expandable section title for pre-made items on the new-board screen
   ///
@@ -260,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Share'**
   String get boardActionShare;
 
+  /// Menu item that opens the board edit flow from the board action bar
+  ///
+  /// In en, this message translates to:
+  /// **'Edit board'**
+  String get boardActionEditBoard;
+
   /// Debug menu item placeholder for filling a board with pre-made items
   ///
   /// In en, this message translates to:
@@ -314,17 +332,71 @@ abstract class AppLocalizations {
   /// **'Appearance'**
   String get appearanceMenuItem;
 
+  /// Section title for appearance settings
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearanceSection;
+
+  /// Section title for general preference settings
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get settingsPreferencesSection;
+
+  /// Section title for board-related settings
+  ///
+  /// In en, this message translates to:
+  /// **'Boards'**
+  String get settingsBoardsSection;
+
+  /// Section title for additional settings, help, and support entries
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get settingsHelpSection;
+
+  /// Section title for supporting the developer
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get settingsSupportSection;
+
   /// Label above the theme color selector in settings
   ///
   /// In en, this message translates to:
   /// **'Theme color'**
   String get themeColorLabel;
 
+  /// Settings helper text for the theme color selector
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the palette used across the app.'**
+  String get themeColorSettingsDescription;
+
   /// Label for the dark mode switch in settings
   ///
   /// In en, this message translates to:
   /// **'Dark mode'**
   String get darkModeLabel;
+
+  /// Settings helper text for the dark mode switch
+  ///
+  /// In en, this message translates to:
+  /// **'Use a darker interface.'**
+  String get darkModeSettingsDescription;
+
+  /// Label for the confetti preference switch
+  ///
+  /// In en, this message translates to:
+  /// **'Confetti'**
+  String get enableConfettiLabel;
+
+  /// Settings helper text for the confetti preference switch
+  ///
+  /// In en, this message translates to:
+  /// **'Show a celebration when you complete a bingo.'**
+  String get enableConfettiSettingsDescription;
 
   /// Title of the pre-made tiles settings screen and menu entry
   ///
@@ -434,59 +506,47 @@ abstract class AppLocalizations {
   /// **'Propose Features'**
   String get proposeFeatures;
 
-  /// Title of the optional email prompt before opening UserOrient
+  /// Settings helper text for the feature request entry
   ///
   /// In en, this message translates to:
-  /// **'Want us to follow up?'**
-  String get userEmailPromptTitle;
-
-  /// Body copy explaining the optional email prompt before opening UserOrient
-  ///
-  /// In en, this message translates to:
-  /// **'Add your email address if you\'d like us to reply about your feedback.'**
-  String get userEmailPromptBody;
-
-  /// Label for the optional email field before opening UserOrient
-  ///
-  /// In en, this message translates to:
-  /// **'Email address'**
-  String get userEmailPromptFieldLabel;
-
-  /// Hint text for the optional email field before opening UserOrient
-  ///
-  /// In en, this message translates to:
-  /// **'you@example.com'**
-  String get userEmailPromptFieldHint;
-
-  /// Checkbox label for opting out of future optional email prompts
-  ///
-  /// In en, this message translates to:
-  /// **'Don\'t ask me again'**
-  String get userEmailPromptDontAskAgain;
-
-  /// Button label to skip the optional email prompt
-  ///
-  /// In en, this message translates to:
-  /// **'Skip'**
-  String get userEmailPromptSkip;
-
-  /// Button label to continue after optionally entering an email
-  ///
-  /// In en, this message translates to:
-  /// **'Continue'**
-  String get userEmailPromptContinue;
-
-  /// Validation error shown when the optional email field has an invalid email address
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid email address.'**
-  String get userEmailPromptInvalidEmail;
+  /// **'Vote on ideas and suggest what to build next.'**
+  String get proposeFeaturesSettingsDescription;
 
   /// Menu item that opens the direct-support paywall
   ///
   /// In en, this message translates to:
-  /// **'Support me directly'**
+  /// **'Support the developer'**
   String get supportMeDirectly;
+
+  /// Settings helper text for the direct support entry
+  ///
+  /// In en, this message translates to:
+  /// **'Help fund development and keep the app improving.'**
+  String get supportMeDirectlySettingsDescription;
+
+  /// Settings entry that opens the native store rating dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the app'**
+  String get rateTheApp;
+
+  /// Settings helper text for the app rating entry
+  ///
+  /// In en, this message translates to:
+  /// **'Open the store rating prompt.'**
+  String get rateTheAppSettingsDescription;
+
+  /// Settings entry that opens an email composer
+  ///
+  /// In en, this message translates to:
+  /// **'Contact me'**
+  String get contactMe;
+
+  /// Settings helper text for the contact email entry
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback, questions, or bug reports by email.'**
+  String get contactMeSettingsDescription;
 
   /// Title of the share dialog
   ///
