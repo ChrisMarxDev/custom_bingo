@@ -151,5 +151,19 @@
             "date": { "type": "String" },
             "time": { "type": "String" }
         }
-    }
+    },
+
+    "screenshotCaptionPlaying": "Eine einfache App, um Bingo-Felder zu erstellen.\n\nOhne Anmeldung, ohne Werbung, vollständig kostenlos nutzbar.",
+    "screenshotCaptionCreate": "Nur zwei Bildschirme, um dein Bingo-Raster anzulegen.",
+    "screenshotCaptionLocked": "Das war es.",
+    "screenshotBoardName": "Davids Hochzeit",
+    "screenshotTilePhoneDuringVows": "Handy beim Ja-Wort",
+    "screenshotTileChampagneSpilled": "Champagner verschüttet",
+    "screenshotTileSpeechTears": "Tränen bei der Rede",
+    "screenshotTileDramaticEntrance": "Dramatischer Auftritt",
+    "screenshotTileKidsDanceFloor": "Kinder tanzen",
+    "screenshotTileGuestToast": "Toast vom Gast",
+    "screenshotTileCrowdClapsEarly": "Applaus zu früh",
+    "screenshotTileDjClassic": "DJ spielt Klassiker",
+    "screenshotTileGroupPhotoChaos": "Gruppenfoto-Chaos"
 }

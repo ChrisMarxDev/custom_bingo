@@ -336,4 +336,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String lastChange(String date, String time) {
     return 'Last change: $date $time';
   }
+
+  @override
+  String get screenshotCaptionPlaying =>
+      'Just a simple app to create bingo board.\n\nNo signup, no ads, fully free to use.';
+
+  @override
+  String get screenshotCaptionCreate =>
+      'Literally just 2 screens to create a bingo grid.';
+
+  @override
+  String get screenshotCaptionLocked => 'That\'s it.';
+
+  @override
+  String get screenshotBoardName => 'David\'s Wedding';
+
+  @override
+  String get screenshotTilePhoneDuringVows => 'Phone during vows';
+
+  @override
+  String get screenshotTileChampagneSpilled => 'Champagne spilled';
+
+  @override
+  String get screenshotTileSpeechTears => 'Speech tears';
+
+  @override
+  String get screenshotTileDramaticEntrance => 'Dramatic entrance';
+
+  @override
+  String get screenshotTileKidsDanceFloor => 'Kids take the dance floor';
+
+  @override
+  String get screenshotTileGuestToast => 'Guest gives a toast';
+
+  @override
+  String get screenshotTileCrowdClapsEarly => 'Crowd claps early';
+
+  @override
+  String get screenshotTileDjClassic => 'DJ plays a classic';
+
+  @override
+  String get screenshotTileGroupPhotoChaos => 'Group photo chaos';
 }

@@ -697,6 +697,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last change: {date} {time}'**
   String lastChange(String date, String time);
+
+  /// Promotional caption for the screenshot showing a played bingo board
+  ///
+  /// In en, this message translates to:
+  /// **'Just a simple app to create bingo board.\n\nNo signup, no ads, fully free to use.'**
+  String get screenshotCaptionPlaying;
+
+  /// Promotional caption for the screenshot showing the new-board screen
+  ///
+  /// In en, this message translates to:
+  /// **'Literally just 2 screens to create a bingo grid.'**
+  String get screenshotCaptionCreate;
+
+  /// Promotional caption for the screenshot showing the locked board
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s it.'**
+  String get screenshotCaptionLocked;
+
+  /// Sample bingo board name used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'David\'s Wedding'**
+  String get screenshotBoardName;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Phone during vows'**
+  String get screenshotTilePhoneDuringVows;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Champagne spilled'**
+  String get screenshotTileChampagneSpilled;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Speech tears'**
+  String get screenshotTileSpeechTears;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Dramatic entrance'**
+  String get screenshotTileDramaticEntrance;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Kids take the dance floor'**
+  String get screenshotTileKidsDanceFloor;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Guest gives a toast'**
+  String get screenshotTileGuestToast;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Crowd claps early'**
+  String get screenshotTileCrowdClapsEarly;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'DJ plays a classic'**
+  String get screenshotTileDjClassic;
+
+  /// Sample bingo tile text used in generated screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Group photo chaos'**
+  String get screenshotTileGroupPhotoChaos;
 }
 
 class _AppLocalizationsDelegate

@@ -252,68 +252,31 @@ class Actions extends StatelessWidget {
     final screenSize = MediaQuery.sizeOf(context);
     final viewCenter = Offset(screenSize.width / 2, screenSize.height / 2);
 
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.primary,
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          border: Border.all(color: context.outlineColor),
-        ),
-        child: IntrinsicHeight(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BoardActionsPopupMenu(onShuffle: () => shuffleCard(context)),
-              ButtonDivider(),
-              IconButton(
-                onPressed: () {
-                  // Zoom out
-                  const double scaleFactor = 1 / 1.2;
-                  final Matrix4 newMatrix = Matrix4.identity()
-                    ..translate(viewCenter.dx, viewCenter.dy)
-                    ..scale(scaleFactor, scaleFactor)
-                    ..translate(-viewCenter.dx, -viewCenter.dy);
-                  transformationController.value =
-                      newMatrix * transformationController.value;
-                },
-                icon: Icon(
-                  PhosphorIcons.magnifyingGlassMinus(),
-                  color: context.onPrimary,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  // Zoom in
-                  const double scaleFactor = 1.2;
-                  final Matrix4 newMatrix = Matrix4.identity()
-                    ..translate(viewCenter.dx, viewCenter.dy)
-                    ..scale(scaleFactor, scaleFactor)
-                    ..translate(-viewCenter.dx, -viewCenter.dy);
-                  transformationController.value =
-                      newMatrix * transformationController.value;
-                },
-                icon: Icon(
-                  PhosphorIcons.magnifyingGlassPlus(),
-                  color: context.onPrimary,
-                ),
-              ),
-              ButtonDivider(),
-              IconButton(
-                onPressed: () {
-                  final controller = bingoCardControllerRef.of(context);
-                  controller.isEditing.value = !controller.isEditing.value;
-                },
-                icon: Icon(
-                  isEditing
-                      ? PhosphorIcons.lockOpen()
-                      : PhosphorIcons.lock(PhosphorIconsStyle.fill),
-                  color: context.onPrimary,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return BoardActionBarVisual(
+      isEditing: isEditing,
+      menu: BoardActionsPopupMenu(onShuffle: () => shuffleCard(context)),
+      onZoomOut: () {
+        const double scaleFactor = 1 / 1.2;
+        final Matrix4 newMatrix = Matrix4.identity()
+          ..translate(viewCenter.dx, viewCenter.dy)
+          ..scale(scaleFactor, scaleFactor)
+          ..translate(-viewCenter.dx, -viewCenter.dy);
+        transformationController.value =
+            newMatrix * transformationController.value;
+      },
+      onZoomIn: () {
+        const double scaleFactor = 1.2;
+        final Matrix4 newMatrix = Matrix4.identity()
+          ..translate(viewCenter.dx, viewCenter.dy)
+          ..scale(scaleFactor, scaleFactor)
+          ..translate(-viewCenter.dx, -viewCenter.dy);
+        transformationController.value =
+            newMatrix * transformationController.value;
+      },
+      onToggleEditing: () {
+        final controller = bingoCardControllerRef.of(context);
+        controller.isEditing.value = !controller.isEditing.value;
+      },
     );
   }
 
@@ -339,6 +302,69 @@ class Actions extends StatelessWidget {
     if (!confirmed) return;
     final controller = bingoCardControllerRef.of(context);
     controller.shuffleCard();
+  }
+}
+
+class BoardActionBarVisual extends StatelessWidget {
+  const BoardActionBarVisual({
+    required this.isEditing,
+    required this.menu,
+    required this.onZoomOut,
+    required this.onZoomIn,
+    required this.onToggleEditing,
+    super.key,
+  });
+
+  final bool isEditing;
+  final Widget menu;
+  final VoidCallback onZoomOut;
+  final VoidCallback onZoomIn;
+  final VoidCallback onToggleEditing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: context.primary,
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: context.outlineColor),
+        ),
+        child: IntrinsicHeight(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              menu,
+              const ButtonDivider(),
+              IconButton(
+                onPressed: onZoomOut,
+                icon: Icon(
+                  PhosphorIcons.magnifyingGlassMinus(),
+                  color: context.onPrimary,
+                ),
+              ),
+              IconButton(
+                onPressed: onZoomIn,
+                icon: Icon(
+                  PhosphorIcons.magnifyingGlassPlus(),
+                  color: context.onPrimary,
+                ),
+              ),
+              const ButtonDivider(),
+              IconButton(
+                onPressed: onToggleEditing,
+                icon: Icon(
+                  isEditing
+                      ? PhosphorIcons.lockOpen()
+                      : PhosphorIcons.lock(PhosphorIconsStyle.fill),
+                  color: context.onPrimary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

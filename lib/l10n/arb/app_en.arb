@@ -338,5 +338,32 @@
             "date": { "type": "String", "example": "5.5.2026" },
             "time": { "type": "String", "example": "14:30" }
         }
-    }
+    },
+
+    "screenshotCaptionPlaying": "Just a simple app to create bingo board.\n\nNo signup, no ads, fully free to use.",
+    "@screenshotCaptionPlaying": { "description": "Promotional caption for the screenshot showing a played bingo board" },
+    "screenshotCaptionCreate": "Literally just 2 screens to create a bingo grid.",
+    "@screenshotCaptionCreate": { "description": "Promotional caption for the screenshot showing the new-board screen" },
+    "screenshotCaptionLocked": "That's it.",
+    "@screenshotCaptionLocked": { "description": "Promotional caption for the screenshot showing the locked board" },
+    "screenshotBoardName": "David's Wedding",
+    "@screenshotBoardName": { "description": "Sample bingo board name used in generated screenshots" },
+    "screenshotTilePhoneDuringVows": "Phone during vows",
+    "@screenshotTilePhoneDuringVows": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileChampagneSpilled": "Champagne spilled",
+    "@screenshotTileChampagneSpilled": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileSpeechTears": "Speech tears",
+    "@screenshotTileSpeechTears": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileDramaticEntrance": "Dramatic entrance",
+    "@screenshotTileDramaticEntrance": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileKidsDanceFloor": "Kids take the dance floor",
+    "@screenshotTileKidsDanceFloor": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileGuestToast": "Guest gives a toast",
+    "@screenshotTileGuestToast": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileCrowdClapsEarly": "Crowd claps early",
+    "@screenshotTileCrowdClapsEarly": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileDjClassic": "DJ plays a classic",
+    "@screenshotTileDjClassic": { "description": "Sample bingo tile text used in generated screenshots" },
+    "screenshotTileGroupPhotoChaos": "Group photo chaos",
+    "@screenshotTileGroupPhotoChaos": { "description": "Sample bingo tile text used in generated screenshots" }
 }

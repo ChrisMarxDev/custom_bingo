@@ -340,4 +340,45 @@ class AppLocalizationsDe extends AppLocalizations {
   String lastChange(String date, String time) {
     return 'Letzte Änderung: $date $time';
   }
+
+  @override
+  String get screenshotCaptionPlaying =>
+      'Eine einfache App, um Bingo-Felder zu erstellen.\n\nOhne Anmeldung, ohne Werbung, vollständig kostenlos nutzbar.';
+
+  @override
+  String get screenshotCaptionCreate =>
+      'Nur zwei Bildschirme, um dein Bingo-Raster anzulegen.';
+
+  @override
+  String get screenshotCaptionLocked => 'Das war es.';
+
+  @override
+  String get screenshotBoardName => 'Davids Hochzeit';
+
+  @override
+  String get screenshotTilePhoneDuringVows => 'Handy beim Ja-Wort';
+
+  @override
+  String get screenshotTileChampagneSpilled => 'Champagner verschüttet';
+
+  @override
+  String get screenshotTileSpeechTears => 'Tränen bei der Rede';
+
+  @override
+  String get screenshotTileDramaticEntrance => 'Dramatischer Auftritt';
+
+  @override
+  String get screenshotTileKidsDanceFloor => 'Kinder tanzen';
+
+  @override
+  String get screenshotTileGuestToast => 'Toast vom Gast';
+
+  @override
+  String get screenshotTileCrowdClapsEarly => 'Applaus zu früh';
+
+  @override
+  String get screenshotTileDjClassic => 'DJ spielt Klassiker';
+
+  @override
+  String get screenshotTileGroupPhotoChaos => 'Gruppenfoto-Chaos';
 }

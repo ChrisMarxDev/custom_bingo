@@ -92,6 +92,10 @@ tasks:
     desc: Run tests with coverage and a randomized order
     cmd: flutter test --coverage --test-randomize-ordering-seed random
 
+  screenshots:
+    desc: Generate localized app screenshots into build/screenshots (set SCREENSHOT_LOCALES=en,de)
+    cmd: flutter test test/screenshots/screenshots_flow_test.dart --dart-define=SCREENSHOT_LOCALES=${SCREENSHOT_LOCALES:-en}
+
   # ── Code generation ───────────────────────────────────────────────────
 
   locale:

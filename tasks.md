@@ -46,6 +46,9 @@
 | T-031 | [DONE] | 2026-06-08 | Handle RevenueCat configuration errors in the paywall | Completed 2026-06-08. Converted offering/product fetch failures into normal unavailable paywall state instead of Flutter framework errors; verified with `task lint` and `flutter test`. |
 | T-032 | [DONE] | 2026-06-08 | Toggle locked bingo cells on tap | Completed 2026-06-08. Locked cells now mark/unmark on tap while edit mode still taps to focus; verified with `task lint` and `flutter test test/features/bingo_card`. |
 | T-033 | [DONE] | 2026-06-08 | Preserve long-press bingo cell toggling | Completed 2026-06-08. Long press still toggles cells in both edit and locked modes, with locked tap toggling retained; verified with `task lint` and `flutter test test/features/bingo_card`. |
+| T-034 | [DONE] | 2026-06-17 | Add rerunnable localized screenshot generation flow | Completed 2026-06-17. Added a widget-test screenshot generator with localized copy bundles and a `task screenshots` wrapper; verified English and German PNG output. |
+| T-035 | [DONE] | 2026-06-17 | Add app-locale Codex skill and localize screenshot copy | Completed 2026-06-17. Added `.codex/skills/app-locales`, moved screenshot copy and sample tiles into app ARB/localizations, regenerated l10n, and reran English/German screenshots. |
+| T-036 | [DONE] | 2026-06-22 | Reuse app visual widgets in screenshot flow | Completed 2026-06-22. Extracted reusable app visual widgets for the new-card form, board static view, and board action bar; screenshot flow now composes those real app components and uses updated fully-free copy. |
 
 ## Feature Concepts
 

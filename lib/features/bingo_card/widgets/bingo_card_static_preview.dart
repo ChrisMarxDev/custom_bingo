@@ -1,7 +1,39 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_item.dart';
+import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_content.dart';
 import 'package:flutter/material.dart';
+
+class BingoCardStaticView extends StatelessWidget {
+  const BingoCardStaticView({
+    required this.gridItems,
+    required this.boardName,
+    required this.lastChangeDateTime,
+    this.cellSize = 64,
+    this.titleStyle,
+    super.key,
+  });
+
+  final List<List<BingoItem>> gridItems;
+  final String boardName;
+  final DateTime? lastChangeDateTime;
+  final double cellSize;
+  final TextStyle? titleStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(boardName, style: titleStyle ?? context.h2),
+        const SizedBox(height: 16),
+        BingoCardStaticPreview(gridItems: gridItems, cellSize: cellSize),
+        const SizedBox(height: 16),
+        LastChange(lastChangeDateTime: lastChangeDateTime),
+      ],
+    );
+  }
+}
 
 /// A read-only render of a bingo grid. Used on the import screen and anywhere
 /// else we need to show a card without depending on the live controller.
