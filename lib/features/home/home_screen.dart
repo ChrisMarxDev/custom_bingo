@@ -240,12 +240,30 @@ class _SupportCarouselState extends State<_SupportCarousel> {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: SizedBox(
         height: 112,
-        child: PageView.builder(
-          controller: _pageController,
-          scrollDirection: Axis.vertical,
-          onPageChanged: (page) => _page = page % items.length,
-          itemCount: items.length,
-          itemBuilder: (context, index) => items[index],
+        child: Stack(
+          children: [
+            PageView.builder(
+              controller: _pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (page) {
+                setState(() => _page = page % items.length);
+              },
+              itemCount: items.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: items[index],
+              ),
+            ),
+            Positioned(
+              right: 14,
+              top: 0,
+              bottom: 0,
+              child: _SupportCarouselIndicator(
+                count: items.length,
+                activeIndex: _page,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -272,50 +290,94 @@ class _SupportCarouselItem extends StatelessWidget {
     final foregroundColor = color.computeLuminance() > 0.45
         ? kDarkBlack
         : kWhite;
+    final gradientEndColor = Color.lerp(color, foregroundColor, 0.12) ?? color;
 
     return Material(
-      color: color,
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(24),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(24),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-          child: Row(
-            children: [
-              Icon(icon, color: foregroundColor, size: 38),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [color, gradientEndColor],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 14, 42, 14),
+            child: Row(
+              children: [
+                Icon(icon, color: foregroundColor, size: 38),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       style: context.p1.copyWith(
                         color: foregroundColor,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.p2.copyWith(
-                        color: foregroundColor.withValues(alpha: 0.78),
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.p2.copyWith(
+                          color: foregroundColor.withValues(alpha: 0.78),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Icon(Icons.chevron_right_rounded, color: foregroundColor),
-            ],
+                const SizedBox(width: 10),
+                Icon(Icons.chevron_right_rounded, color: foregroundColor),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SupportCarouselIndicator extends StatelessWidget {
+  const _SupportCarouselIndicator({
+    required this.count,
+    required this.activeIndex,
+  });
+
+  final int count;
+  final int activeIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(count, (index) {
+          final isActive = index == activeIndex;
+
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 260),
+            curve: Curves.easeOutCubic,
+            width: 6,
+            height: isActive ? 18 : 6,
+            margin: const EdgeInsets.symmetric(vertical: 3),
+            decoration: BoxDecoration(
+              color: kWhite.withValues(alpha: isActive ? 0.95 : 0.45),
+              borderRadius: BorderRadius.circular(999),
+            ),
+          );
+        }),
       ),
     );
   }
