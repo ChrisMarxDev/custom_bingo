@@ -192,7 +192,7 @@ class _SupportSummary extends StatelessWidget {
       children: [
         Icon(
           hasProAccess ? Icons.favorite : Icons.volunteer_activism,
-          color: hasProAccess ? context.success : context.primary,
+          color: context.primary,
           size: 52,
         ),
         const SizedBox(height: 16),
