@@ -115,3 +115,6 @@ app.*.map.json
 !.idea/codeStyles/
 !.idea/dictionaries/
 !.idea/runConfigurations/
+
+# Hermes autonomous workflow runtime state
+.hermes-task-loop/

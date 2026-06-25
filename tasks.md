@@ -49,6 +49,7 @@
 | T-034 | [DONE] | 2026-06-17 | Add rerunnable localized screenshot generation flow | Completed 2026-06-17. Added a widget-test screenshot generator with localized copy bundles and a `task screenshots` wrapper; verified English and German PNG output. |
 | T-035 | [DONE] | 2026-06-17 | Add app-locale Codex skill and localize screenshot copy | Completed 2026-06-17. Added `.codex/skills/app-locales`, moved screenshot copy and sample tiles into app ARB/localizations, regenerated l10n, and reran English/German screenshots. |
 | T-036 | [DONE] | 2026-06-22 | Reuse app visual widgets in screenshot flow | Completed 2026-06-22. Extracted reusable app visual widgets for the new-card form, board static view, and board action bar; screenshot flow now composes those real app components and uses updated fully-free copy. |
+| T-037 | [DONE] | 2026-06-25 | Add Hermes-managed daily GitHub issue workflow | Added token-gated loop scripts, local workflow skill, daily cron wrapper, and Hermes project profile; verified with dry run and shell syntax checks. |
 
 ## Feature Concepts
 
