@@ -21,6 +21,17 @@ class RatingPromptService {
   bool _requestInProgress = false;
 
   Future<void> maybeRequestAfterBingo(BuildContext context) async {
+    await _maybeRequestReview(context, delay: const Duration(seconds: 2));
+  }
+
+  Future<void> maybeRequestFromSupportPrompt(BuildContext context) async {
+    await _maybeRequestReview(context);
+  }
+
+  Future<void> _maybeRequestReview(
+    BuildContext context, {
+    Duration delay = Duration.zero,
+  }) async {
     if (_requestInProgress) return;
 
     final prefs = sharedPrefsBeacon.value;
@@ -29,8 +40,10 @@ class RatingPromptService {
     _requestInProgress = true;
     try {
       await prefs.setBool(_requestedKey, true);
-      await Future<void>.delayed(const Duration(seconds: 2));
-      if (!context.mounted) return;
+      if (delay > Duration.zero) {
+        await Future<void>.delayed(delay);
+        if (!context.mounted) return;
+      }
 
       final l10n = context.l10n;
       final wantsReview = await showDialog<bool>(

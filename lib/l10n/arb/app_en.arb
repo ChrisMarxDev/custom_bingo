@@ -236,6 +236,18 @@
     "supportMeDirectlySettingsDescription": "Help fund development and keep the app improving.",
     "@supportMeDirectlySettingsDescription": { "description": "Settings helper text for the direct support entry" },
 
+    "supportCarouselProTitle": "Support Custom Bingo",
+    "@supportCarouselProTitle": { "description": "Title of the home-screen support carousel item that opens the paywall" },
+
+    "supportCarouselProSubtitle": "Unlock bonus colors and help keep the app independent.",
+    "@supportCarouselProSubtitle": { "description": "Subtitle of the home-screen support carousel item that opens the paywall" },
+
+    "supportCarouselRateTitle": "Enjoying the app?",
+    "@supportCarouselRateTitle": { "description": "Title of the home-screen support carousel item that asks for a store review" },
+
+    "supportCarouselRateSubtitle": "A quick review helps more people find Custom Bingo.",
+    "@supportCarouselRateSubtitle": { "description": "Subtitle of the home-screen support carousel item that asks for a store review" },
+
     "rateTheApp": "Rate the app",
     "@rateTheApp": { "description": "Settings entry that opens the native store rating dialog" },
 
@@ -247,6 +259,63 @@
 
     "contactMeSettingsDescription": "Send feedback, questions, or bug reports by email.",
     "@contactMeSettingsDescription": { "description": "Settings helper text for the contact email entry" },
+
+    "paywallTitle": "Support Custom Bingo",
+    "@paywallTitle": { "description": "AppBar title of the direct-support paywall" },
+
+    "paywallThankYouTitle": "Thank you",
+    "@paywallThankYouTitle": { "description": "Paywall title shown after Pro access is active" },
+
+    "paywallSupportTitle": "Support Custom Bingo",
+    "@paywallSupportTitle": { "description": "Main title on the direct-support paywall" },
+
+    "paywallSupportBody": "This purchase supports me, the developer, directly. You get my gratitude and a few small bonus things for your boards.",
+    "@paywallSupportBody": { "description": "Main body copy on the direct-support paywall" },
+
+    "paywallBonusGratitude": "My gratitude, sincerely.",
+    "@paywallBonusGratitude": { "description": "First benefit line on the direct-support paywall" },
+
+    "paywallBonusColors": "A few extra board colors.",
+    "@paywallBonusColors": { "description": "Second benefit line on the direct-support paywall" },
+
+    "paywallBonusExtras": "Small supporter extras over time.",
+    "@paywallBonusExtras": { "description": "Third benefit line on the direct-support paywall" },
+
+    "paywallFreeForever": "No one ever needs to pay for this app. Custom Bingo stays usable for everyone.",
+    "@paywallFreeForever": { "description": "Footer reassurance on the direct-support paywall" },
+
+    "paywallLoadingPrice": "Loading price",
+    "@paywallLoadingPrice": { "description": "Placeholder shown while the paywall price is loading" },
+
+    "paywallUnavailable": "Unavailable",
+    "@paywallUnavailable": { "description": "Paywall price/button text when purchases are unavailable" },
+
+    "paywallSupportOnce": "Support once",
+    "@paywallSupportOnce": { "description": "Purchase button label on the direct-support paywall" },
+
+    "paywallRestorePurchase": "Restore purchase",
+    "@paywallRestorePurchase": { "description": "Restore button label on the direct-support paywall" },
+
+    "paywallProActiveToast": "Custom Bingo Pro is active.",
+    "@paywallProActiveToast": { "description": "Toast shown after a successful Pro purchase" },
+
+    "paywallPurchaseInactiveToast": "Purchase finished, but Pro is not active.",
+    "@paywallPurchaseInactiveToast": { "description": "Toast shown if a purchase returns without Pro access" },
+
+    "paywallProRestoredToast": "Custom Bingo Pro restored.",
+    "@paywallProRestoredToast": { "description": "Toast shown after restoring Pro access" },
+
+    "paywallNoPurchaseFoundToast": "No Pro purchase found.",
+    "@paywallNoPurchaseFoundToast": { "description": "Toast shown when restore finds no Pro access" },
+
+    "paywallPurchasesUnavailable": "Purchases are unavailable right now.",
+    "@paywallPurchasesUnavailable": { "description": "Fallback error text for a paywall purchase error" },
+
+    "paywallPlatformUnavailable": "Purchases are unavailable on this platform.",
+    "@paywallPlatformUnavailable": { "description": "Fallback paywall text when purchases are not configured for the platform" },
+
+    "paywallCouldNotLoad": "Could not load purchase information.",
+    "@paywallCouldNotLoad": { "description": "Fallback paywall error text for an unknown purchase loading error" },
 
     "shareTitle": "Share the bingo card",
     "@shareTitle": { "description": "Title of the share dialog" },

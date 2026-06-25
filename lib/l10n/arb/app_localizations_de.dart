@@ -242,6 +242,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Hilf, die Entwicklung zu finanzieren und die App weiter zu verbessern.';
 
   @override
+  String get supportCarouselProTitle => 'Custom Bingo unterstützen';
+
+  @override
+  String get supportCarouselProSubtitle =>
+      'Schalte Bonusfarben frei und hilf, die App unabhängig zu halten.';
+
+  @override
+  String get supportCarouselRateTitle => 'Gefällt dir die App?';
+
+  @override
+  String get supportCarouselRateSubtitle =>
+      'Eine kurze Bewertung hilft anderen, Custom Bingo zu finden.';
+
+  @override
   String get rateTheApp => 'App bewerten';
 
   @override
@@ -253,6 +267,70 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get contactMeSettingsDescription =>
       'Sende Feedback, Fragen oder Fehlerberichte per E-Mail.';
+
+  @override
+  String get paywallTitle => 'Custom Bingo unterstützen';
+
+  @override
+  String get paywallThankYouTitle => 'Danke';
+
+  @override
+  String get paywallSupportTitle => 'Custom Bingo unterstützen';
+
+  @override
+  String get paywallSupportBody =>
+      'Dieser Kauf unterstützt mich, den Entwickler, direkt. Du bekommst meine Dankbarkeit und ein paar kleine Bonusfunktionen für deine Boards.';
+
+  @override
+  String get paywallBonusGratitude => 'Meine Dankbarkeit, ehrlich.';
+
+  @override
+  String get paywallBonusColors => 'Ein paar zusätzliche Board-Farben.';
+
+  @override
+  String get paywallBonusExtras => 'Kleine Unterstützer-Extras mit der Zeit.';
+
+  @override
+  String get paywallFreeForever =>
+      'Niemand muss jemals für diese App bezahlen. Custom Bingo bleibt für alle nutzbar.';
+
+  @override
+  String get paywallLoadingPrice => 'Preis wird geladen';
+
+  @override
+  String get paywallUnavailable => 'Nicht verfügbar';
+
+  @override
+  String get paywallSupportOnce => 'Einmal unterstützen';
+
+  @override
+  String get paywallRestorePurchase => 'Kauf wiederherstellen';
+
+  @override
+  String get paywallProActiveToast => 'Custom Bingo Pro ist aktiv.';
+
+  @override
+  String get paywallPurchaseInactiveToast =>
+      'Kauf abgeschlossen, aber Pro ist nicht aktiv.';
+
+  @override
+  String get paywallProRestoredToast =>
+      'Custom Bingo Pro wurde wiederhergestellt.';
+
+  @override
+  String get paywallNoPurchaseFoundToast => 'Kein Pro-Kauf gefunden.';
+
+  @override
+  String get paywallPurchasesUnavailable =>
+      'Käufe sind gerade nicht verfügbar.';
+
+  @override
+  String get paywallPlatformUnavailable =>
+      'Käufe sind auf dieser Plattform nicht verfügbar.';
+
+  @override
+  String get paywallCouldNotLoad =>
+      'Kaufinformationen konnten nicht geladen werden.';
 
   @override
   String get shareTitle => 'Bingo-Karte teilen';

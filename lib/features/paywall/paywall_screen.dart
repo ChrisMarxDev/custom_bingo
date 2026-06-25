@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/widgets/toast.dart';
+import 'package:custom_bingo/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:state_beacon/state_beacon.dart';
 
@@ -52,11 +53,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
         _isLoadingOption = false;
       });
     } on Object catch (error) {
+      if (!mounted) return;
+
       revenueCatStateBeacon.value = revenueCatStateBeacon.value.copyWith(
         status: RevenueCatStatus.error,
-        message: _messageFromRevenueCatError(error),
+        message: _messageFromRevenueCatError(context, error),
       );
-      if (!mounted) return;
 
       setState(() {
         _option = null;
@@ -75,17 +77,20 @@ class _PaywallScreenState extends State<PaywallScreen> {
       if (!mounted) return;
 
       if (hasRevenueCatProAccess(customerInfo)) {
-        await showSuccessToast(context, 'Custom Bingo Pro is active.');
+        await showSuccessToast(context, context.l10n.paywallProActiveToast);
       } else {
         await showNeutralToast(
           context,
-          'Purchase finished, but Pro is not active.',
+          context.l10n.paywallPurchaseInactiveToast,
         );
       }
     } on Object catch (error) {
       if (!mounted || error is RevenueCatPurchaseCancelled) return;
 
-      await showErrorToast(context, _messageFromRevenueCatError(error));
+      await showErrorToast(
+        context,
+        _messageFromRevenueCatError(context, error),
+      );
     } finally {
       if (mounted) {
         setState(() => _isPurchasing = false);
@@ -100,14 +105,20 @@ class _PaywallScreenState extends State<PaywallScreen> {
       if (!mounted) return;
 
       if (hasRevenueCatProAccess(customerInfo)) {
-        await showSuccessToast(context, 'Custom Bingo Pro restored.');
+        await showSuccessToast(context, context.l10n.paywallProRestoredToast);
       } else {
-        await showNeutralToast(context, 'No Pro purchase found.');
+        await showNeutralToast(
+          context,
+          context.l10n.paywallNoPurchaseFoundToast,
+        );
       }
     } on Object catch (error) {
       if (!mounted || error is RevenueCatPurchaseCancelled) return;
 
-      await showErrorToast(context, _messageFromRevenueCatError(error));
+      await showErrorToast(
+        context,
+        _messageFromRevenueCatError(context, error),
+      );
     } finally {
       if (mounted) {
         setState(() => _isRestoring = false);
@@ -136,10 +147,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
         !hasProAccess;
     final canRestore = revenueCatState.isConfigured && !_isRestoring;
     final price = _option?.priceString;
-    final availabilityMessage = _availabilityMessage(revenueCatState);
+    final availabilityMessage = _availabilityMessage(context, revenueCatState);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Support Custom Bingo', style: context.h2)),
+      appBar: AppBar(title: Text(context.l10n.paywallTitle, style: context.h2)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
@@ -186,29 +197,27 @@ class _SupportSummary extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          hasProAccess ? 'Thank you' : 'Support Custom Bingo',
+          hasProAccess
+              ? context.l10n.paywallThankYouTitle
+              : context.l10n.paywallSupportTitle,
           textAlign: TextAlign.center,
           style: context.h2.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 10),
         Text(
-          'This purchase supports me, the developer, directly. You get my '
-          'gratitude and a few small bonus things for your boards.',
+          context.l10n.paywallSupportBody,
           textAlign: TextAlign.center,
           style: context.p1.copyWith(color: context.weakTextColor),
         ),
         const SizedBox(height: 22),
-        const _BonusLine(
+        _BonusLine(
           icon: Icons.favorite,
-          text: 'My gratitude, sincerely.',
+          text: context.l10n.paywallBonusGratitude,
         ),
-        const _BonusLine(
-          icon: Icons.palette,
-          text: 'A few extra board colors.',
-        ),
-        const _BonusLine(
+        _BonusLine(icon: Icons.palette, text: context.l10n.paywallBonusColors),
+        _BonusLine(
           icon: Icons.auto_awesome,
-          text: 'Small supporter extras over time.',
+          text: context.l10n.paywallBonusExtras,
         ),
       ],
     );
@@ -272,10 +281,19 @@ class _PaywallActions extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'No one ever needs to pay for this app. Custom Bingo stays usable '
-          'for everyone.',
+          context.l10n.paywallFreeForever,
           textAlign: TextAlign.center,
           style: context.p2.copyWith(color: context.weakTextColor),
+        ),
+        const SizedBox(height: 18),
+        Text(
+          _priceLabel(context, isLoadingOption, price),
+          textAlign: TextAlign.center,
+          style: context.h1.copyWith(
+            fontSize: 42,
+            fontWeight: FontWeight.w900,
+            color: price == null ? context.weakTextColor : context.textColor,
+          ),
         ),
         const SizedBox(height: 14),
         FilledButton.icon(
@@ -287,7 +305,7 @@ class _PaywallActions extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : Icon(hasProAccess ? Icons.check_circle : Icons.favorite),
-          label: Text(_purchaseButtonLabel(isLoadingOption, price)),
+          label: Text(context.l10n.paywallSupportOnce),
         ),
         const SizedBox(height: 8),
         TextButton.icon(
@@ -298,7 +316,7 @@ class _PaywallActions extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.restore),
-          label: const Text('Restore purchase'),
+          label: Text(context.l10n.paywallRestorePurchase),
         ),
         if (availabilityMessage != null) ...[
           const SizedBox(height: 8),
@@ -313,23 +331,23 @@ class _PaywallActions extends StatelessWidget {
   }
 }
 
-String _purchaseButtonLabel(bool isLoading, String? price) {
-  if (isLoading) return 'Loading price';
-  if (price == null) return 'Unavailable';
-  return 'Support once - $price';
+String _priceLabel(BuildContext context, bool isLoading, String? price) {
+  if (isLoading) return context.l10n.paywallLoadingPrice;
+  if (price == null) return context.l10n.paywallUnavailable;
+  return price;
 }
 
-String? _availabilityMessage(RevenueCatState state) {
+String? _availabilityMessage(BuildContext context, RevenueCatState state) {
   return switch (state.status) {
     RevenueCatStatus.error =>
-      state.message ?? 'Purchases are unavailable right now.',
+      state.message ?? context.l10n.paywallPurchasesUnavailable,
     RevenueCatStatus.unavailable =>
-      state.message ?? 'Purchases are unavailable on this platform.',
+      state.message ?? context.l10n.paywallPlatformUnavailable,
     _ => null,
   };
 }
 
-String _messageFromRevenueCatError(Object error) {
+String _messageFromRevenueCatError(BuildContext context, Object error) {
   if (error is RevenueCatException) return error.message;
-  return 'Could not load purchase information.';
+  return context.l10n.paywallCouldNotLoad;
 }

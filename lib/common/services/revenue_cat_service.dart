@@ -11,6 +11,9 @@ const revenueCatEntitlementId = 'pro';
 const revenueCatOfferingId = 'default';
 const revenueCatPackageId = '';
 const revenueCatLifetimeProductId = 'lifetime';
+// Future donation tiers: when the 5, 10, and 15 euro SKUs are ready, surface
+// them as separate products in the offering. Every SKU should be attached to
+// the `pro` entitlement in RevenueCat so entitlement checks stay authoritative.
 
 final revenueCatStateBeacon = Beacon.writable<RevenueCatState>(
   const RevenueCatState(
@@ -35,11 +38,10 @@ class RevenueCatState {
   bool get isConfigured => status == RevenueCatStatus.configured;
 
   bool get hasProAccess {
-    return customerInfo
-            ?.entitlements
-            .active[revenueCatEntitlementId]
-            ?.isActive ??
-        false;
+    final info = customerInfo;
+    if (info == null) return false;
+
+    return hasRevenueCatProAccess(info);
   }
 
   RevenueCatState copyWith({

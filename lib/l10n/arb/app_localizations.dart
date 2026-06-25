@@ -524,6 +524,30 @@ abstract class AppLocalizations {
   /// **'Help fund development and keep the app improving.'**
   String get supportMeDirectlySettingsDescription;
 
+  /// Title of the home-screen support carousel item that opens the paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Support Custom Bingo'**
+  String get supportCarouselProTitle;
+
+  /// Subtitle of the home-screen support carousel item that opens the paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock bonus colors and help keep the app independent.'**
+  String get supportCarouselProSubtitle;
+
+  /// Title of the home-screen support carousel item that asks for a store review
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying the app?'**
+  String get supportCarouselRateTitle;
+
+  /// Subtitle of the home-screen support carousel item that asks for a store review
+  ///
+  /// In en, this message translates to:
+  /// **'A quick review helps more people find Custom Bingo.'**
+  String get supportCarouselRateSubtitle;
+
   /// Settings entry that opens the native store rating dialog
   ///
   /// In en, this message translates to:
@@ -547,6 +571,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send feedback, questions, or bug reports by email.'**
   String get contactMeSettingsDescription;
+
+  /// AppBar title of the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Support Custom Bingo'**
+  String get paywallTitle;
+
+  /// Paywall title shown after Pro access is active
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you'**
+  String get paywallThankYouTitle;
+
+  /// Main title on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Support Custom Bingo'**
+  String get paywallSupportTitle;
+
+  /// Main body copy on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'This purchase supports me, the developer, directly. You get my gratitude and a few small bonus things for your boards.'**
+  String get paywallSupportBody;
+
+  /// First benefit line on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'My gratitude, sincerely.'**
+  String get paywallBonusGratitude;
+
+  /// Second benefit line on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'A few extra board colors.'**
+  String get paywallBonusColors;
+
+  /// Third benefit line on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Small supporter extras over time.'**
+  String get paywallBonusExtras;
+
+  /// Footer reassurance on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'No one ever needs to pay for this app. Custom Bingo stays usable for everyone.'**
+  String get paywallFreeForever;
+
+  /// Placeholder shown while the paywall price is loading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading price'**
+  String get paywallLoadingPrice;
+
+  /// Paywall price/button text when purchases are unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get paywallUnavailable;
+
+  /// Purchase button label on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Support once'**
+  String get paywallSupportOnce;
+
+  /// Restore button label on the direct-support paywall
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchase'**
+  String get paywallRestorePurchase;
+
+  /// Toast shown after a successful Pro purchase
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Bingo Pro is active.'**
+  String get paywallProActiveToast;
+
+  /// Toast shown if a purchase returns without Pro access
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase finished, but Pro is not active.'**
+  String get paywallPurchaseInactiveToast;
+
+  /// Toast shown after restoring Pro access
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Bingo Pro restored.'**
+  String get paywallProRestoredToast;
+
+  /// Toast shown when restore finds no Pro access
+  ///
+  /// In en, this message translates to:
+  /// **'No Pro purchase found.'**
+  String get paywallNoPurchaseFoundToast;
+
+  /// Fallback error text for a paywall purchase error
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases are unavailable right now.'**
+  String get paywallPurchasesUnavailable;
+
+  /// Fallback paywall text when purchases are not configured for the platform
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases are unavailable on this platform.'**
+  String get paywallPlatformUnavailable;
+
+  /// Fallback paywall error text for an unknown purchase loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load purchase information.'**
+  String get paywallCouldNotLoad;
 
   /// Title of the share dialog
   ///

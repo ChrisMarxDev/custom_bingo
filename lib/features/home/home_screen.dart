@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:custom_bingo/app/view/app_route_paths.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
+import 'package:custom_bingo/common/services/premium_service.dart';
+import 'package:custom_bingo/common/services/rating_prompt_service.dart';
 import 'package:custom_bingo/features/bingo_card/bingo_card_logic.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_card_static_preview.dart';
 import 'package:custom_bingo/features/bingo_card/widgets/bingo_popup_menu.dart';
@@ -39,25 +43,33 @@ class HomeScreen extends StatelessWidget {
           onRefresh: () async => controller.reloadBoards(),
           child: boards.isEmpty
               ? const _EmptyHomeGrid()
-              : GridView.builder(
+              : CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.76,
-                  ),
-                  itemCount: boards.length,
-                  itemBuilder: (context, index) {
-                    final board = boards[index];
-                    return _HomeBoardTile(
-                      board: board,
-                      onOpen: () => _openBoard(context, board),
-                      onDelete: () =>
-                          _confirmDeleteBoard(context, controller, board),
-                    );
-                  },
+                  slivers: [
+                    const SliverToBoxAdapter(child: _SupportCarousel()),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+                      sliver: SliverGrid.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 0.76,
+                            ),
+                        itemCount: boards.length,
+                        itemBuilder: (context, index) {
+                          final board = boards[index];
+                          return _HomeBoardTile(
+                            board: board,
+                            onOpen: () => _openBoard(context, board),
+                            onDelete: () =>
+                                _confirmDeleteBoard(context, controller, board),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
         ),
       ),
@@ -157,6 +169,158 @@ class _HomeBoardTile extends StatelessWidget {
   }
 }
 
+class _SupportCarousel extends StatefulWidget {
+  const _SupportCarousel();
+
+  @override
+  State<_SupportCarousel> createState() => _SupportCarouselState();
+}
+
+class _SupportCarouselState extends State<_SupportCarousel> {
+  late final PageController _pageController;
+  Timer? _timer;
+  var _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _timer = Timer.periodic(const Duration(seconds: 5), (_) => _nextPage());
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _nextPage() {
+    if (!mounted || !_pageController.hasClients) return;
+
+    _page = (_page + 1) % 2;
+    unawaited(
+      _pageController.animateToPage(
+        _page,
+        duration: const Duration(milliseconds: 520),
+        curve: Curves.easeOutCubic,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isPremium = isPremiumUserBeacon.watch(context);
+    if (isPremium) return const SizedBox.shrink();
+
+    final items = [
+      _SupportCarouselItem(
+        icon: Icons.favorite_rounded,
+        title: context.l10n.supportCarouselProTitle,
+        subtitle: context.l10n.supportCarouselProSubtitle,
+        color: context.primary,
+        onTap: () => context.push(AppRoutePaths.paywall),
+      ),
+      _SupportCarouselItem(
+        icon: Icons.star_rounded,
+        title: context.l10n.supportCarouselRateTitle,
+        subtitle: context.l10n.supportCarouselRateSubtitle,
+        color: const Color(0xFFEA580C),
+        onTap: () {
+          unawaited(
+            ratingPromptServiceBeacon.value.maybeRequestFromSupportPrompt(
+              context,
+            ),
+          );
+        },
+      ),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: SizedBox(
+        height: 112,
+        child: PageView.builder(
+          controller: _pageController,
+          scrollDirection: Axis.vertical,
+          onPageChanged: (page) => _page = page % items.length,
+          itemCount: items.length,
+          itemBuilder: (context, index) => items[index],
+        ),
+      ),
+    );
+  }
+}
+
+class _SupportCarouselItem extends StatelessWidget {
+  const _SupportCarouselItem({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final foregroundColor = color.computeLuminance() > 0.45
+        ? kDarkBlack
+        : kWhite;
+
+    return Material(
+      color: color,
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(24),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          child: Row(
+            children: [
+              Icon(icon, color: foregroundColor, size: 38),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.p1.copyWith(
+                        color: foregroundColor,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.p2.copyWith(
+                        color: foregroundColor.withValues(alpha: 0.78),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              Icon(Icons.chevron_right_rounded, color: foregroundColor),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _DeleteBoardButton extends StatelessWidget {
   const _DeleteBoardButton({required this.onPressed});
 
@@ -224,7 +388,8 @@ class _EmptyHomeGrid extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(24),
       children: [
-        SizedBox(height: MediaQuery.sizeOf(context).height * 0.24),
+        const _SupportCarousel(),
+        SizedBox(height: MediaQuery.sizeOf(context).height * 0.16),
         Icon(Icons.grid_view_rounded, size: 40, color: context.weakTextColor),
         const SizedBox(height: 12),
         Text(
