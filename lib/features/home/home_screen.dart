@@ -321,11 +321,11 @@ class _SupportCarouselItem extends StatelessWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                      style: context.p1.copyWith(
-                        color: foregroundColor,
-                        fontWeight: FontWeight.bold,
+                        style: context.p1.copyWith(
+                          color: foregroundColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
                       const SizedBox(height: 4),
                       Text(
                         subtitle,
