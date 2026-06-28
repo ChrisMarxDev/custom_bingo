@@ -68,6 +68,21 @@
     "settingsSupportSection": "Unterstützen",
     "themeColorLabel": "Themenfarbe",
     "themeColorSettingsDescription": "Wähle die Farbpalette für die App.",
+    "languageSettingsTitle": "Sprache",
+    "languageSettingsSelectorLabel": "App-Sprache",
+    "languageSettingsSystemOption": "Systemstandard ({language})",
+    "@languageSettingsSystemOption": {
+        "placeholders": {
+            "language": { "type": "String" }
+        }
+    },
+    "languageSettingsSystemDescription": "Folgt deiner Telefonsprache: {language}.",
+    "@languageSettingsSystemDescription": {
+        "placeholders": {
+            "language": { "type": "String" }
+        }
+    },
+    "languageSettingsOverrideDescription": "Diese Sprache statt der Telefonsprache verwenden.",
     "darkModeLabel": "Dunkler Modus",
     "darkModeSettingsDescription": "Verwende eine dunklere Oberfläche.",
     "enableConfettiLabel": "Konfetti",

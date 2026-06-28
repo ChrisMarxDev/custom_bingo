@@ -155,6 +155,31 @@
     "themeColorSettingsDescription": "Choose the palette used across the app.",
     "@themeColorSettingsDescription": { "description": "Settings helper text for the theme color selector" },
 
+    "languageSettingsTitle": "Language",
+    "@languageSettingsTitle": { "description": "Settings tile title for choosing the app language" },
+
+    "languageSettingsSelectorLabel": "App language",
+    "@languageSettingsSelectorLabel": { "description": "Label above the language dropdown in settings" },
+
+    "languageSettingsSystemOption": "System default ({language})",
+    "@languageSettingsSystemOption": {
+        "description": "Dropdown option that makes the app follow the phone/system language. The placeholder is the current phone language display name.",
+        "placeholders": {
+            "language": { "type": "String", "example": "Deutsch" }
+        }
+    },
+
+    "languageSettingsSystemDescription": "Following your phone language: {language}.",
+    "@languageSettingsSystemDescription": {
+        "description": "Settings helper text when no manual app language override is selected. The placeholder is the current phone language display name.",
+        "placeholders": {
+            "language": { "type": "String", "example": "Deutsch" }
+        }
+    },
+
+    "languageSettingsOverrideDescription": "Use this language instead of the phone language.",
+    "@languageSettingsOverrideDescription": { "description": "Settings helper text when a manual app language override is selected" },
+
     "darkModeLabel": "Dark mode",
     "@darkModeLabel": { "description": "Label for the dark mode switch in settings" },
 

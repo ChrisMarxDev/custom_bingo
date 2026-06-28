@@ -4,27 +4,27 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for English (`en`).
-class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+/// The translations for Spanish Castilian (`es`).
+class AppLocalizationsEs extends AppLocalizations {
+  AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get newCardTitle => 'Create New Bingo Grid';
+  String get newCardTitle => 'Crear nueva cuadrícula de bingo';
 
   @override
-  String get editCardTitle => 'Edit Bingo Grid';
+  String get editCardTitle => 'Editar cuadrícula de bingo';
 
   @override
-  String get cardNameLabel => 'Bingo Grid Name *';
+  String get cardNameLabel => 'Nombre de la cuadrícula *';
 
   @override
-  String get cardNameHint => 'Enter a name for your bingo grid';
+  String get cardNameHint => 'Ponle nombre a tu cuadrícula de bingo';
 
   @override
-  String get createCardButton => 'Create Bingo Grid';
+  String get createCardButton => 'Crear cuadrícula';
 
   @override
-  String get updateCardButton => 'Update Bingo Grid';
+  String get updateCardButton => 'Actualizar cuadrícula';
 
   @override
   String get newBoardPreMadeSectionTitle => 'Your pre-made items';
@@ -54,10 +54,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get defaultCardName => 'Bingo Card';
+  String get defaultCardName => 'Tarjeta de bingo';
 
   @override
-  String get toggleHint => 'Press long to mark a field as checked';
+  String get toggleHint => 'Mantén pulsado para marcar una casilla';
 
   @override
   String get editingHintBefore => 'Press the lock icon';
@@ -72,10 +72,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteCardConfirm => 'Are you sure you want to delete this card?';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Cancelar';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Eliminar';
 
   @override
   String get shuffleCardTitle => 'Shuffle Card';
@@ -85,7 +85,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.';
 
   @override
-  String get shuffle => 'Shuffle';
+  String get shuffle => 'Mezclar';
 
   @override
   String get ratingPromptTitle => 'Do you like Custom Bingo?';
@@ -101,19 +101,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ratingPromptYes => 'Yes, I like it';
 
   @override
-  String get boardActionShare => 'Share';
+  String get boardActionShare => 'Compartir';
 
   @override
-  String get boardActionEditBoard => 'Edit board';
+  String get boardActionEditBoard => 'Editar tablero';
 
   @override
   String get boardActionAddPreMadeItems => 'Add pre-made items';
 
   @override
-  String get cellHint => 'Enter text…';
+  String get cellHint => 'Escribe texto…';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Editar';
 
   @override
   String get markDone => 'Mark Done';
@@ -122,71 +122,71 @@ class AppLocalizationsEn extends AppLocalizations {
   String get markNotDone => 'Mark Not Done';
 
   @override
-  String get newCardMenuItem => 'New bingo board';
+  String get newCardMenuItem => 'Nuevo tablero de bingo';
 
   @override
-  String get yourCardsHeader => 'Your Boards';
+  String get yourCardsHeader => 'Tus tableros';
 
   @override
-  String get settingsHeader => 'Settings';
+  String get settingsHeader => 'Ajustes';
 
   @override
   String get appearanceMenuItem => 'Appearance';
 
   @override
-  String get settingsAppearanceSection => 'Appearance';
+  String get settingsAppearanceSection => 'Apariencia';
 
   @override
-  String get settingsPreferencesSection => 'Preferences';
+  String get settingsPreferencesSection => 'Preferencias';
 
   @override
-  String get settingsBoardsSection => 'Boards';
+  String get settingsBoardsSection => 'Tableros';
 
   @override
-  String get settingsHelpSection => 'More';
+  String get settingsHelpSection => 'Más';
 
   @override
-  String get settingsSupportSection => 'Support';
+  String get settingsSupportSection => 'Apoyo';
 
   @override
-  String get themeColorLabel => 'Theme color';
+  String get themeColorLabel => 'Color del tema';
 
   @override
   String get themeColorSettingsDescription =>
-      'Choose the palette used across the app.';
+      'Elige la paleta usada en toda la app.';
 
   @override
-  String get languageSettingsTitle => 'Language';
+  String get languageSettingsTitle => 'Idioma';
 
   @override
-  String get languageSettingsSelectorLabel => 'App language';
+  String get languageSettingsSelectorLabel => 'Idioma de la app';
 
   @override
   String languageSettingsSystemOption(String language) {
-    return 'System default ($language)';
+    return 'Predeterminado del sistema ($language)';
   }
 
   @override
   String languageSettingsSystemDescription(String language) {
-    return 'Following your phone language: $language.';
+    return 'Sigue el idioma del teléfono: $language.';
   }
 
   @override
   String get languageSettingsOverrideDescription =>
-      'Use this language instead of the phone language.';
+      'Usar este idioma en lugar del idioma del teléfono.';
 
   @override
-  String get darkModeLabel => 'Dark mode';
+  String get darkModeLabel => 'Modo oscuro';
 
   @override
-  String get darkModeSettingsDescription => 'Use a darker interface.';
+  String get darkModeSettingsDescription => 'Usar una interfaz más oscura.';
 
   @override
-  String get enableConfettiLabel => 'Confetti';
+  String get enableConfettiLabel => 'Confeti';
 
   @override
   String get enableConfettiSettingsDescription =>
-      'Show a celebration when you complete a bingo.';
+      'Mostrar una celebración al completar un bingo.';
 
   @override
   String get preMadeTilesTitle => 'Pre-made tiles';
@@ -349,23 +349,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paywallCouldNotLoad => 'Could not load purchase information.';
 
   @override
-  String get shareTitle => 'Share the bingo card';
+  String get shareTitle => 'Compartir la tarjeta de bingo';
 
   @override
   String get shareDialogPrompt => 'How would you like to share?';
 
   @override
-  String get shareImageOptionTitle => 'Share as image';
+  String get shareImageOptionTitle => 'Compartir como imagen';
 
   @override
   String get shareImageOptionHelper =>
       'Send a picture of your card. Anyone can see it — even without the app.';
 
   @override
-  String get shareImageOptionButton => 'Share image';
+  String get shareImageOptionButton => 'Compartir imagen';
 
   @override
-  String get shareInviteOptionTitle => 'Invite friends to play';
+  String get shareInviteOptionTitle => 'Invitar amigos a jugar';
 
   @override
   String get shareInviteOptionHelper =>
@@ -379,15 +379,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'When on, your friends will see what you\'ve already crossed off.';
 
   @override
-  String get shareInviteOptionButton => 'Send invite';
+  String get shareInviteOptionButton => 'Enviar invitación';
 
   @override
   String shareInviteText(String name, String link) {
-    return 'Play \"$name\" with me! Open it in the app:\n$link';
+    return '¡Juega “$name” conmigo! Ábrelo en la app:\n$link';
   }
 
   @override
-  String get close => 'Close';
+  String get close => 'Cerrar';
 
   @override
   String get shareSubject => 'Bingo Card';
@@ -399,10 +399,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importBody => 'Add it to your cards so you can play along?';
 
   @override
-  String get importConfirm => 'Add to my cards';
+  String get importConfirm => 'Añadir a mis tarjetas';
 
   @override
-  String get importCancel => 'Not now';
+  String get importCancel => 'Ahora no';
 
   @override
   String importCollisionToast(String newName) {
@@ -417,20 +417,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importOutdatedAppToast => 'Update the app to open this invite.';
 
   @override
-  String get toastInfo => 'Info';
+  String get toastInfo => 'Información';
 
   @override
-  String get toastSuccess => 'Success';
+  String get toastSuccess => 'Éxito';
 
   @override
   String get toastError => 'Error';
 
   @override
-  String get lastChangeNever => 'Last change: Never';
+  String get lastChangeNever => 'Último cambio: nunca';
 
   @override
   String lastChange(String date, String time) {
-    return 'Last change: $date $time';
+    return 'Último cambio: $date $time';
   }
 
   @override

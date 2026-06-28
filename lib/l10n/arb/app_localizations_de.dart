@@ -157,6 +157,26 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wähle die Farbpalette für die App.';
 
   @override
+  String get languageSettingsTitle => 'Sprache';
+
+  @override
+  String get languageSettingsSelectorLabel => 'App-Sprache';
+
+  @override
+  String languageSettingsSystemOption(String language) {
+    return 'Systemstandard ($language)';
+  }
+
+  @override
+  String languageSettingsSystemDescription(String language) {
+    return 'Folgt deiner Telefonsprache: $language.';
+  }
+
+  @override
+  String get languageSettingsOverrideDescription =>
+      'Diese Sprache statt der Telefonsprache verwenden.';
+
+  @override
   String get darkModeLabel => 'Dunkler Modus';
 
   @override

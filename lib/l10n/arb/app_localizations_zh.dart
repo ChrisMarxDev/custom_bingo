@@ -4,27 +4,27 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for English (`en`).
-class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+/// The translations for Chinese (`zh`).
+class AppLocalizationsZh extends AppLocalizations {
+  AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get newCardTitle => 'Create New Bingo Grid';
+  String get newCardTitle => '创建新的宾果表';
 
   @override
-  String get editCardTitle => 'Edit Bingo Grid';
+  String get editCardTitle => '编辑宾果表';
 
   @override
-  String get cardNameLabel => 'Bingo Grid Name *';
+  String get cardNameLabel => '宾果表名称 *';
 
   @override
-  String get cardNameHint => 'Enter a name for your bingo grid';
+  String get cardNameHint => '输入宾果表名称';
 
   @override
-  String get createCardButton => 'Create Bingo Grid';
+  String get createCardButton => '创建宾果表';
 
   @override
-  String get updateCardButton => 'Update Bingo Grid';
+  String get updateCardButton => '更新宾果表';
 
   @override
   String get newBoardPreMadeSectionTitle => 'Your pre-made items';
@@ -54,10 +54,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get defaultCardName => 'Bingo Card';
+  String get defaultCardName => '宾果卡';
 
   @override
-  String get toggleHint => 'Press long to mark a field as checked';
+  String get toggleHint => '长按可勾选格子';
 
   @override
   String get editingHintBefore => 'Press the lock icon';
@@ -72,10 +72,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteCardConfirm => 'Are you sure you want to delete this card?';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => '取消';
 
   @override
-  String get delete => 'Delete';
+  String get delete => '删除';
 
   @override
   String get shuffleCardTitle => 'Shuffle Card';
@@ -85,7 +85,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.';
 
   @override
-  String get shuffle => 'Shuffle';
+  String get shuffle => '随机排列';
 
   @override
   String get ratingPromptTitle => 'Do you like Custom Bingo?';
@@ -101,19 +101,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ratingPromptYes => 'Yes, I like it';
 
   @override
-  String get boardActionShare => 'Share';
+  String get boardActionShare => '分享';
 
   @override
-  String get boardActionEditBoard => 'Edit board';
+  String get boardActionEditBoard => '编辑棋盘';
 
   @override
   String get boardActionAddPreMadeItems => 'Add pre-made items';
 
   @override
-  String get cellHint => 'Enter text…';
+  String get cellHint => '输入文字…';
 
   @override
-  String get edit => 'Edit';
+  String get edit => '编辑';
 
   @override
   String get markDone => 'Mark Done';
@@ -122,71 +122,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get markNotDone => 'Mark Not Done';
 
   @override
-  String get newCardMenuItem => 'New bingo board';
+  String get newCardMenuItem => '新建宾果棋盘';
 
   @override
-  String get yourCardsHeader => 'Your Boards';
+  String get yourCardsHeader => '你的棋盘';
 
   @override
-  String get settingsHeader => 'Settings';
+  String get settingsHeader => '设置';
 
   @override
   String get appearanceMenuItem => 'Appearance';
 
   @override
-  String get settingsAppearanceSection => 'Appearance';
+  String get settingsAppearanceSection => '外观';
 
   @override
-  String get settingsPreferencesSection => 'Preferences';
+  String get settingsPreferencesSection => '偏好设置';
 
   @override
-  String get settingsBoardsSection => 'Boards';
+  String get settingsBoardsSection => '棋盘';
 
   @override
-  String get settingsHelpSection => 'More';
+  String get settingsHelpSection => '更多';
 
   @override
-  String get settingsSupportSection => 'Support';
+  String get settingsSupportSection => '支持';
 
   @override
-  String get themeColorLabel => 'Theme color';
+  String get themeColorLabel => '主题颜色';
 
   @override
-  String get themeColorSettingsDescription =>
-      'Choose the palette used across the app.';
+  String get themeColorSettingsDescription => '选择整个应用使用的配色。';
 
   @override
-  String get languageSettingsTitle => 'Language';
+  String get languageSettingsTitle => '语言';
 
   @override
-  String get languageSettingsSelectorLabel => 'App language';
+  String get languageSettingsSelectorLabel => '应用语言';
 
   @override
   String languageSettingsSystemOption(String language) {
-    return 'System default ($language)';
+    return '系统默认（$language）';
   }
 
   @override
   String languageSettingsSystemDescription(String language) {
-    return 'Following your phone language: $language.';
+    return '跟随手机语言：$language。';
   }
 
   @override
-  String get languageSettingsOverrideDescription =>
-      'Use this language instead of the phone language.';
+  String get languageSettingsOverrideDescription => '使用此语言，而不是手机语言。';
 
   @override
-  String get darkModeLabel => 'Dark mode';
+  String get darkModeLabel => '深色模式';
 
   @override
-  String get darkModeSettingsDescription => 'Use a darker interface.';
+  String get darkModeSettingsDescription => '使用更深色的界面。';
 
   @override
-  String get enableConfettiLabel => 'Confetti';
+  String get enableConfettiLabel => '彩纸';
 
   @override
-  String get enableConfettiSettingsDescription =>
-      'Show a celebration when you complete a bingo.';
+  String get enableConfettiSettingsDescription => '完成宾果时显示庆祝效果。';
 
   @override
   String get preMadeTilesTitle => 'Pre-made tiles';
@@ -349,23 +346,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paywallCouldNotLoad => 'Could not load purchase information.';
 
   @override
-  String get shareTitle => 'Share the bingo card';
+  String get shareTitle => '分享宾果卡';
 
   @override
   String get shareDialogPrompt => 'How would you like to share?';
 
   @override
-  String get shareImageOptionTitle => 'Share as image';
+  String get shareImageOptionTitle => '以图片分享';
 
   @override
   String get shareImageOptionHelper =>
       'Send a picture of your card. Anyone can see it — even without the app.';
 
   @override
-  String get shareImageOptionButton => 'Share image';
+  String get shareImageOptionButton => '分享图片';
 
   @override
-  String get shareInviteOptionTitle => 'Invite friends to play';
+  String get shareInviteOptionTitle => '邀请朋友一起玩';
 
   @override
   String get shareInviteOptionHelper =>
@@ -379,15 +376,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'When on, your friends will see what you\'ve already crossed off.';
 
   @override
-  String get shareInviteOptionButton => 'Send invite';
+  String get shareInviteOptionButton => '发送邀请';
 
   @override
   String shareInviteText(String name, String link) {
-    return 'Play \"$name\" with me! Open it in the app:\n$link';
+    return '和我一起玩“$name”！在应用中打开：\n$link';
   }
 
   @override
-  String get close => 'Close';
+  String get close => '关闭';
 
   @override
   String get shareSubject => 'Bingo Card';
@@ -399,10 +396,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importBody => 'Add it to your cards so you can play along?';
 
   @override
-  String get importConfirm => 'Add to my cards';
+  String get importConfirm => '添加到我的卡片';
 
   @override
-  String get importCancel => 'Not now';
+  String get importCancel => '暂不';
 
   @override
   String importCollisionToast(String newName) {
@@ -417,20 +414,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importOutdatedAppToast => 'Update the app to open this invite.';
 
   @override
-  String get toastInfo => 'Info';
+  String get toastInfo => '信息';
 
   @override
-  String get toastSuccess => 'Success';
+  String get toastSuccess => '成功';
 
   @override
-  String get toastError => 'Error';
+  String get toastError => '错误';
 
   @override
-  String get lastChangeNever => 'Last change: Never';
+  String get lastChangeNever => '上次更改：从未';
 
   @override
   String lastChange(String date, String time) {
-    return 'Last change: $date $time';
+    return '上次更改：$date $time';
   }
 
   @override

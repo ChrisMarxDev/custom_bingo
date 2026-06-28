@@ -7,6 +7,7 @@ import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/common/services/userorient_service.dart';
 import 'package:custom_bingo/common/widgets/premium_gate.dart';
+import 'package:custom_bingo/features/settings/app_locale_settings.dart';
 import 'package:custom_bingo/features/settings/settings_preferences.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/l10n.dart';
@@ -40,6 +41,8 @@ class SettingsScreen extends StatelessWidget {
     final themePalette = appThemePaletteBeacon.watch(context);
     final isPremiumUser = isPremiumUserBeacon.watch(context);
     final enableConfetti = enableConfettiBeacon.watch(context);
+    final selectedLocale = appLocaleOverrideBeacon.watch(context);
+    final phoneLocale = phoneLocaleBeacon.watch(context);
     final effectiveThemePalette = availableAppThemePalette(
       themePalette,
       isPremiumUser: isPremiumUser,
@@ -85,6 +88,11 @@ class SettingsScreen extends StatelessWidget {
               _ThemePaletteSettingsTile(
                 selectedPalette: effectiveThemePalette,
                 onPaletteSelected: setAppThemePalette,
+              ),
+              _LanguageSettingsTile(
+                selectedLocale: selectedLocale,
+                phoneLocale: phoneLocale,
+                onLocaleSelected: setAppLocaleOverride,
               ),
               _SettingsTile(
                 title: l10n.enableConfettiLabel,
@@ -301,6 +309,57 @@ class _SettingsIcon extends StatelessWidget {
         borderRadius: kBorderradiusSmall,
       ),
       child: Icon(icon, color: context.primary, size: 22),
+    );
+  }
+}
+
+class _LanguageSettingsTile extends StatelessWidget {
+  const _LanguageSettingsTile({
+    required this.selectedLocale,
+    required this.phoneLocale,
+    required this.onLocaleSelected,
+  });
+
+  final Locale? selectedLocale;
+  final Locale phoneLocale;
+  final ValueChanged<Locale?> onLocaleSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final phoneLanguage =
+        appLanguageFor(phoneLocale)?.nativeName ??
+        phoneLocale.languageCode.toUpperCase();
+    final dropdownValue = selectedLocale?.languageCode;
+
+    return _SettingsTile(
+      title: l10n.languageSettingsTitle,
+      subtitle: selectedLocale == null
+          ? l10n.languageSettingsSystemDescription(phoneLanguage)
+          : l10n.languageSettingsOverrideDescription,
+      icon: PhosphorIcons.translate(),
+      child: DropdownButtonFormField<String?>(
+        initialValue: dropdownValue,
+        isExpanded: true,
+        decoration: InputDecoration(
+          labelText: l10n.languageSettingsSelectorLabel,
+        ),
+        items: [
+          DropdownMenuItem<String?>(
+            child: Text(l10n.languageSettingsSystemOption(phoneLanguage)),
+          ),
+          for (final language in supportedAppLanguages)
+            DropdownMenuItem<String?>(
+              value: language.locale.languageCode,
+              child: Text(language.nativeName),
+            ),
+        ],
+        onChanged: (languageCode) {
+          onLocaleSelected(
+            supportedAppLanguageByCode(languageCode ?? '')?.locale,
+          );
+        },
+      ),
     );
   }
 }

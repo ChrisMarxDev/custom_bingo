@@ -5,8 +5,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_ar.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_ja.dart';
+import 'app_localizations_pt.dart';
+import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
 
@@ -94,8 +100,14 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
     Locale('de'),
     Locale('en'),
+    Locale('es'),
+    Locale('fr'),
+    Locale('ja'),
+    Locale('pt'),
+    Locale('zh'),
   ];
 
   /// AppBar title of the new-card screen
@@ -373,6 +385,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose the palette used across the app.'**
   String get themeColorSettingsDescription;
+
+  /// Settings tile title for choosing the app language
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageSettingsTitle;
+
+  /// Label above the language dropdown in settings
+  ///
+  /// In en, this message translates to:
+  /// **'App language'**
+  String get languageSettingsSelectorLabel;
+
+  /// Dropdown option that makes the app follow the phone/system language. The placeholder is the current phone language display name.
+  ///
+  /// In en, this message translates to:
+  /// **'System default ({language})'**
+  String languageSettingsSystemOption(String language);
+
+  /// Settings helper text when no manual app language override is selected. The placeholder is the current phone language display name.
+  ///
+  /// In en, this message translates to:
+  /// **'Following your phone language: {language}.'**
+  String languageSettingsSystemDescription(String language);
+
+  /// Settings helper text when a manual app language override is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Use this language instead of the phone language.'**
+  String get languageSettingsOverrideDescription;
 
   /// Label for the dark mode switch in settings
   ///
@@ -925,8 +967,16 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['de', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+    'ar',
+    'de',
+    'en',
+    'es',
+    'fr',
+    'ja',
+    'pt',
+    'zh',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -935,10 +985,22 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
     case 'de':
       return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'ja':
+      return AppLocalizationsJa();
+    case 'pt':
+      return AppLocalizationsPt();
+    case 'zh':
+      return AppLocalizationsZh();
   }
 
   throw FlutterError(
