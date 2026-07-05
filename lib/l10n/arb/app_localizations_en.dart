@@ -125,10 +125,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newCardMenuItem => 'New bingo board';
 
   @override
+  String get allBoardsMenuItem => 'All boards';
+
+  @override
   String get yourCardsHeader => 'Your Boards';
 
   @override
+  String get noBoardsYet => 'No boards yet';
+
+  @override
+  String get pageNotFoundTitle => 'Page Not Found';
+
+  @override
+  String get homeButton => 'Home';
+
+  @override
+  String revenueCatUserIdLabel(String userId) {
+    return 'RevenueCat user id: $userId';
+  }
+
+  @override
+  String get copyRevenueCatUserIdTooltip => 'Copy RevenueCat user id';
+
+  @override
+  String get revenueCatUserIdCopiedToast => 'RevenueCat user id copied.';
+
+  @override
   String get settingsHeader => 'Settings';
+
+  @override
+  String get clearSettingsMenuItem => 'Clear Settings';
 
   @override
   String get appearanceMenuItem => 'Appearance';

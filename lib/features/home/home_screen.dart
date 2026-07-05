@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.deleteCardTitle),
-        content: const Text('Do you want to delete this'),
+        content: Text(l10n.deleteCardConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -455,7 +455,7 @@ class _EmptyHomeGrid extends StatelessWidget {
         Icon(Icons.grid_view_rounded, size: 40, color: context.weakTextColor),
         const SizedBox(height: 12),
         Text(
-          'No boards yet',
+          context.l10n.noBoardsYet,
           textAlign: TextAlign.center,
           style: context.p1.copyWith(
             color: context.weakTextColor,

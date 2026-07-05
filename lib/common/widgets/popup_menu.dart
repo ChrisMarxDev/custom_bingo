@@ -11,6 +11,7 @@ class PopupMenu extends StatefulWidget {
     this.followerAnchor = Alignment.topLeft,
     this.offset = Offset.zero,
     this.childBuilder,
+    this.useCard = true,
   }) : assert(
          child != null || childBuilder != null,
          'child or childBuilder must be provided',
@@ -24,6 +25,7 @@ class PopupMenu extends StatefulWidget {
   final Alignment targetAnchor;
   final Alignment followerAnchor;
   final Offset offset;
+  final bool useCard;
 
   @override
   State<PopupMenu> createState() => _PopupMenuState();
@@ -60,13 +62,10 @@ class _PopupMenuState extends State<PopupMenu> {
             child:
                 Material(
                       type: MaterialType.transparency,
-                      child: Card(
-                        elevation: 4,
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: widget.padding,
-                          child: widget.popupMenuBuilder(context, _hideOverlay),
-                        ),
+                      child: _PopupMenuSurface(
+                        useCard: widget.useCard,
+                        padding: widget.padding,
+                        child: widget.popupMenuBuilder(context, _hideOverlay),
                       ),
                     )
                     .animate()
@@ -116,5 +115,26 @@ class _PopupMenuState extends State<PopupMenu> {
           ? widget.childBuilder!(context, _showOverlay)
           : GestureDetector(onTap: _showOverlay, child: widget.child),
     );
+  }
+}
+
+class _PopupMenuSurface extends StatelessWidget {
+  const _PopupMenuSurface({
+    required this.useCard,
+    required this.padding,
+    required this.child,
+  });
+
+  final bool useCard;
+  final EdgeInsets padding;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final paddedChild = Padding(padding: padding, child: child);
+
+    if (!useCard) return paddedChild;
+
+    return Card(elevation: 4, margin: EdgeInsets.zero, child: paddedChild);
   }
 }

@@ -27,30 +27,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get updateCardButton => '更新宾果表';
 
   @override
-  String get newBoardPreMadeSectionTitle => 'Your pre-made items';
+  String get newBoardPreMadeSectionTitle => '你的预制项目';
 
   @override
-  String get newBoardPreMadeButton => 'Start with pre-made items';
+  String get newBoardPreMadeButton => '从预制项目开始';
 
   @override
-  String get newBoardPreMadeChangeButton => 'Change pre-made items';
+  String get newBoardPreMadeChangeButton => '更改预制项目';
 
   @override
-  String get newBoardPreMadeClearButton => 'Clear pre-made items';
+  String get newBoardPreMadeClearButton => '清除预制项目';
 
   @override
   String newBoardPreMadeAppliedCount(int count) {
-    return '$count pre-made entries applied';
+    return '已应用 $count 个预制条目';
   }
 
   @override
   String newBoardPreMadeFullSummary(int used) {
-    return '$used will be drawn at random for this board.';
+    return '将为此棋盘随机抽取 $used 个。';
   }
 
   @override
   String newBoardPreMadePartialSummary(int used, int blank) {
-    return '$used cells will be filled. $blank will stay blank.';
+    return '将填充 $used 个格子，$blank 个保持空白。';
   }
 
   @override
@@ -60,16 +60,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get toggleHint => '长按可勾选格子';
 
   @override
-  String get editingHintBefore => 'Press the lock icon';
+  String get editingHintBefore => '按锁定图标';
 
   @override
-  String get editingHintAfter => ' to make the fields not editable anymore.';
+  String get editingHintAfter => '，让格子不再可编辑。';
 
   @override
-  String get deleteCardTitle => 'Delete Card';
+  String get deleteCardTitle => '删除卡片';
 
   @override
-  String get deleteCardConfirm => 'Are you sure you want to delete this card?';
+  String get deleteCardConfirm => '确定要删除这张卡片吗？';
 
   @override
   String get cancel => '取消';
@@ -78,27 +78,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get delete => '删除';
 
   @override
-  String get shuffleCardTitle => 'Shuffle Card';
+  String get shuffleCardTitle => '打乱卡片';
 
   @override
-  String get shuffleCardConfirm =>
-      'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.';
+  String get shuffleCardConfirm => '确定要打乱这张卡片吗？打乱后所有格子都会取消勾选。';
 
   @override
   String get shuffle => '随机排列';
 
   @override
-  String get ratingPromptTitle => 'Do you like Custom Bingo?';
+  String get ratingPromptTitle => '你喜欢 Custom Bingo 吗？';
 
   @override
-  String get ratingPromptBody =>
-      'If so, a quick store review helps others find it.';
+  String get ratingPromptBody => '如果喜欢，商店里的简短评价能帮助更多人发现它。';
 
   @override
-  String get ratingPromptNo => 'Not really';
+  String get ratingPromptNo => '不太喜欢';
 
   @override
-  String get ratingPromptYes => 'Yes, I like it';
+  String get ratingPromptYes => '是的，我喜欢';
 
   @override
   String get boardActionShare => '分享';
@@ -107,7 +105,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get boardActionEditBoard => '编辑棋盘';
 
   @override
-  String get boardActionAddPreMadeItems => 'Add pre-made items';
+  String get boardActionAddPreMadeItems => '添加预制项目';
 
   @override
   String get cellHint => '输入文字…';
@@ -116,22 +114,48 @@ class AppLocalizationsZh extends AppLocalizations {
   String get edit => '编辑';
 
   @override
-  String get markDone => 'Mark Done';
+  String get markDone => '标记完成';
 
   @override
-  String get markNotDone => 'Mark Not Done';
+  String get markNotDone => '标记未完成';
 
   @override
   String get newCardMenuItem => '新建宾果棋盘';
 
   @override
+  String get allBoardsMenuItem => '所有棋盘';
+
+  @override
   String get yourCardsHeader => '你的棋盘';
+
+  @override
+  String get noBoardsYet => '还没有棋盘';
+
+  @override
+  String get pageNotFoundTitle => '找不到页面';
+
+  @override
+  String get homeButton => '首页';
+
+  @override
+  String revenueCatUserIdLabel(String userId) {
+    return 'RevenueCat 用户 ID：$userId';
+  }
+
+  @override
+  String get copyRevenueCatUserIdTooltip => '复制 RevenueCat 用户 ID';
+
+  @override
+  String get revenueCatUserIdCopiedToast => '已复制 RevenueCat 用户 ID。';
 
   @override
   String get settingsHeader => '设置';
 
   @override
-  String get appearanceMenuItem => 'Appearance';
+  String get clearSettingsMenuItem => '清除设置';
+
+  @override
+  String get appearanceMenuItem => '外观';
 
   @override
   String get settingsAppearanceSection => '外观';
@@ -186,177 +210,163 @@ class AppLocalizationsZh extends AppLocalizations {
   String get enableConfettiSettingsDescription => '完成宾果时显示庆祝效果。';
 
   @override
-  String get preMadeTilesTitle => 'Pre-made tiles';
+  String get preMadeTilesTitle => '预制格子';
 
   @override
-  String get preMadeTilesSettingsDescription =>
-      'Create reusable tile text for future boards.';
+  String get preMadeTilesSettingsDescription => '为未来的棋盘创建可复用的格子文字。';
 
   @override
-  String get preMadeTilesDescription =>
-      'Create reusable bingo entries here. When you create a new board, you can add them without typing everything again.';
+  String get preMadeTilesDescription => '在这里创建可复用的宾果条目。创建新棋盘时，无需重新输入即可添加。';
 
   @override
-  String get preMadeTilesSelectMode => 'Select';
+  String get preMadeTilesSelectMode => '选择';
 
   @override
-  String get preMadeTilesEditMode => 'Edit';
+  String get preMadeTilesEditMode => '编辑';
 
   @override
-  String get preMadeTileHint => 'Tile text';
+  String get preMadeTileHint => '格子文字';
 
   @override
-  String get preMadeTilesAdd => 'Add tile';
+  String get preMadeTilesAdd => '添加格子';
 
   @override
-  String get preMadeTilesDelete => 'Delete tile';
+  String get preMadeTilesDelete => '删除格子';
 
   @override
-  String get preMadeTilesSelectAll => 'Un/select all';
+  String get preMadeTilesSelectAll => '全选/取消全选';
 
   @override
-  String get preMadeTilesSelectNone => 'Select none';
+  String get preMadeTilesSelectNone => '全部不选';
 
   @override
-  String get preMadeTilesApply => 'Apply';
+  String get preMadeTilesApply => '应用';
 
   @override
-  String get preMadeTilesReplaceItems => 'Replace items';
+  String get preMadeTilesReplaceItems => '替换项目';
 
   @override
-  String get preMadeTilesFillItems => 'Fill items';
+  String get preMadeTilesFillItems => '填充项目';
 
   @override
   String get preMadeTilesBoardActionHelp =>
-      'Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.';
+      '替换会从你的选择中随机抽取并替换棋盘条目。填充只会把项目添加到空格子。奇数棋盘中，中心格保持不变。';
 
   @override
   String preMadeTilesSelectedCount(int selected, int total) {
-    return '$selected / $total selected';
+    return '已选择 $selected / $total';
   }
 
   @override
-  String get preMadeTilesEmptyTitle => 'No tiles yet';
+  String get preMadeTilesEmptyTitle => '还没有格子';
 
   @override
-  String get preMadeTilesEmptyBody =>
-      'Add a tile to start building a reusable list.';
+  String get preMadeTilesEmptyBody => '添加一个格子，开始建立可复用列表。';
 
   @override
-  String get proposeFeatures => 'Propose Features';
+  String get proposeFeatures => '提议功能';
 
   @override
-  String get proposeFeaturesSettingsDescription =>
-      'Vote on ideas and suggest what to build next.';
+  String get proposeFeaturesSettingsDescription => '为想法投票，并建议下一步要构建什么。';
 
   @override
-  String get supportMeDirectly => 'Support the developer';
+  String get supportMeDirectly => '支持开发者';
 
   @override
-  String get supportMeDirectlySettingsDescription =>
-      'Help fund development and keep the app improving.';
+  String get supportMeDirectlySettingsDescription => '帮助资助开发，让应用持续改进。';
 
   @override
-  String get supportCarouselProTitle => 'Support Custom Bingo';
+  String get supportCarouselProTitle => '支持 Custom Bingo';
 
   @override
-  String get supportCarouselProSubtitle =>
-      'Unlock bonus colors and help keep the app independent.';
+  String get supportCarouselProSubtitle => '解锁额外颜色，并帮助应用保持独立。';
 
   @override
-  String get supportCarouselRateTitle => 'Enjoying the app?';
+  String get supportCarouselRateTitle => '喜欢这个应用吗？';
 
   @override
-  String get supportCarouselRateSubtitle =>
-      'A quick review helps more people find Custom Bingo.';
+  String get supportCarouselRateSubtitle => '简短评价能帮助更多人发现 Custom Bingo。';
 
   @override
-  String get rateTheApp => 'Rate the app';
+  String get rateTheApp => '评价应用';
 
   @override
-  String get rateTheAppSettingsDescription => 'Open the store rating prompt.';
+  String get rateTheAppSettingsDescription => '打开商店评分提示。';
 
   @override
-  String get contactMe => 'Contact me';
+  String get contactMe => '联系我';
 
   @override
-  String get contactMeSettingsDescription =>
-      'Send feedback, questions, or bug reports by email.';
+  String get contactMeSettingsDescription => '通过电子邮件发送反馈、问题或错误报告。';
 
   @override
-  String get paywallTitle => 'Support Custom Bingo';
+  String get paywallTitle => '支持 Custom Bingo';
 
   @override
-  String get paywallThankYouTitle => 'Thank you';
+  String get paywallThankYouTitle => '谢谢';
 
   @override
-  String get paywallSupportTitle => 'Support Custom Bingo';
+  String get paywallSupportTitle => '支持 Custom Bingo';
 
   @override
-  String get paywallSupportBody =>
-      'This purchase supports me, the developer, directly. You get my gratitude and a few small bonus things for your boards.';
+  String get paywallSupportBody => '这笔购买会直接支持我，也就是开发者。你会得到我的感谢，以及一些用于棋盘的小奖励。';
 
   @override
-  String get paywallBonusGratitude => 'My gratitude, sincerely.';
+  String get paywallBonusGratitude => '真诚感谢。';
 
   @override
-  String get paywallBonusColors => 'A few extra board colors.';
+  String get paywallBonusColors => '一些额外棋盘颜色。';
 
   @override
-  String get paywallBonusExtras => 'Small supporter extras over time.';
+  String get paywallBonusExtras => '未来的小支持者奖励。';
 
   @override
-  String get paywallFreeForever =>
-      'No one ever needs to pay for this app. Custom Bingo stays usable for everyone.';
+  String get paywallFreeForever => '没有人必须为这个应用付费。Custom Bingo 会继续对所有人可用。';
 
   @override
-  String get paywallLoadingPrice => 'Loading price';
+  String get paywallLoadingPrice => '正在加载价格';
 
   @override
-  String get paywallUnavailable => 'Unavailable';
+  String get paywallUnavailable => '不可用';
 
   @override
-  String get paywallSupportOnce => 'Support once';
+  String get paywallSupportOnce => '支持一次';
 
   @override
-  String get paywallRestorePurchase => 'Restore purchase';
+  String get paywallRestorePurchase => '恢复购买';
 
   @override
-  String get paywallProActiveToast => 'Custom Bingo Pro is active.';
+  String get paywallProActiveToast => 'Custom Bingo Pro 已启用。';
 
   @override
-  String get paywallPurchaseInactiveToast =>
-      'Purchase finished, but Pro is not active.';
+  String get paywallPurchaseInactiveToast => '购买已完成，但 Pro 未启用。';
 
   @override
-  String get paywallProRestoredToast => 'Custom Bingo Pro restored.';
+  String get paywallProRestoredToast => 'Custom Bingo Pro 已恢复。';
 
   @override
-  String get paywallNoPurchaseFoundToast => 'No Pro purchase found.';
+  String get paywallNoPurchaseFoundToast => '未找到 Pro 购买记录。';
 
   @override
-  String get paywallPurchasesUnavailable =>
-      'Purchases are unavailable right now.';
+  String get paywallPurchasesUnavailable => '目前无法购买。';
 
   @override
-  String get paywallPlatformUnavailable =>
-      'Purchases are unavailable on this platform.';
+  String get paywallPlatformUnavailable => '此平台不支持购买。';
 
   @override
-  String get paywallCouldNotLoad => 'Could not load purchase information.';
+  String get paywallCouldNotLoad => '无法加载购买信息。';
 
   @override
   String get shareTitle => '分享宾果卡';
 
   @override
-  String get shareDialogPrompt => 'How would you like to share?';
+  String get shareDialogPrompt => '你想如何分享？';
 
   @override
   String get shareImageOptionTitle => '以图片分享';
 
   @override
-  String get shareImageOptionHelper =>
-      'Send a picture of your card. Anyone can see it — even without the app.';
+  String get shareImageOptionHelper => '发送你的卡片图片。即使没有应用，任何人也能查看。';
 
   @override
   String get shareImageOptionButton => '分享图片';
@@ -366,14 +376,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get shareInviteOptionHelper =>
-      'Send this link to your friends who also have this app installed. They get the same card and you can play together.';
+      '把这个链接发送给同样安装了此应用的朋友。他们会得到同一张卡片，你们可以一起玩。';
 
   @override
-  String get shareInviteIncludeMarks => 'Include my checkmarks';
+  String get shareInviteIncludeMarks => '包含我的勾选';
 
   @override
-  String get shareInviteIncludeMarksHelper =>
-      'When on, your friends will see what you\'ve already crossed off.';
+  String get shareInviteIncludeMarksHelper => '开启后，朋友会看到你已经划掉的内容。';
 
   @override
   String get shareInviteOptionButton => '发送邀请';
@@ -387,13 +396,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get close => '关闭';
 
   @override
-  String get shareSubject => 'Bingo Card';
+  String get shareSubject => '宾果卡片';
 
   @override
-  String get importTitle => 'A friend shared a bingo card with you';
+  String get importTitle => '朋友与你分享了一张宾果卡片';
 
   @override
-  String get importBody => 'Add it to your cards so you can play along?';
+  String get importBody => '要添加到你的卡片中一起玩吗？';
 
   @override
   String get importConfirm => '添加到我的卡片';
@@ -403,15 +412,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String importCollisionToast(String newName) {
-    return 'You already had a card with this name, so I added it as \"$newName\".';
+    return '你已经有同名卡片，所以我将它添加为“$newName”。';
   }
 
   @override
-  String get importBadLinkToast =>
-      'Sorry, this invite couldn\'t be opened. Ask your friend to send it again.';
+  String get importBadLinkToast => '抱歉，无法打开此邀请。请让朋友重新发送。';
 
   @override
-  String get importOutdatedAppToast => 'Update the app to open this invite.';
+  String get importOutdatedAppToast => '请更新应用以打开此邀请。';
 
   @override
   String get toastInfo => '信息';
@@ -431,43 +439,41 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get screenshotCaptionPlaying =>
-      'Just a simple app to create bingo board.\n\nNo signup, no ads, fully free to use.';
+  String get screenshotCaptionPlaying => '一个用于创建宾果棋盘的简单应用。\\n\\n无需注册、无广告、完全免费。';
 
   @override
-  String get screenshotCaptionCreate =>
-      'Literally just 2 screens to create a bingo grid.';
+  String get screenshotCaptionCreate => '只需两个屏幕即可创建宾果网格。';
 
   @override
-  String get screenshotCaptionLocked => 'That\'s it.';
+  String get screenshotCaptionLocked => '就这样。';
 
   @override
-  String get screenshotBoardName => 'David\'s Wedding';
+  String get screenshotBoardName => 'David 的婚礼';
 
   @override
-  String get screenshotTilePhoneDuringVows => 'Phone during vows';
+  String get screenshotTilePhoneDuringVows => '宣誓时手机响';
 
   @override
-  String get screenshotTileChampagneSpilled => 'Champagne spilled';
+  String get screenshotTileChampagneSpilled => '香槟洒了';
 
   @override
-  String get screenshotTileSpeechTears => 'Speech tears';
+  String get screenshotTileSpeechTears => '致辞落泪';
 
   @override
-  String get screenshotTileDramaticEntrance => 'Dramatic entrance';
+  String get screenshotTileDramaticEntrance => '戏剧性入场';
 
   @override
-  String get screenshotTileKidsDanceFloor => 'Kids take the dance floor';
+  String get screenshotTileKidsDanceFloor => '孩子们冲上舞池';
 
   @override
-  String get screenshotTileGuestToast => 'Guest gives a toast';
+  String get screenshotTileGuestToast => '宾客敬酒';
 
   @override
-  String get screenshotTileCrowdClapsEarly => 'Crowd claps early';
+  String get screenshotTileCrowdClapsEarly => '人群提前鼓掌';
 
   @override
-  String get screenshotTileDjClassic => 'DJ plays a classic';
+  String get screenshotTileDjClassic => 'DJ 播放经典曲目';
 
   @override
-  String get screenshotTileGroupPhotoChaos => 'Group photo chaos';
+  String get screenshotTileGroupPhotoChaos => '合影现场混乱';
 }

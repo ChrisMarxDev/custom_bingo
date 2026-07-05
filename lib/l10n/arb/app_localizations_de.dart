@@ -126,10 +126,36 @@ class AppLocalizationsDe extends AppLocalizations {
   String get newCardMenuItem => 'Neues Bingo';
 
   @override
+  String get allBoardsMenuItem => 'Alle Boards';
+
+  @override
   String get yourCardsHeader => 'Deine Bingos';
 
   @override
+  String get noBoardsYet => 'Noch keine Boards';
+
+  @override
+  String get pageNotFoundTitle => 'Seite nicht gefunden';
+
+  @override
+  String get homeButton => 'Startseite';
+
+  @override
+  String revenueCatUserIdLabel(String userId) {
+    return 'RevenueCat-Benutzer-ID: $userId';
+  }
+
+  @override
+  String get copyRevenueCatUserIdTooltip => 'RevenueCat-Benutzer-ID kopieren';
+
+  @override
+  String get revenueCatUserIdCopiedToast => 'RevenueCat-Benutzer-ID kopiert.';
+
+  @override
   String get settingsHeader => 'Einstellungen';
+
+  @override
+  String get clearSettingsMenuItem => 'Einstellungen löschen';
 
   @override
   String get appearanceMenuItem => 'Design';
@@ -141,7 +167,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsPreferencesSection => 'Einstellungen';
 
   @override
-  String get settingsBoardsSection => 'Boards';
+  String get settingsBoardsSection => 'Bingo-Boards';
 
   @override
   String get settingsHelpSection => 'Mehr';
@@ -423,7 +449,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Aktualisiere die App, um diese Einladung zu öffnen.';
 
   @override
-  String get toastInfo => 'Info';
+  String get toastInfo => 'Hinweis';
 
   @override
   String get toastSuccess => 'Erfolg';

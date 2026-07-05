@@ -326,17 +326,65 @@ abstract class AppLocalizations {
   /// **'New bingo board'**
   String get newCardMenuItem;
 
+  /// Menu item that opens the list of all saved boards
+  ///
+  /// In en, this message translates to:
+  /// **'All boards'**
+  String get allBoardsMenuItem;
+
   /// Section header in the popup menu listing saved cards
   ///
   /// In en, this message translates to:
   /// **'Your Boards'**
   String get yourCardsHeader;
 
+  /// Empty-state title shown when there are no saved boards
+  ///
+  /// In en, this message translates to:
+  /// **'No boards yet'**
+  String get noBoardsYet;
+
+  /// Title shown on the fallback route when a page cannot be found
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get pageNotFoundTitle;
+
+  /// Button that navigates back to the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeButton;
+
+  /// Debug settings label showing the RevenueCat user id
+  ///
+  /// In en, this message translates to:
+  /// **'RevenueCat user id: {userId}'**
+  String revenueCatUserIdLabel(String userId);
+
+  /// Tooltip for copying the RevenueCat user id from debug settings
+  ///
+  /// In en, this message translates to:
+  /// **'Copy RevenueCat user id'**
+  String get copyRevenueCatUserIdTooltip;
+
+  /// Toast shown after copying the RevenueCat user id
+  ///
+  /// In en, this message translates to:
+  /// **'RevenueCat user id copied.'**
+  String get revenueCatUserIdCopiedToast;
+
   /// Section header in the popup menu
   ///
   /// In en, this message translates to:
   /// **'Settings'**
   String get settingsHeader;
+
+  /// Debug menu item that clears saved settings
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Settings'**
+  String get clearSettingsMenuItem;
 
   /// Menu item that opens the appearance settings screen
   ///

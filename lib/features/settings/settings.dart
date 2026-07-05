@@ -7,6 +7,7 @@ import 'package:custom_bingo/common/services/revenue_cat_service.dart';
 import 'package:custom_bingo/common/services/user_id.dart';
 import 'package:custom_bingo/common/services/userorient_service.dart';
 import 'package:custom_bingo/common/widgets/premium_gate.dart';
+import 'package:custom_bingo/common/widgets/popup_menu.dart';
 import 'package:custom_bingo/features/settings/app_locale_settings.dart';
 import 'package:custom_bingo/features/settings/settings_preferences.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
@@ -167,20 +168,22 @@ class _RevenueCatUserIdFooter extends StatelessWidget {
         children: [
           Expanded(
             child: SelectableText(
-              'RevenueCat user id: $userId',
+              context.l10n.revenueCatUserIdLabel(userId),
               style: context.caption.copyWith(color: context.weakTextColor),
             ),
           ),
           IconButton(
             visualDensity: VisualDensity.compact,
-            tooltip: 'Copy RevenueCat user id',
+            tooltip: context.l10n.copyRevenueCatUserIdTooltip,
             iconSize: 16,
             color: context.weakTextColor,
             onPressed: () async {
               await Clipboard.setData(ClipboardData(text: userId));
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('RevenueCat user id copied.')),
+                SnackBar(
+                  content: Text(context.l10n.revenueCatUserIdCopiedToast),
+                ),
               );
             },
             icon: Icon(PhosphorIcons.copy()),
@@ -330,7 +333,11 @@ class _LanguageSettingsTile extends StatelessWidget {
     final phoneLanguage =
         appLanguageFor(phoneLocale)?.nativeName ??
         phoneLocale.languageCode.toUpperCase();
-    final dropdownValue = selectedLocale?.languageCode;
+    final overrideLocale = selectedLocale;
+    final selectedLabel = overrideLocale == null
+        ? l10n.languageSettingsSystemOption(phoneLanguage)
+        : appLanguageFor(overrideLocale)?.nativeName ??
+              overrideLocale.languageCode.toUpperCase();
 
     return _SettingsTile(
       title: l10n.languageSettingsTitle,
@@ -338,27 +345,194 @@ class _LanguageSettingsTile extends StatelessWidget {
           ? l10n.languageSettingsSystemDescription(phoneLanguage)
           : l10n.languageSettingsOverrideDescription,
       icon: PhosphorIcons.translate(),
-      child: DropdownButtonFormField<String?>(
-        initialValue: dropdownValue,
-        isExpanded: true,
-        decoration: InputDecoration(
-          labelText: l10n.languageSettingsSelectorLabel,
-        ),
-        items: [
-          DropdownMenuItem<String?>(
-            child: Text(l10n.languageSettingsSystemOption(phoneLanguage)),
+      child: _LanguageSelector(
+        label: l10n.languageSettingsSelectorLabel,
+        selectedLabel: selectedLabel,
+        selectedLocale: selectedLocale,
+        systemLabel: l10n.languageSettingsSystemOption(phoneLanguage),
+        onLocaleSelected: onLocaleSelected,
+      ),
+    );
+  }
+}
+
+class _LanguageSelector extends StatelessWidget {
+  const _LanguageSelector({
+    required this.label,
+    required this.selectedLabel,
+    required this.selectedLocale,
+    required this.systemLabel,
+    required this.onLocaleSelected,
+  });
+
+  final String label;
+  final String selectedLabel;
+  final Locale? selectedLocale;
+  final String systemLabel;
+  final ValueChanged<Locale?> onLocaleSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width - 48;
+
+        return PopupMenu(
+          padding: EdgeInsets.zero,
+          useCard: false,
+          targetAnchor: Alignment.bottomLeft,
+          followerAnchor: Alignment.topLeft,
+          offset: const Offset(0, 8),
+          childBuilder: (context, showOverlay) {
+            return InkWell(
+              borderRadius: kBorderradiusSmall,
+              onTap: showOverlay,
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  labelText: label,
+                  suffixIcon: Icon(
+                    PhosphorIcons.caretDown(),
+                    color: context.weakTextColor,
+                    size: 18,
+                  ),
+                ),
+                child: Text(
+                  selectedLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.p1,
+                ),
+              ),
+            );
+          },
+          popupMenuBuilder: (menuContext, hideOverlay) {
+            return _LanguageSelectorMenu(
+              width: width,
+              selectedLocale: selectedLocale,
+              systemLabel: systemLabel,
+              onSelect: (locale) {
+                hideOverlay();
+                onLocaleSelected(locale);
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _LanguageSelectorMenu extends StatelessWidget {
+  const _LanguageSelectorMenu({
+    required this.width,
+    required this.selectedLocale,
+    required this.systemLabel,
+    required this.onSelect,
+  });
+
+  final double width;
+  final Locale? selectedLocale;
+  final String systemLabel;
+  final ValueChanged<Locale?> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      constraints: const BoxConstraints(maxHeight: 420),
+      decoration: BoxDecoration(
+        color: context.cardColor,
+        borderRadius: kBorderradiusSmall,
+        border: Border.all(color: context.outlineColor),
+        boxShadow: [
+          BoxShadow(
+            color: context.shadowColor.withValues(alpha: 0.16),
+            blurRadius: 22,
+            offset: const Offset(0, 12),
           ),
-          for (final language in supportedAppLanguages)
-            DropdownMenuItem<String?>(
-              value: language.locale.languageCode,
-              child: Text(language.nativeName),
-            ),
         ],
-        onChanged: (languageCode) {
-          onLocaleSelected(
-            supportedAppLanguageByCode(languageCode ?? '')?.locale,
-          );
-        },
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _LanguageSelectorMenuItem(
+              label: systemLabel,
+              isSelected: selectedLocale == null,
+              onTap: () => onSelect(null),
+            ),
+            Divider(height: 1, color: context.outlineColor),
+            for (final language in supportedAppLanguages)
+              _LanguageSelectorMenuItem(
+                label: language.nativeName,
+                isSelected:
+                    selectedLocale?.languageCode ==
+                    language.locale.languageCode,
+                onTap: () => onSelect(language.locale),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageSelectorMenuItem extends StatelessWidget {
+  const _LanguageSelectorMenuItem({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: isSelected
+          ? context.primary.withValues(alpha: 0.12)
+          : Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          height: 54,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.p1.copyWith(
+                      color: context.textColor,
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                AnimatedOpacity(
+                  opacity: isSelected ? 1 : 0,
+                  duration: const Duration(milliseconds: 120),
+                  child: Icon(
+                    PhosphorIcons.check(),
+                    color: context.primary,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

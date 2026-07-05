@@ -14,37 +14,6 @@ final currentSelectedBingoCardName = Beacon.writable<String?>(
   getCurrentSelectedBingoCardName(),
 );
 
-// 	1.	📱 Phone comes out during vows
-// 2.	🥂 Champagne gets spilled
-// 3.	😢 Tears during a speech
-// 4.	🎩 Someone makes a dramatic entrance
-// 5.	💃 Kids take over the dance floor
-// 6.	🍻 Impromptu toast from a guest
-// 7.	👏 Crowd claps too early
-// 8.	🎶 DJ plays a throwback hit
-// 9.	📷 Someone takes a group photo and no one looks at the same camera
-final exampleGridItems = [
-  [
-    BingoItem(id: '1', text: '📱 Phone comes out during vows'),
-    BingoItem(id: '2', text: '🥂 Champagne gets spilled'),
-    BingoItem(id: '3', text: '😢 Tears during a speech'),
-  ],
-  [
-    BingoItem(id: '4', text: '🎩 Someone makes a dramatic entrance'),
-    BingoItem(id: '5', text: '💃 Kids take over the dance floor'),
-    BingoItem(id: '6', text: '🍻 Impromptu toast from a guest'),
-  ],
-  [
-    BingoItem(id: '7', text: '👏 Crowd claps too early'),
-    BingoItem(id: '8', text: '🎶 DJ plays a throwback hit'),
-    BingoItem(
-      id: '9',
-      text:
-          '📷 Someone takes a group photo and no one looks at the same camera',
-    ),
-  ],
-];
-
 class BingoCardController extends BeaconController {
   BingoCardController() {
     loadBoard();
@@ -67,7 +36,6 @@ class BingoCardController extends BeaconController {
     }
     final bingoCard = loadBingoCard(sharedPrefsBeacon.value, name);
     gridItems.value = bingoCard?.gridItems ?? [];
-    // gridItems.value = exampleGridItems;
     isEditing.value = bingoCard?.isEditing ?? true;
     lastChangeDateTime.value = bingoCard?.lastChangeDateTime ?? DateTime.now();
   }

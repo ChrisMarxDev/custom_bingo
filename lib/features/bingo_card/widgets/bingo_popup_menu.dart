@@ -81,7 +81,7 @@ class BingoPopupMenu extends StatelessWidget {
                         children: [
                           Icon(PhosphorIcons.squaresFour()),
                           const SizedBox(width: 8),
-                          const Text('All boards'),
+                          Text(l10n.allBoardsMenuItem),
                         ],
                       ),
                     ),
@@ -168,7 +168,7 @@ class BingoPopupMenu extends StatelessWidget {
                           hideOverlay();
                           context.go(AppRoutePaths.root);
                         },
-                        child: const Text('Clear Settings'),
+                        child: Text(l10n.clearSettingsMenuItem),
                       ),
                   ],
                 ),

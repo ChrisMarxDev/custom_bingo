@@ -89,17 +89,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shuffle => 'Mélanger';
 
   @override
-  String get ratingPromptTitle => 'Do you like Custom Bingo?';
+  String get ratingPromptTitle => 'Vous aimez Custom Bingo ?';
 
   @override
   String get ratingPromptBody =>
-      'If so, a quick store review helps others find it.';
+      'Si oui, un avis rapide sur le store aide d’autres personnes à le trouver.';
 
   @override
-  String get ratingPromptNo => 'Not really';
+  String get ratingPromptNo => 'Pas vraiment';
 
   @override
-  String get ratingPromptYes => 'Yes, I like it';
+  String get ratingPromptYes => 'Oui, j’aime';
 
   @override
   String get boardActionShare => 'Partager';
@@ -108,7 +108,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boardActionEditBoard => 'Modifier la grille';
 
   @override
-  String get boardActionAddPreMadeItems => 'Add pre-made items';
+  String get boardActionAddPreMadeItems => 'Ajouter des éléments préparés';
 
   @override
   String get cellHint => 'Saisir du texte…';
@@ -126,10 +126,37 @@ class AppLocalizationsFr extends AppLocalizations {
   String get newCardMenuItem => 'Nouvelle grille de bingo';
 
   @override
+  String get allBoardsMenuItem => 'Toutes les grilles';
+
+  @override
   String get yourCardsHeader => 'Vos grilles';
 
   @override
+  String get noBoardsYet => 'Aucune grille pour l’instant';
+
+  @override
+  String get pageNotFoundTitle => 'Page introuvable';
+
+  @override
+  String get homeButton => 'Accueil';
+
+  @override
+  String revenueCatUserIdLabel(String userId) {
+    return 'ID utilisateur RevenueCat : $userId';
+  }
+
+  @override
+  String get copyRevenueCatUserIdTooltip =>
+      'Copier l’ID utilisateur RevenueCat';
+
+  @override
+  String get revenueCatUserIdCopiedToast => 'ID utilisateur RevenueCat copié.';
+
+  @override
   String get settingsHeader => 'Réglages';
+
+  @override
+  String get clearSettingsMenuItem => 'Effacer les réglages';
 
   @override
   String get appearanceMenuItem => 'Apparence';
@@ -233,11 +260,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get preMadeTilesBoardActionHelp =>
-      'Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.';
+      'Remplacer échange les entrées de la grille contre un tirage aléatoire de votre sélection. Remplir ajoute seulement des éléments aux cases vides. Sur les grilles impaires, la case centrale reste en place.';
 
   @override
   String preMadeTilesSelectedCount(int selected, int total) {
-    return '$selected / $total selected';
+    return '$selected / $total sélectionnées';
   }
 
   @override
@@ -262,18 +289,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aidez à financer le développement et à améliorer l’app.';
 
   @override
-  String get supportCarouselProTitle => 'Support Custom Bingo';
+  String get supportCarouselProTitle => 'Soutenir Custom Bingo';
 
   @override
   String get supportCarouselProSubtitle =>
-      'Unlock bonus colors and help keep the app independent.';
+      'Débloquez des couleurs bonus et aidez l’app à rester indépendante.';
 
   @override
-  String get supportCarouselRateTitle => 'Enjoying the app?';
+  String get supportCarouselRateTitle => 'Vous aimez l’app ?';
 
   @override
   String get supportCarouselRateSubtitle =>
-      'A quick review helps more people find Custom Bingo.';
+      'Un avis rapide aide plus de personnes à découvrir Custom Bingo.';
 
   @override
   String get rateTheApp => 'Noter l’app';
@@ -290,66 +317,68 @@ class AppLocalizationsFr extends AppLocalizations {
       'Envoyer des retours, questions ou bugs par e-mail.';
 
   @override
-  String get paywallTitle => 'Support Custom Bingo';
+  String get paywallTitle => 'Soutenir Custom Bingo';
 
   @override
-  String get paywallThankYouTitle => 'Thank you';
+  String get paywallThankYouTitle => 'Merci';
 
   @override
-  String get paywallSupportTitle => 'Support Custom Bingo';
+  String get paywallSupportTitle => 'Soutenir Custom Bingo';
 
   @override
   String get paywallSupportBody =>
-      'This purchase supports me, the developer, directly. You get my gratitude and a few small bonus things for your boards.';
+      'Cet achat me soutient directement, moi le développeur. Vous recevez ma gratitude et quelques petits bonus pour vos grilles.';
 
   @override
-  String get paywallBonusGratitude => 'My gratitude, sincerely.';
+  String get paywallBonusGratitude => 'Ma gratitude, sincèrement.';
 
   @override
-  String get paywallBonusColors => 'A few extra board colors.';
+  String get paywallBonusColors => 'Quelques couleurs de grille en plus.';
 
   @override
-  String get paywallBonusExtras => 'Small supporter extras over time.';
+  String get paywallBonusExtras =>
+      'De petits bonus de soutien au fil du temps.';
 
   @override
   String get paywallFreeForever =>
-      'No one ever needs to pay for this app. Custom Bingo stays usable for everyone.';
+      'Personne n’a jamais besoin de payer pour cette app. Custom Bingo reste utilisable par tout le monde.';
 
   @override
-  String get paywallLoadingPrice => 'Loading price';
+  String get paywallLoadingPrice => 'Chargement du prix';
 
   @override
-  String get paywallUnavailable => 'Unavailable';
+  String get paywallUnavailable => 'Indisponible';
 
   @override
-  String get paywallSupportOnce => 'Support once';
+  String get paywallSupportOnce => 'Soutenir une fois';
 
   @override
-  String get paywallRestorePurchase => 'Restore purchase';
+  String get paywallRestorePurchase => 'Restaurer l’achat';
 
   @override
-  String get paywallProActiveToast => 'Custom Bingo Pro is active.';
+  String get paywallProActiveToast => 'Custom Bingo Pro est actif.';
 
   @override
   String get paywallPurchaseInactiveToast =>
-      'Purchase finished, but Pro is not active.';
+      'L’achat est terminé, mais Pro n’est pas actif.';
 
   @override
-  String get paywallProRestoredToast => 'Custom Bingo Pro restored.';
+  String get paywallProRestoredToast => 'Custom Bingo Pro restauré.';
 
   @override
-  String get paywallNoPurchaseFoundToast => 'No Pro purchase found.';
+  String get paywallNoPurchaseFoundToast => 'Aucun achat Pro trouvé.';
 
   @override
   String get paywallPurchasesUnavailable =>
-      'Purchases are unavailable right now.';
+      'Les achats sont indisponibles pour le moment.';
 
   @override
   String get paywallPlatformUnavailable =>
-      'Purchases are unavailable on this platform.';
+      'Les achats ne sont pas disponibles sur cette plateforme.';
 
   @override
-  String get paywallCouldNotLoad => 'Could not load purchase information.';
+  String get paywallCouldNotLoad =>
+      'Impossible de charger les informations d’achat.';
 
   @override
   String get shareTitle => 'Partager la carte de bingo';
@@ -372,7 +401,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get shareInviteOptionHelper =>
-      'Send this link to your friends who also have this app installed. They get the same card and you can play together.';
+      'Envoyez ce lien à vos amis qui ont aussi installé cette app. Ils recevront la même carte et vous pourrez jouer ensemble.';
 
   @override
   String get shareInviteIncludeMarks => 'Inclure mes coches';
@@ -409,18 +438,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String importCollisionToast(String newName) {
-    return 'You already had a card with this name, so I added it as \"$newName\".';
+    return 'Vous aviez déjà une carte avec ce nom, je l’ai donc ajoutée sous « $newName ».';
   }
 
   @override
   String get importBadLinkToast =>
-      'Sorry, this invite couldn\'t be opened. Ask your friend to send it again.';
+      'Désolé, cette invitation n’a pas pu être ouverte. Demandez à votre ami de la renvoyer.';
 
   @override
-  String get importOutdatedAppToast => 'Update the app to open this invite.';
+  String get importOutdatedAppToast =>
+      'Mettez l’app à jour pour ouvrir cette invitation.';
 
   @override
-  String get toastInfo => 'Info';
+  String get toastInfo => 'Information';
 
   @override
   String get toastSuccess => 'Succès';

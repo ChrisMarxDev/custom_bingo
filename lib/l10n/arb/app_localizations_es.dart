@@ -27,30 +27,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateCardButton => 'Actualizar cuadrícula';
 
   @override
-  String get newBoardPreMadeSectionTitle => 'Your pre-made items';
+  String get newBoardPreMadeSectionTitle => 'Tus elementos preparados';
 
   @override
-  String get newBoardPreMadeButton => 'Start with pre-made items';
+  String get newBoardPreMadeButton => 'Empezar con elementos preparados';
 
   @override
-  String get newBoardPreMadeChangeButton => 'Change pre-made items';
+  String get newBoardPreMadeChangeButton => 'Cambiar elementos preparados';
 
   @override
-  String get newBoardPreMadeClearButton => 'Clear pre-made items';
+  String get newBoardPreMadeClearButton => 'Borrar elementos preparados';
 
   @override
   String newBoardPreMadeAppliedCount(int count) {
-    return '$count pre-made entries applied';
+    return '$count entradas preparadas aplicadas';
   }
 
   @override
   String newBoardPreMadeFullSummary(int used) {
-    return '$used will be drawn at random for this board.';
+    return 'Se elegirán $used al azar para este tablero.';
   }
 
   @override
   String newBoardPreMadePartialSummary(int used, int blank) {
-    return '$used cells will be filled. $blank will stay blank.';
+    return 'Se rellenarán $used casillas. $blank quedarán vacías.';
   }
 
   @override
@@ -60,16 +60,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get toggleHint => 'Mantén pulsado para marcar una casilla';
 
   @override
-  String get editingHintBefore => 'Press the lock icon';
+  String get editingHintBefore => 'Pulsa el icono de candado';
 
   @override
-  String get editingHintAfter => ' to make the fields not editable anymore.';
+  String get editingHintAfter =>
+      ' para que las casillas dejen de ser editables.';
 
   @override
-  String get deleteCardTitle => 'Delete Card';
+  String get deleteCardTitle => 'Eliminar tarjeta';
 
   @override
-  String get deleteCardConfirm => 'Are you sure you want to delete this card?';
+  String get deleteCardConfirm => '¿Seguro que quieres eliminar esta tarjeta?';
 
   @override
   String get cancel => 'Cancelar';
@@ -78,27 +79,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get delete => 'Eliminar';
 
   @override
-  String get shuffleCardTitle => 'Shuffle Card';
+  String get shuffleCardTitle => 'Mezclar tarjeta';
 
   @override
   String get shuffleCardConfirm =>
-      'Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.';
+      '¿Seguro que quieres mezclar esta tarjeta? Todas las casillas quedarán desmarcadas después.';
 
   @override
   String get shuffle => 'Mezclar';
 
   @override
-  String get ratingPromptTitle => 'Do you like Custom Bingo?';
+  String get ratingPromptTitle => '¿Te gusta Custom Bingo?';
 
   @override
   String get ratingPromptBody =>
-      'If so, a quick store review helps others find it.';
+      'Si es así, una reseña rápida en la tienda ayuda a que más personas la encuentren.';
 
   @override
-  String get ratingPromptNo => 'Not really';
+  String get ratingPromptNo => 'No mucho';
 
   @override
-  String get ratingPromptYes => 'Yes, I like it';
+  String get ratingPromptYes => 'Sí, me gusta';
 
   @override
   String get boardActionShare => 'Compartir';
@@ -107,7 +108,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get boardActionEditBoard => 'Editar tablero';
 
   @override
-  String get boardActionAddPreMadeItems => 'Add pre-made items';
+  String get boardActionAddPreMadeItems => 'Añadir elementos preparados';
 
   @override
   String get cellHint => 'Escribe texto…';
@@ -116,22 +117,50 @@ class AppLocalizationsEs extends AppLocalizations {
   String get edit => 'Editar';
 
   @override
-  String get markDone => 'Mark Done';
+  String get markDone => 'Marcar como hecho';
 
   @override
-  String get markNotDone => 'Mark Not Done';
+  String get markNotDone => 'Marcar como no hecho';
 
   @override
   String get newCardMenuItem => 'Nuevo tablero de bingo';
 
   @override
+  String get allBoardsMenuItem => 'Todos los tableros';
+
+  @override
   String get yourCardsHeader => 'Tus tableros';
+
+  @override
+  String get noBoardsYet => 'Aún no hay tableros';
+
+  @override
+  String get pageNotFoundTitle => 'Página no encontrada';
+
+  @override
+  String get homeButton => 'Inicio';
+
+  @override
+  String revenueCatUserIdLabel(String userId) {
+    return 'ID de usuario de RevenueCat: $userId';
+  }
+
+  @override
+  String get copyRevenueCatUserIdTooltip =>
+      'Copiar ID de usuario de RevenueCat';
+
+  @override
+  String get revenueCatUserIdCopiedToast =>
+      'ID de usuario de RevenueCat copiado.';
 
   @override
   String get settingsHeader => 'Ajustes';
 
   @override
-  String get appearanceMenuItem => 'Appearance';
+  String get clearSettingsMenuItem => 'Borrar ajustes';
+
+  @override
+  String get appearanceMenuItem => 'Apariencia';
 
   @override
   String get settingsAppearanceSection => 'Apariencia';
@@ -189,177 +218,181 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar una celebración al completar un bingo.';
 
   @override
-  String get preMadeTilesTitle => 'Pre-made tiles';
+  String get preMadeTilesTitle => 'Casillas preparadas';
 
   @override
   String get preMadeTilesSettingsDescription =>
-      'Create reusable tile text for future boards.';
+      'Crea textos de casilla reutilizables para futuros tableros.';
 
   @override
   String get preMadeTilesDescription =>
-      'Create reusable bingo entries here. When you create a new board, you can add them without typing everything again.';
+      'Crea aquí entradas de bingo reutilizables. Cuando crees un tablero nuevo, podrás añadirlas sin volver a escribirlo todo.';
 
   @override
-  String get preMadeTilesSelectMode => 'Select';
+  String get preMadeTilesSelectMode => 'Seleccionar';
 
   @override
-  String get preMadeTilesEditMode => 'Edit';
+  String get preMadeTilesEditMode => 'Editar';
 
   @override
-  String get preMadeTileHint => 'Tile text';
+  String get preMadeTileHint => 'Texto de la casilla';
 
   @override
-  String get preMadeTilesAdd => 'Add tile';
+  String get preMadeTilesAdd => 'Añadir casilla';
 
   @override
-  String get preMadeTilesDelete => 'Delete tile';
+  String get preMadeTilesDelete => 'Eliminar casilla';
 
   @override
-  String get preMadeTilesSelectAll => 'Un/select all';
+  String get preMadeTilesSelectAll => 'Seleccionar/deseleccionar todo';
 
   @override
-  String get preMadeTilesSelectNone => 'Select none';
+  String get preMadeTilesSelectNone => 'No seleccionar nada';
 
   @override
-  String get preMadeTilesApply => 'Apply';
+  String get preMadeTilesApply => 'Aplicar';
 
   @override
-  String get preMadeTilesReplaceItems => 'Replace items';
+  String get preMadeTilesReplaceItems => 'Reemplazar elementos';
 
   @override
-  String get preMadeTilesFillItems => 'Fill items';
+  String get preMadeTilesFillItems => 'Rellenar elementos';
 
   @override
   String get preMadeTilesBoardActionHelp =>
-      'Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.';
+      'Reemplazar cambia las entradas del tablero por una selección aleatoria. Rellenar solo añade elementos a casillas vacías. En tableros impares, la casilla central se mantiene.';
 
   @override
   String preMadeTilesSelectedCount(int selected, int total) {
-    return '$selected / $total selected';
+    return '$selected / $total seleccionadas';
   }
 
   @override
-  String get preMadeTilesEmptyTitle => 'No tiles yet';
+  String get preMadeTilesEmptyTitle => 'Aún no hay casillas';
 
   @override
   String get preMadeTilesEmptyBody =>
-      'Add a tile to start building a reusable list.';
+      'Añade una casilla para empezar una lista reutilizable.';
 
   @override
-  String get proposeFeatures => 'Propose Features';
+  String get proposeFeatures => 'Proponer funciones';
 
   @override
   String get proposeFeaturesSettingsDescription =>
-      'Vote on ideas and suggest what to build next.';
+      'Vota ideas y sugiere qué crear después.';
 
   @override
-  String get supportMeDirectly => 'Support the developer';
+  String get supportMeDirectly => 'Apoyar al desarrollador';
 
   @override
   String get supportMeDirectlySettingsDescription =>
-      'Help fund development and keep the app improving.';
+      'Ayuda a financiar el desarrollo y a seguir mejorando la app.';
 
   @override
-  String get supportCarouselProTitle => 'Support Custom Bingo';
+  String get supportCarouselProTitle => 'Apoya Custom Bingo';
 
   @override
   String get supportCarouselProSubtitle =>
-      'Unlock bonus colors and help keep the app independent.';
+      'Desbloquea colores extra y ayuda a mantener la app independiente.';
 
   @override
-  String get supportCarouselRateTitle => 'Enjoying the app?';
+  String get supportCarouselRateTitle => '¿Disfrutas la app?';
 
   @override
   String get supportCarouselRateSubtitle =>
-      'A quick review helps more people find Custom Bingo.';
+      'Una reseña rápida ayuda a que más personas encuentren Custom Bingo.';
 
   @override
-  String get rateTheApp => 'Rate the app';
+  String get rateTheApp => 'Valorar la app';
 
   @override
-  String get rateTheAppSettingsDescription => 'Open the store rating prompt.';
+  String get rateTheAppSettingsDescription =>
+      'Abrir la solicitud de valoración de la tienda.';
 
   @override
-  String get contactMe => 'Contact me';
+  String get contactMe => 'Contactarme';
 
   @override
   String get contactMeSettingsDescription =>
-      'Send feedback, questions, or bug reports by email.';
+      'Envía comentarios, preguntas o informes de errores por email.';
 
   @override
-  String get paywallTitle => 'Support Custom Bingo';
+  String get paywallTitle => 'Apoya Custom Bingo';
 
   @override
-  String get paywallThankYouTitle => 'Thank you';
+  String get paywallThankYouTitle => 'Gracias';
 
   @override
-  String get paywallSupportTitle => 'Support Custom Bingo';
+  String get paywallSupportTitle => 'Apoya Custom Bingo';
 
   @override
   String get paywallSupportBody =>
-      'This purchase supports me, the developer, directly. You get my gratitude and a few small bonus things for your boards.';
+      'Esta compra me apoya directamente a mí, el desarrollador. Recibes mi agradecimiento y algunos pequeños extras para tus tableros.';
 
   @override
-  String get paywallBonusGratitude => 'My gratitude, sincerely.';
+  String get paywallBonusGratitude => 'Mi agradecimiento, de verdad.';
 
   @override
-  String get paywallBonusColors => 'A few extra board colors.';
+  String get paywallBonusColors => 'Algunos colores extra para tableros.';
 
   @override
-  String get paywallBonusExtras => 'Small supporter extras over time.';
+  String get paywallBonusExtras =>
+      'Pequeños extras para seguidores con el tiempo.';
 
   @override
   String get paywallFreeForever =>
-      'No one ever needs to pay for this app. Custom Bingo stays usable for everyone.';
+      'Nadie necesita pagar nunca por esta app. Custom Bingo seguirá siendo usable para todos.';
 
   @override
-  String get paywallLoadingPrice => 'Loading price';
+  String get paywallLoadingPrice => 'Cargando precio';
 
   @override
-  String get paywallUnavailable => 'Unavailable';
+  String get paywallUnavailable => 'No disponible';
 
   @override
-  String get paywallSupportOnce => 'Support once';
+  String get paywallSupportOnce => 'Apoyar una vez';
 
   @override
-  String get paywallRestorePurchase => 'Restore purchase';
+  String get paywallRestorePurchase => 'Restaurar compra';
 
   @override
-  String get paywallProActiveToast => 'Custom Bingo Pro is active.';
+  String get paywallProActiveToast => 'Custom Bingo Pro está activo.';
 
   @override
   String get paywallPurchaseInactiveToast =>
-      'Purchase finished, but Pro is not active.';
+      'La compra terminó, pero Pro no está activo.';
 
   @override
-  String get paywallProRestoredToast => 'Custom Bingo Pro restored.';
+  String get paywallProRestoredToast => 'Custom Bingo Pro restaurado.';
 
   @override
-  String get paywallNoPurchaseFoundToast => 'No Pro purchase found.';
+  String get paywallNoPurchaseFoundToast =>
+      'No se encontró ninguna compra Pro.';
 
   @override
   String get paywallPurchasesUnavailable =>
-      'Purchases are unavailable right now.';
+      'Las compras no están disponibles ahora mismo.';
 
   @override
   String get paywallPlatformUnavailable =>
-      'Purchases are unavailable on this platform.';
+      'Las compras no están disponibles en esta plataforma.';
 
   @override
-  String get paywallCouldNotLoad => 'Could not load purchase information.';
+  String get paywallCouldNotLoad =>
+      'No se pudo cargar la información de compra.';
 
   @override
   String get shareTitle => 'Compartir la tarjeta de bingo';
 
   @override
-  String get shareDialogPrompt => 'How would you like to share?';
+  String get shareDialogPrompt => '¿Cómo quieres compartir?';
 
   @override
   String get shareImageOptionTitle => 'Compartir como imagen';
 
   @override
   String get shareImageOptionHelper =>
-      'Send a picture of your card. Anyone can see it — even without the app.';
+      'Envía una imagen de tu tarjeta. Cualquiera puede verla, incluso sin la app.';
 
   @override
   String get shareImageOptionButton => 'Compartir imagen';
@@ -369,14 +402,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get shareInviteOptionHelper =>
-      'Send this link to your friends who also have this app installed. They get the same card and you can play together.';
+      'Envía este enlace a tus amigos que también tengan esta app instalada. Recibirán la misma tarjeta y podréis jugar juntos.';
 
   @override
-  String get shareInviteIncludeMarks => 'Include my checkmarks';
+  String get shareInviteIncludeMarks => 'Incluir mis marcas';
 
   @override
   String get shareInviteIncludeMarksHelper =>
-      'When on, your friends will see what you\'ve already crossed off.';
+      'Cuando esté activado, tus amigos verán lo que ya has tachado.';
 
   @override
   String get shareInviteOptionButton => 'Enviar invitación';
@@ -390,13 +423,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get close => 'Cerrar';
 
   @override
-  String get shareSubject => 'Bingo Card';
+  String get shareSubject => 'Tarjeta de bingo';
 
   @override
-  String get importTitle => 'A friend shared a bingo card with you';
+  String get importTitle => 'Un amigo compartió una tarjeta de bingo contigo';
 
   @override
-  String get importBody => 'Add it to your cards so you can play along?';
+  String get importBody => '¿Añadirla a tus tarjetas para jugar?';
 
   @override
   String get importConfirm => 'Añadir a mis tarjetas';
@@ -406,15 +439,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String importCollisionToast(String newName) {
-    return 'You already had a card with this name, so I added it as \"$newName\".';
+    return 'Ya tenías una tarjeta con este nombre, así que la añadí como \"$newName\".';
   }
 
   @override
   String get importBadLinkToast =>
-      'Sorry, this invite couldn\'t be opened. Ask your friend to send it again.';
+      'Lo siento, no se pudo abrir esta invitación. Pide a tu amigo que la envíe otra vez.';
 
   @override
-  String get importOutdatedAppToast => 'Update the app to open this invite.';
+  String get importOutdatedAppToast =>
+      'Actualiza la app para abrir esta invitación.';
 
   @override
   String get toastInfo => 'Información';
@@ -423,7 +457,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get toastSuccess => 'Éxito';
 
   @override
-  String get toastError => 'Error';
+  String get toastError => 'Fallo';
 
   @override
   String get lastChangeNever => 'Último cambio: nunca';
@@ -435,42 +469,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get screenshotCaptionPlaying =>
-      'Just a simple app to create bingo board.\n\nNo signup, no ads, fully free to use.';
+      'Una app sencilla para crear tableros de bingo.\\n\\nSin registro, sin anuncios y totalmente gratis.';
 
   @override
   String get screenshotCaptionCreate =>
-      'Literally just 2 screens to create a bingo grid.';
+      'Literalmente solo dos pantallas para crear una cuadrícula de bingo.';
 
   @override
-  String get screenshotCaptionLocked => 'That\'s it.';
+  String get screenshotCaptionLocked => 'Eso es todo.';
 
   @override
-  String get screenshotBoardName => 'David\'s Wedding';
+  String get screenshotBoardName => 'La boda de David';
 
   @override
-  String get screenshotTilePhoneDuringVows => 'Phone during vows';
+  String get screenshotTilePhoneDuringVows => 'Teléfono durante los votos';
 
   @override
-  String get screenshotTileChampagneSpilled => 'Champagne spilled';
+  String get screenshotTileChampagneSpilled => 'Champán derramado';
 
   @override
-  String get screenshotTileSpeechTears => 'Speech tears';
+  String get screenshotTileSpeechTears => 'Lágrimas en el discurso';
 
   @override
-  String get screenshotTileDramaticEntrance => 'Dramatic entrance';
+  String get screenshotTileDramaticEntrance => 'Entrada dramática';
 
   @override
-  String get screenshotTileKidsDanceFloor => 'Kids take the dance floor';
+  String get screenshotTileKidsDanceFloor => 'Niños en la pista';
 
   @override
-  String get screenshotTileGuestToast => 'Guest gives a toast';
+  String get screenshotTileGuestToast => 'Un invitado brinda';
 
   @override
-  String get screenshotTileCrowdClapsEarly => 'Crowd claps early';
+  String get screenshotTileCrowdClapsEarly => 'Aplausos antes de tiempo';
 
   @override
-  String get screenshotTileDjClassic => 'DJ plays a classic';
+  String get screenshotTileDjClassic => 'El DJ pone un clásico';
 
   @override
-  String get screenshotTileGroupPhotoChaos => 'Group photo chaos';
+  String get screenshotTileGroupPhotoChaos => 'Caos en la foto de grupo';
 }
