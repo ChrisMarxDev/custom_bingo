@@ -125,10 +125,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newCardMenuItem => 'New bingo board';
 
   @override
+  String get allBoardsMenuItem => 'All boards';
+
+  @override
   String get yourCardsHeader => 'Your Boards';
 
   @override
+  String get noBoardsYet => 'No boards yet';
+
+  @override
+  String get pageNotFoundTitle => 'Page Not Found';
+
+  @override
+  String get homeButton => 'Home';
+
+  @override
+  String revenueCatUserIdLabel(String userId) {
+    return 'RevenueCat user id: $userId';
+  }
+
+  @override
+  String get copyRevenueCatUserIdTooltip => 'Copy RevenueCat user id';
+
+  @override
+  String get revenueCatUserIdCopiedToast => 'RevenueCat user id copied.';
+
+  @override
   String get settingsHeader => 'Settings';
+
+  @override
+  String get clearSettingsMenuItem => 'Clear Settings';
 
   @override
   String get appearanceMenuItem => 'Appearance';
@@ -154,6 +180,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get themeColorSettingsDescription =>
       'Choose the palette used across the app.';
+
+  @override
+  String get languageSettingsTitle => 'Language';
+
+  @override
+  String get languageSettingsSelectorLabel => 'App language';
+
+  @override
+  String languageSettingsSystemOption(String language) {
+    return 'System default ($language)';
+  }
+
+  @override
+  String languageSettingsSystemDescription(String language) {
+    return 'Following your phone language: $language.';
+  }
+
+  @override
+  String get languageSettingsOverrideDescription =>
+      'Use this language instead of the phone language.';
 
   @override
   String get darkModeLabel => 'Dark mode';

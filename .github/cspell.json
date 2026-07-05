@@ -16,10 +16,29 @@
   ],
   "useGitignore": true,
   "words": [
+    "assetlinks",
+    "bingogrid",
+    "christophermarx",
     "Contador",
+    "custombingo",
+    "firebaserc",
+    "fullfilled",
+    "fvmrc",
+    "groupchats",
+    "keypresses",
+    "libsqlite",
     "localizable",
+    "mdoe",
     "mostrado",
     "página",
-    "Texto"
+    "Podfile",
+    "podfix",
+    "Prefs",
+    "rerunnable",
+    "sideloading",
+    "SIGUSR",
+    "Taskfile",
+    "Texto",
+    "worktree"
   ]
 }

@@ -339,15 +339,12 @@ String _priceLabel(BuildContext context, bool isLoading, String? price) {
 
 String? _availabilityMessage(BuildContext context, RevenueCatState state) {
   return switch (state.status) {
-    RevenueCatStatus.error =>
-      state.message ?? context.l10n.paywallPurchasesUnavailable,
-    RevenueCatStatus.unavailable =>
-      state.message ?? context.l10n.paywallPlatformUnavailable,
+    RevenueCatStatus.error => context.l10n.paywallPurchasesUnavailable,
+    RevenueCatStatus.unavailable => context.l10n.paywallPlatformUnavailable,
     _ => null,
   };
 }
 
 String _messageFromRevenueCatError(BuildContext context, Object error) {
-  if (error is RevenueCatException) return error.message;
   return context.l10n.paywallCouldNotLoad;
 }

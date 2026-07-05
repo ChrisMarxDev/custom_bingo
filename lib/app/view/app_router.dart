@@ -98,17 +98,18 @@ class _RouterErrorScreenState extends State<_RouterErrorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Page Not Found'),
+              Text(l10n.pageNotFoundTitle),
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () => context.go(AppRoutePaths.home),
-                child: const Text('Home'),
+                child: Text(l10n.homeButton),
               ),
             ],
           ),

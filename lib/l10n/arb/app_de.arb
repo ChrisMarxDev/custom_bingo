@@ -1,6 +1,5 @@
 {
     "@@locale": "de",
-
     "newCardTitle": "Neues Bingo erstellen",
     "editCardTitle": "Bingo bearbeiten",
     "cardNameLabel": "Name des Bingos *",
@@ -14,33 +13,38 @@
     "newBoardPreMadeAppliedCount": "{count} vorbereitete Einträge angewendet",
     "@newBoardPreMadeAppliedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "newBoardPreMadeFullSummary": "{used} werden zufällig für dieses Board gezogen.",
     "@newBoardPreMadeFullSummary": {
         "placeholders": {
-            "used": { "type": "int" }
+            "used": {
+                "type": "int"
+            }
         }
     },
     "newBoardPreMadePartialSummary": "{used} Felder werden gefüllt. {blank} bleiben leer.",
     "@newBoardPreMadePartialSummary": {
         "placeholders": {
-            "used": { "type": "int" },
-            "blank": { "type": "int" }
+            "used": {
+                "type": "int"
+            },
+            "blank": {
+                "type": "int"
+            }
         }
     },
     "defaultCardName": "Bingo-Karte",
-
     "toggleHint": "Lange drücken, um ein Feld zu markieren",
     "editingHintBefore": "Drücke auf das Schloss-Symbol",
     "editingHintAfter": ", damit die Felder nicht mehr bearbeitbar sind.",
-
     "deleteCardTitle": "Karte löschen",
     "deleteCardConfirm": "Möchtest du diese Karte wirklich löschen?",
     "cancel": "Abbrechen",
     "delete": "Löschen",
-
     "shuffleCardTitle": "Karte mischen",
     "shuffleCardConfirm": "Möchtest du die Karte wirklich mischen? Alle Markierungen werden danach zurückgesetzt.",
     "shuffle": "Mischen",
@@ -51,23 +55,69 @@
     "boardActionShare": "Teilen",
     "boardActionEditBoard": "Board bearbeiten",
     "boardActionAddPreMadeItems": "Vorbereitete Einträge hinzufügen",
-
     "cellHint": "Text eingeben…",
     "edit": "Bearbeiten",
     "markDone": "Als erledigt markieren",
     "markNotDone": "Markierung entfernen",
-
     "newCardMenuItem": "Neues Bingo",
+    "allBoardsMenuItem": "Alle Boards",
     "yourCardsHeader": "Deine Bingos",
+    "noBoardsYet": "Noch keine Boards",
+    "pageNotFoundTitle": "Seite nicht gefunden",
+    "@pageNotFoundTitle": {
+        "description": "Title shown on the fallback route when a page cannot be found"
+    },
+    "homeButton": "Startseite",
+    "@homeButton": {
+        "description": "Button that navigates back to the home screen"
+    },
+    "revenueCatUserIdLabel": "RevenueCat-Benutzer-ID: {userId}",
+    "@revenueCatUserIdLabel": {
+        "description": "Debug settings label showing the RevenueCat user id",
+        "placeholders": {
+            "userId": {
+                "type": "String",
+                "example": "abc123"
+            }
+        }
+    },
+    "copyRevenueCatUserIdTooltip": "RevenueCat-Benutzer-ID kopieren",
+    "@copyRevenueCatUserIdTooltip": {
+        "description": "Tooltip for copying the RevenueCat user id from debug settings"
+    },
+    "revenueCatUserIdCopiedToast": "RevenueCat-Benutzer-ID kopiert.",
+    "@revenueCatUserIdCopiedToast": {
+        "description": "Toast shown after copying the RevenueCat user id"
+    },
     "settingsHeader": "Einstellungen",
+    "clearSettingsMenuItem": "Einstellungen löschen",
     "appearanceMenuItem": "Design",
     "settingsAppearanceSection": "Design",
     "settingsPreferencesSection": "Einstellungen",
-    "settingsBoardsSection": "Boards",
+    "settingsBoardsSection": "Bingo-Boards",
     "settingsHelpSection": "Mehr",
     "settingsSupportSection": "Unterstützen",
     "themeColorLabel": "Themenfarbe",
     "themeColorSettingsDescription": "Wähle die Farbpalette für die App.",
+    "languageSettingsTitle": "Sprache",
+    "languageSettingsSelectorLabel": "App-Sprache",
+    "languageSettingsSystemOption": "Systemstandard ({language})",
+    "@languageSettingsSystemOption": {
+        "placeholders": {
+            "language": {
+                "type": "String"
+            }
+        }
+    },
+    "languageSettingsSystemDescription": "Folgt deiner Telefonsprache: {language}.",
+    "@languageSettingsSystemDescription": {
+        "placeholders": {
+            "language": {
+                "type": "String"
+            }
+        }
+    },
+    "languageSettingsOverrideDescription": "Diese Sprache statt der Telefonsprache verwenden.",
     "darkModeLabel": "Dunkler Modus",
     "darkModeSettingsDescription": "Verwende eine dunklere Oberfläche.",
     "enableConfettiLabel": "Konfetti",
@@ -89,8 +139,12 @@
     "preMadeTilesSelectedCount": "{selected} / {total} ausgewählt",
     "@preMadeTilesSelectedCount": {
         "placeholders": {
-            "selected": { "type": "int" },
-            "total": { "type": "int" }
+            "selected": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "preMadeTilesEmptyTitle": "Noch keine Felder",
@@ -126,14 +180,11 @@
     "paywallPurchasesUnavailable": "Käufe sind gerade nicht verfügbar.",
     "paywallPlatformUnavailable": "Käufe sind auf dieser Plattform nicht verfügbar.",
     "paywallCouldNotLoad": "Kaufinformationen konnten nicht geladen werden.",
-
     "shareTitle": "Bingo-Karte teilen",
     "shareDialogPrompt": "Wie möchtest du teilen?",
-
     "shareImageOptionTitle": "Als Bild teilen",
     "shareImageOptionHelper": "Schicke ein Bild deiner Karte. Jeder kann es sehen, auch ohne die App.",
     "shareImageOptionButton": "Bild teilen",
-
     "shareInviteOptionTitle": "Freunde zum Mitspielen einladen",
     "shareInviteOptionHelper": "Schicke diesen Link an deine Freunde, die diese App auch installiert haben. Sie bekommen die gleiche Karte und ihr könnt zusammen spielen.",
     "shareInviteIncludeMarks": "Meine Markierungen mitsenden",
@@ -142,14 +193,16 @@
     "shareInviteText": "Spiel „{name}\" mit mir! In der App öffnen:\n{link}",
     "@shareInviteText": {
         "placeholders": {
-            "name": { "type": "String" },
-            "link": { "type": "String" }
+            "name": {
+                "type": "String"
+            },
+            "link": {
+                "type": "String"
+            }
         }
     },
-
     "close": "Schließen",
     "shareSubject": "Bingo-Karte",
-
     "importTitle": "Ein Freund hat dir eine Bingo-Karte geschickt",
     "importBody": "Zu deinen Karten hinzufügen, damit ihr zusammen spielen könnt?",
     "importConfirm": "Zu meinen Karten hinzufügen",
@@ -157,25 +210,28 @@
     "importCollisionToast": "Du hattest schon eine Karte mit diesem Namen — ich habe sie als „{newName}\" hinzugefügt.",
     "@importCollisionToast": {
         "placeholders": {
-            "newName": { "type": "String" }
+            "newName": {
+                "type": "String"
+            }
         }
     },
     "importBadLinkToast": "Diese Einladung konnte nicht geöffnet werden. Bitte deinen Freund, sie noch einmal zu schicken.",
     "importOutdatedAppToast": "Aktualisiere die App, um diese Einladung zu öffnen.",
-
-    "toastInfo": "Info",
+    "toastInfo": "Hinweis",
     "toastSuccess": "Erfolg",
     "toastError": "Fehler",
-
     "lastChangeNever": "Letzte Änderung: Nie",
     "lastChange": "Letzte Änderung: {date} {time}",
     "@lastChange": {
         "placeholders": {
-            "date": { "type": "String" },
-            "time": { "type": "String" }
+            "date": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
         }
     },
-
     "screenshotCaptionPlaying": "Eine einfache App, um Bingo-Felder zu erstellen.\n\nOhne Anmeldung, ohne Werbung, vollständig kostenlos nutzbar.",
     "screenshotCaptionCreate": "Nur zwei Bildschirme, um dein Bingo-Raster anzulegen.",
     "screenshotCaptionLocked": "Das war es.",

@@ -1,46 +1,46 @@
 {
-    "@@locale": "en",
-    "newCardTitle": "Create New Bingo Grid",
+    "@@locale": "fr",
+    "newCardTitle": "Créer une nouvelle grille de bingo",
     "@newCardTitle": {
         "description": "AppBar title of the new-card screen"
     },
-    "editCardTitle": "Edit Bingo Grid",
+    "editCardTitle": "Modifier la grille de bingo",
     "@editCardTitle": {
         "description": "AppBar title of the edit-card screen"
     },
-    "cardNameLabel": "Bingo Grid Name *",
+    "cardNameLabel": "Nom de la grille *",
     "@cardNameLabel": {
         "description": "Label of the card-name text field"
     },
-    "cardNameHint": "Enter a name for your bingo grid",
+    "cardNameHint": "Donnez un nom à votre grille de bingo",
     "@cardNameHint": {
         "description": "Placeholder hint for the card-name text field"
     },
-    "createCardButton": "Create Bingo Grid",
+    "createCardButton": "Créer la grille",
     "@createCardButton": {
         "description": "Confirm button on the new-card screen"
     },
-    "updateCardButton": "Update Bingo Grid",
+    "updateCardButton": "Mettre à jour la grille",
     "@updateCardButton": {
         "description": "Confirm button on the edit-card screen"
     },
-    "newBoardPreMadeSectionTitle": "Your pre-made items",
+    "newBoardPreMadeSectionTitle": "Vos éléments préparés",
     "@newBoardPreMadeSectionTitle": {
         "description": "Expandable section title for pre-made items on the new-board screen"
     },
-    "newBoardPreMadeButton": "Start with pre-made items",
+    "newBoardPreMadeButton": "Commencer avec des éléments préparés",
     "@newBoardPreMadeButton": {
         "description": "Button that opens pre-made item selection from the new-board screen"
     },
-    "newBoardPreMadeChangeButton": "Change pre-made items",
+    "newBoardPreMadeChangeButton": "Modifier les éléments préparés",
     "@newBoardPreMadeChangeButton": {
         "description": "Button that reopens pre-made item selection after items have been applied"
     },
-    "newBoardPreMadeClearButton": "Clear pre-made items",
+    "newBoardPreMadeClearButton": "Effacer les éléments préparés",
     "@newBoardPreMadeClearButton": {
         "description": "Button that clears applied pre-made entries from the new-board form"
     },
-    "newBoardPreMadeAppliedCount": "{count} pre-made entries applied",
+    "newBoardPreMadeAppliedCount": "{count} entrées préparées appliquées",
     "@newBoardPreMadeAppliedCount": {
         "description": "Summary of how many pre-made entries are applied to the new-board form",
         "placeholders": {
@@ -50,7 +50,7 @@
             }
         }
     },
-    "newBoardPreMadeFullSummary": "{used} will be drawn at random for this board.",
+    "newBoardPreMadeFullSummary": "{used} seront tirées au hasard pour cette grille.",
     "@newBoardPreMadeFullSummary": {
         "description": "Summary when applied pre-made entries can fill the new board",
         "placeholders": {
@@ -60,7 +60,7 @@
             }
         }
     },
-    "newBoardPreMadePartialSummary": "{used} cells will be filled. {blank} will stay blank.",
+    "newBoardPreMadePartialSummary": "{used} cases seront remplies. {blank} resteront vides.",
     "@newBoardPreMadePartialSummary": {
         "description": "Summary when applied pre-made entries are fewer than the board cells",
         "placeholders": {
@@ -74,119 +74,119 @@
             }
         }
     },
-    "defaultCardName": "Bingo Card",
+    "defaultCardName": "Carte de bingo",
     "@defaultCardName": {
         "description": "Fallback title shown when a card has no name"
     },
-    "toggleHint": "Press long to mark a field as checked",
+    "toggleHint": "Appuyez longuement pour cocher une case",
     "@toggleHint": {
         "description": "Hint banner above the bingo grid"
     },
-    "editingHintBefore": "Press the lock icon",
+    "editingHintBefore": "Appuyez sur l’icône de cadenas",
     "@editingHintBefore": {
         "description": "First half of the hint that explains the lock toggle. The lock icon is rendered between the two halves."
     },
-    "editingHintAfter": " to make the fields not editable anymore.",
+    "editingHintAfter": " pour empêcher la modification des cases.",
     "@editingHintAfter": {
         "description": "Second half of the lock-toggle hint, rendered after the lock icon."
     },
-    "deleteCardTitle": "Delete Card",
+    "deleteCardTitle": "Supprimer la carte",
     "@deleteCardTitle": {
         "description": "Title of the delete-card confirmation dialog"
     },
-    "deleteCardConfirm": "Are you sure you want to delete this card?",
+    "deleteCardConfirm": "Voulez-vous vraiment supprimer cette carte ?",
     "@deleteCardConfirm": {
         "description": "Body of the delete-card confirmation dialog"
     },
-    "cancel": "Cancel",
+    "cancel": "Annuler",
     "@cancel": {
         "description": "Generic cancel button"
     },
-    "delete": "Delete",
+    "delete": "Supprimer",
     "@delete": {
         "description": "Generic delete button"
     },
-    "shuffleCardTitle": "Shuffle Card",
+    "shuffleCardTitle": "Mélanger la carte",
     "@shuffleCardTitle": {
         "description": "Title of the shuffle confirmation dialog"
     },
-    "shuffleCardConfirm": "Are you sure you want to shuffle this card? All fields will be unchecked, after shuffling.",
+    "shuffleCardConfirm": "Voulez-vous vraiment mélanger cette carte ? Toutes les cases seront décochées après le mélange.",
     "@shuffleCardConfirm": {
         "description": "Body of the shuffle confirmation dialog"
     },
-    "shuffle": "Shuffle",
+    "shuffle": "Mélanger",
     "@shuffle": {
         "description": "Confirm button to shuffle the card"
     },
-    "ratingPromptTitle": "Do you like Custom Bingo?",
+    "ratingPromptTitle": "Vous aimez Custom Bingo ?",
     "@ratingPromptTitle": {
         "description": "Title of the dialog shown before asking for an app store review"
     },
-    "ratingPromptBody": "If so, a quick store review helps others find it.",
+    "ratingPromptBody": "Si oui, un avis rapide sur le store aide d’autres personnes à le trouver.",
     "@ratingPromptBody": {
         "description": "Body of the dialog shown before asking for an app store review"
     },
-    "ratingPromptNo": "Not really",
+    "ratingPromptNo": "Pas vraiment",
     "@ratingPromptNo": {
         "description": "Dismiss button for the rating prompt dialog"
     },
-    "ratingPromptYes": "Yes, I like it",
+    "ratingPromptYes": "Oui, j’aime",
     "@ratingPromptYes": {
         "description": "Confirm button that continues to the native app store review flow"
     },
-    "boardActionShare": "Share",
+    "boardActionShare": "Partager",
     "@boardActionShare": {
         "description": "Menu item that opens the share dialog from the board action bar"
     },
-    "boardActionEditBoard": "Edit board",
+    "boardActionEditBoard": "Modifier la grille",
     "@boardActionEditBoard": {
         "description": "Menu item that opens the board edit flow from the board action bar"
     },
-    "boardActionAddPreMadeItems": "Add pre-made items",
+    "boardActionAddPreMadeItems": "Ajouter des éléments préparés",
     "@boardActionAddPreMadeItems": {
         "description": "Debug menu item placeholder for filling a board with pre-made items"
     },
-    "cellHint": "Enter text…",
+    "cellHint": "Saisir du texte…",
     "@cellHint": {
         "description": "Placeholder for an empty bingo cell"
     },
-    "edit": "Edit",
+    "edit": "Modifier",
     "@edit": {
         "description": "Edit menu item in a cell's context menu"
     },
-    "markDone": "Mark Done",
+    "markDone": "Marquer comme fait",
     "@markDone": {
         "description": "Cell context menu item: mark this cell as done"
     },
-    "markNotDone": "Mark Not Done",
+    "markNotDone": "Retirer la marque",
     "@markNotDone": {
         "description": "Cell context menu item: clear the done state"
     },
-    "newCardMenuItem": "New bingo board",
+    "newCardMenuItem": "Nouvelle grille de bingo",
     "@newCardMenuItem": {
         "description": "Menu item that opens the new-card screen"
     },
-    "allBoardsMenuItem": "All boards",
+    "allBoardsMenuItem": "Toutes les grilles",
     "@allBoardsMenuItem": {
         "description": "Menu item that opens the list of all saved boards"
     },
-    "yourCardsHeader": "Your Boards",
+    "yourCardsHeader": "Vos grilles",
     "@yourCardsHeader": {
         "description": "Section header in the popup menu listing saved cards"
     },
-    "noBoardsYet": "No boards yet",
+    "noBoardsYet": "Aucune grille pour l’instant",
     "@noBoardsYet": {
         "description": "Empty-state title shown when there are no saved boards"
     },
-    "pageNotFoundTitle": "Page Not Found",
+    "pageNotFoundTitle": "Page introuvable",
     "@pageNotFoundTitle": {
         "description": "Title shown on the fallback route when a page cannot be found"
     },
-    "homeButton": "Home",
+    "homeButton": "Accueil",
     "@homeButton": {
         "description": "Button that navigates back to the home screen"
     },
-    "revenueCatUserIdLabel": "RevenueCat user id: {userId}",
+    "revenueCatUserIdLabel": "ID utilisateur RevenueCat : {userId}",
     "@revenueCatUserIdLabel": {
         "description": "Debug settings label showing the RevenueCat user id",
         "placeholders": {
@@ -196,63 +196,63 @@
             }
         }
     },
-    "copyRevenueCatUserIdTooltip": "Copy RevenueCat user id",
+    "copyRevenueCatUserIdTooltip": "Copier l’ID utilisateur RevenueCat",
     "@copyRevenueCatUserIdTooltip": {
         "description": "Tooltip for copying the RevenueCat user id from debug settings"
     },
-    "revenueCatUserIdCopiedToast": "RevenueCat user id copied.",
+    "revenueCatUserIdCopiedToast": "ID utilisateur RevenueCat copié.",
     "@revenueCatUserIdCopiedToast": {
         "description": "Toast shown after copying the RevenueCat user id"
     },
-    "settingsHeader": "Settings",
+    "settingsHeader": "Réglages",
     "@settingsHeader": {
         "description": "Section header in the popup menu"
     },
-    "clearSettingsMenuItem": "Clear Settings",
+    "clearSettingsMenuItem": "Effacer les réglages",
     "@clearSettingsMenuItem": {
         "description": "Debug menu item that clears saved settings"
     },
-    "appearanceMenuItem": "Appearance",
+    "appearanceMenuItem": "Apparence",
     "@appearanceMenuItem": {
         "description": "Menu item that opens the appearance settings screen"
     },
-    "settingsAppearanceSection": "Appearance",
+    "settingsAppearanceSection": "Apparence",
     "@settingsAppearanceSection": {
         "description": "Section title for appearance settings"
     },
-    "settingsPreferencesSection": "Preferences",
+    "settingsPreferencesSection": "Préférences",
     "@settingsPreferencesSection": {
         "description": "Section title for general preference settings"
     },
-    "settingsBoardsSection": "Boards",
+    "settingsBoardsSection": "Grilles",
     "@settingsBoardsSection": {
         "description": "Section title for board-related settings"
     },
-    "settingsHelpSection": "More",
+    "settingsHelpSection": "Plus",
     "@settingsHelpSection": {
         "description": "Section title for additional settings, help, and support entries"
     },
-    "settingsSupportSection": "Support",
+    "settingsSupportSection": "Soutien",
     "@settingsSupportSection": {
         "description": "Section title for supporting the developer"
     },
-    "themeColorLabel": "Theme color",
+    "themeColorLabel": "Couleur du thème",
     "@themeColorLabel": {
         "description": "Label above the theme color selector in settings"
     },
-    "themeColorSettingsDescription": "Choose the palette used across the app.",
+    "themeColorSettingsDescription": "Choisissez la palette utilisée dans toute l’app.",
     "@themeColorSettingsDescription": {
         "description": "Settings helper text for the theme color selector"
     },
-    "languageSettingsTitle": "Language",
+    "languageSettingsTitle": "Langue",
     "@languageSettingsTitle": {
         "description": "Settings tile title for choosing the app language"
     },
-    "languageSettingsSelectorLabel": "App language",
+    "languageSettingsSelectorLabel": "Langue de l’app",
     "@languageSettingsSelectorLabel": {
         "description": "Label above the language dropdown in settings"
     },
-    "languageSettingsSystemOption": "System default ({language})",
+    "languageSettingsSystemOption": "Par défaut du système ({language})",
     "@languageSettingsSystemOption": {
         "description": "Dropdown option that makes the app follow the phone/system language. The placeholder is the current phone language display name.",
         "placeholders": {
@@ -262,7 +262,7 @@
             }
         }
     },
-    "languageSettingsSystemDescription": "Following your phone language: {language}.",
+    "languageSettingsSystemDescription": "Suit la langue de votre téléphone : {language}.",
     "@languageSettingsSystemDescription": {
         "description": "Settings helper text when no manual app language override is selected. The placeholder is the current phone language display name.",
         "placeholders": {
@@ -272,83 +272,83 @@
             }
         }
     },
-    "languageSettingsOverrideDescription": "Use this language instead of the phone language.",
+    "languageSettingsOverrideDescription": "Utiliser cette langue au lieu de celle du téléphone.",
     "@languageSettingsOverrideDescription": {
         "description": "Settings helper text when a manual app language override is selected"
     },
-    "darkModeLabel": "Dark mode",
+    "darkModeLabel": "Mode sombre",
     "@darkModeLabel": {
         "description": "Label for the dark mode switch in settings"
     },
-    "darkModeSettingsDescription": "Use a darker interface.",
+    "darkModeSettingsDescription": "Utiliser une interface plus sombre.",
     "@darkModeSettingsDescription": {
         "description": "Settings helper text for the dark mode switch"
     },
-    "enableConfettiLabel": "Confetti",
+    "enableConfettiLabel": "Confettis",
     "@enableConfettiLabel": {
         "description": "Label for the confetti preference switch"
     },
-    "enableConfettiSettingsDescription": "Show a celebration when you complete a bingo.",
+    "enableConfettiSettingsDescription": "Afficher une célébration quand vous terminez un bingo.",
     "@enableConfettiSettingsDescription": {
         "description": "Settings helper text for the confetti preference switch"
     },
-    "preMadeTilesTitle": "Pre-made tiles",
+    "preMadeTilesTitle": "Cases préparées",
     "@preMadeTilesTitle": {
         "description": "Title of the pre-made tiles settings screen and menu entry"
     },
-    "preMadeTilesSettingsDescription": "Create reusable tile text for future boards.",
+    "preMadeTilesSettingsDescription": "Créer des textes de case réutilisables pour de futures grilles.",
     "@preMadeTilesSettingsDescription": {
         "description": "Settings entry helper text for pre-made tiles"
     },
-    "preMadeTilesDescription": "Create reusable bingo entries here. When you create a new board, you can add them without typing everything again.",
+    "preMadeTilesDescription": "Créez ici des entrées de bingo réutilisables. Lors de la création d’une nouvelle grille, vous pourrez les ajouter sans tout retaper.",
     "@preMadeTilesDescription": {
         "description": "Description shown below the pre-made tiles screen title"
     },
-    "preMadeTilesSelectMode": "Select",
+    "preMadeTilesSelectMode": "Sélectionner",
     "@preMadeTilesSelectMode": {
         "description": "Segmented control label for selecting pre-made tiles"
     },
-    "preMadeTilesEditMode": "Edit",
+    "preMadeTilesEditMode": "Modifier",
     "@preMadeTilesEditMode": {
         "description": "Segmented control label for editing pre-made tiles"
     },
-    "preMadeTileHint": "Tile text",
+    "preMadeTileHint": "Texte de la case",
     "@preMadeTileHint": {
         "description": "Placeholder for a pre-made tile text field"
     },
-    "preMadeTilesAdd": "Add tile",
+    "preMadeTilesAdd": "Ajouter une case",
     "@preMadeTilesAdd": {
         "description": "Accessible label and tooltip for adding a pre-made tile"
     },
-    "preMadeTilesDelete": "Delete tile",
+    "preMadeTilesDelete": "Supprimer la case",
     "@preMadeTilesDelete": {
         "description": "Accessible label and tooltip for deleting a pre-made tile"
     },
-    "preMadeTilesSelectAll": "Un/select all",
+    "preMadeTilesSelectAll": "Tout sélectionner/désélectionner",
     "@preMadeTilesSelectAll": {
         "description": "Checkbox label for toggling all pre-made tile selections"
     },
-    "preMadeTilesSelectNone": "Select none",
+    "preMadeTilesSelectNone": "Ne rien sélectionner",
     "@preMadeTilesSelectNone": {
         "description": "Button label for clearing all selected pre-made tiles"
     },
-    "preMadeTilesApply": "Apply",
+    "preMadeTilesApply": "Appliquer",
     "@preMadeTilesApply": {
         "description": "Button label for applying selected pre-made tiles to a board"
     },
-    "preMadeTilesReplaceItems": "Replace items",
+    "preMadeTilesReplaceItems": "Remplacer les éléments",
     "@preMadeTilesReplaceItems": {
         "description": "Button label for replacing current board items with selected pre-made items"
     },
-    "preMadeTilesFillItems": "Fill items",
+    "preMadeTilesFillItems": "Remplir les éléments",
     "@preMadeTilesFillItems": {
         "description": "Button label for filling empty board items with selected pre-made items"
     },
-    "preMadeTilesBoardActionHelp": "Replace swaps the board entries with a random draw from your selection. Fill only adds items to empty tiles. On odd boards, the center tile stays in place.",
+    "preMadeTilesBoardActionHelp": "Remplacer échange les entrées de la grille contre un tirage aléatoire de votre sélection. Remplir ajoute seulement des éléments aux cases vides. Sur les grilles impaires, la case centrale reste en place.",
     "@preMadeTilesBoardActionHelp": {
         "description": "Helper text explaining replace and fill actions for pre-made items on an existing board"
     },
-    "preMadeTilesSelectedCount": "{selected} / {total} selected",
+    "preMadeTilesSelectedCount": "{selected} / {total} sélectionnées",
     "@preMadeTilesSelectedCount": {
         "description": "Count of selected pre-made tiles",
         "placeholders": {
@@ -362,179 +362,179 @@
             }
         }
     },
-    "preMadeTilesEmptyTitle": "No tiles yet",
+    "preMadeTilesEmptyTitle": "Aucune case pour l’instant",
     "@preMadeTilesEmptyTitle": {
         "description": "Empty-state title for the pre-made tiles screen"
     },
-    "preMadeTilesEmptyBody": "Add a tile to start building a reusable list.",
+    "preMadeTilesEmptyBody": "Ajoutez une case pour commencer une liste réutilisable.",
     "@preMadeTilesEmptyBody": {
         "description": "Empty-state helper text for the pre-made tiles screen"
     },
-    "proposeFeatures": "Propose Features",
+    "proposeFeatures": "Proposer des fonctionnalités",
     "@proposeFeatures": {
         "description": "Menu item that opens the UserOrient feedback board"
     },
-    "proposeFeaturesSettingsDescription": "Vote on ideas and suggest what to build next.",
+    "proposeFeaturesSettingsDescription": "Votez pour des idées et suggérez la suite.",
     "@proposeFeaturesSettingsDescription": {
         "description": "Settings helper text for the feature request entry"
     },
-    "supportMeDirectly": "Support the developer",
+    "supportMeDirectly": "Soutenir le développeur",
     "@supportMeDirectly": {
         "description": "Menu item that opens the direct-support paywall"
     },
-    "supportMeDirectlySettingsDescription": "Help fund development and keep the app improving.",
+    "supportMeDirectlySettingsDescription": "Aidez à financer le développement et à améliorer l’app.",
     "@supportMeDirectlySettingsDescription": {
         "description": "Settings helper text for the direct support entry"
     },
-    "supportCarouselProTitle": "Support Custom Bingo",
+    "supportCarouselProTitle": "Soutenir Custom Bingo",
     "@supportCarouselProTitle": {
         "description": "Title of the home-screen support carousel item that opens the paywall"
     },
-    "supportCarouselProSubtitle": "Unlock bonus colors and help keep the app independent.",
+    "supportCarouselProSubtitle": "Débloquez des couleurs bonus et aidez l’app à rester indépendante.",
     "@supportCarouselProSubtitle": {
         "description": "Subtitle of the home-screen support carousel item that opens the paywall"
     },
-    "supportCarouselRateTitle": "Enjoying the app?",
+    "supportCarouselRateTitle": "Vous aimez l’app ?",
     "@supportCarouselRateTitle": {
         "description": "Title of the home-screen support carousel item that asks for a store review"
     },
-    "supportCarouselRateSubtitle": "A quick review helps more people find Custom Bingo.",
+    "supportCarouselRateSubtitle": "Un avis rapide aide plus de personnes à découvrir Custom Bingo.",
     "@supportCarouselRateSubtitle": {
         "description": "Subtitle of the home-screen support carousel item that asks for a store review"
     },
-    "rateTheApp": "Rate the app",
+    "rateTheApp": "Noter l’app",
     "@rateTheApp": {
         "description": "Settings entry that opens the native store rating dialog"
     },
-    "rateTheAppSettingsDescription": "Open the store rating prompt.",
+    "rateTheAppSettingsDescription": "Ouvrir la demande de note du store.",
     "@rateTheAppSettingsDescription": {
         "description": "Settings helper text for the app rating entry"
     },
-    "contactMe": "Contact me",
+    "contactMe": "Me contacter",
     "@contactMe": {
         "description": "Settings entry that opens an email composer"
     },
-    "contactMeSettingsDescription": "Send feedback, questions, or bug reports by email.",
+    "contactMeSettingsDescription": "Envoyer des retours, questions ou bugs par e-mail.",
     "@contactMeSettingsDescription": {
         "description": "Settings helper text for the contact email entry"
     },
-    "paywallTitle": "Support Custom Bingo",
+    "paywallTitle": "Soutenir Custom Bingo",
     "@paywallTitle": {
         "description": "AppBar title of the direct-support paywall"
     },
-    "paywallThankYouTitle": "Thank you",
+    "paywallThankYouTitle": "Merci",
     "@paywallThankYouTitle": {
         "description": "Paywall title shown after Pro access is active"
     },
-    "paywallSupportTitle": "Support Custom Bingo",
+    "paywallSupportTitle": "Soutenir Custom Bingo",
     "@paywallSupportTitle": {
         "description": "Main title on the direct-support paywall"
     },
-    "paywallSupportBody": "This purchase supports me, the developer, directly. You get my gratitude and a few small bonus things for your boards.",
+    "paywallSupportBody": "Cet achat me soutient directement, moi le développeur. Vous recevez ma gratitude et quelques petits bonus pour vos grilles.",
     "@paywallSupportBody": {
         "description": "Main body copy on the direct-support paywall"
     },
-    "paywallBonusGratitude": "My gratitude, sincerely.",
+    "paywallBonusGratitude": "Ma gratitude, sincèrement.",
     "@paywallBonusGratitude": {
         "description": "First benefit line on the direct-support paywall"
     },
-    "paywallBonusColors": "A few extra board colors.",
+    "paywallBonusColors": "Quelques couleurs de grille en plus.",
     "@paywallBonusColors": {
         "description": "Second benefit line on the direct-support paywall"
     },
-    "paywallBonusExtras": "Small supporter extras over time.",
+    "paywallBonusExtras": "De petits bonus de soutien au fil du temps.",
     "@paywallBonusExtras": {
         "description": "Third benefit line on the direct-support paywall"
     },
-    "paywallFreeForever": "No one ever needs to pay for this app. Custom Bingo stays usable for everyone.",
+    "paywallFreeForever": "Personne n’a jamais besoin de payer pour cette app. Custom Bingo reste utilisable par tout le monde.",
     "@paywallFreeForever": {
         "description": "Footer reassurance on the direct-support paywall"
     },
-    "paywallLoadingPrice": "Loading price",
+    "paywallLoadingPrice": "Chargement du prix",
     "@paywallLoadingPrice": {
         "description": "Placeholder shown while the paywall price is loading"
     },
-    "paywallUnavailable": "Unavailable",
+    "paywallUnavailable": "Indisponible",
     "@paywallUnavailable": {
         "description": "Paywall price/button text when purchases are unavailable"
     },
-    "paywallSupportOnce": "Support once",
+    "paywallSupportOnce": "Soutenir une fois",
     "@paywallSupportOnce": {
         "description": "Purchase button label on the direct-support paywall"
     },
-    "paywallRestorePurchase": "Restore purchase",
+    "paywallRestorePurchase": "Restaurer l’achat",
     "@paywallRestorePurchase": {
         "description": "Restore button label on the direct-support paywall"
     },
-    "paywallProActiveToast": "Custom Bingo Pro is active.",
+    "paywallProActiveToast": "Custom Bingo Pro est actif.",
     "@paywallProActiveToast": {
         "description": "Toast shown after a successful Pro purchase"
     },
-    "paywallPurchaseInactiveToast": "Purchase finished, but Pro is not active.",
+    "paywallPurchaseInactiveToast": "L’achat est terminé, mais Pro n’est pas actif.",
     "@paywallPurchaseInactiveToast": {
         "description": "Toast shown if a purchase returns without Pro access"
     },
-    "paywallProRestoredToast": "Custom Bingo Pro restored.",
+    "paywallProRestoredToast": "Custom Bingo Pro restauré.",
     "@paywallProRestoredToast": {
         "description": "Toast shown after restoring Pro access"
     },
-    "paywallNoPurchaseFoundToast": "No Pro purchase found.",
+    "paywallNoPurchaseFoundToast": "Aucun achat Pro trouvé.",
     "@paywallNoPurchaseFoundToast": {
         "description": "Toast shown when restore finds no Pro access"
     },
-    "paywallPurchasesUnavailable": "Purchases are unavailable right now.",
+    "paywallPurchasesUnavailable": "Les achats sont indisponibles pour le moment.",
     "@paywallPurchasesUnavailable": {
         "description": "Fallback error text for a paywall purchase error"
     },
-    "paywallPlatformUnavailable": "Purchases are unavailable on this platform.",
+    "paywallPlatformUnavailable": "Les achats ne sont pas disponibles sur cette plateforme.",
     "@paywallPlatformUnavailable": {
         "description": "Fallback paywall text when purchases are not configured for the platform"
     },
-    "paywallCouldNotLoad": "Could not load purchase information.",
+    "paywallCouldNotLoad": "Impossible de charger les informations d’achat.",
     "@paywallCouldNotLoad": {
         "description": "Fallback paywall error text for an unknown purchase loading error"
     },
-    "shareTitle": "Share the bingo card",
+    "shareTitle": "Partager la carte de bingo",
     "@shareTitle": {
         "description": "Title of the share dialog"
     },
-    "shareDialogPrompt": "How would you like to share?",
+    "shareDialogPrompt": "Comment voulez-vous partager ?",
     "@shareDialogPrompt": {
         "description": "Section header above the two share options"
     },
-    "shareImageOptionTitle": "Share as image",
+    "shareImageOptionTitle": "Partager en image",
     "@shareImageOptionTitle": {
         "description": "Title of the image-share option in the share dialog"
     },
-    "shareImageOptionHelper": "Send a picture of your card. Anyone can see it — even without the app.",
+    "shareImageOptionHelper": "Envoyez une image de votre carte. Tout le monde peut la voir, même sans l’app.",
     "@shareImageOptionHelper": {
         "description": "Helper text explaining what 'Share as image' does"
     },
-    "shareImageOptionButton": "Share image",
+    "shareImageOptionButton": "Partager l’image",
     "@shareImageOptionButton": {
         "description": "Confirm button on the image-share option"
     },
-    "shareInviteOptionTitle": "Invite friends to play",
+    "shareInviteOptionTitle": "Inviter des amis à jouer",
     "@shareInviteOptionTitle": {
         "description": "Title of the play-together invite option"
     },
-    "shareInviteOptionHelper": "Send this link to your friends who also have this app installed. They get the same card and you can play together.",
+    "shareInviteOptionHelper": "Envoyez ce lien à vos amis qui ont aussi installé cette app. Ils recevront la même carte et vous pourrez jouer ensemble.",
     "@shareInviteOptionHelper": {
         "description": "Helper text explaining what the invite link does"
     },
-    "shareInviteIncludeMarks": "Include my checkmarks",
+    "shareInviteIncludeMarks": "Inclure mes coches",
     "@shareInviteIncludeMarks": {
         "description": "Toggle label: include the sender's marks in the invite"
     },
-    "shareInviteIncludeMarksHelper": "When on, your friends will see what you've already crossed off.",
+    "shareInviteIncludeMarksHelper": "Activé, vos amis verront ce que vous avez déjà coché.",
     "@shareInviteIncludeMarksHelper": {
         "description": "Helper text under the include-checkmarks toggle"
     },
-    "shareInviteOptionButton": "Send invite",
+    "shareInviteOptionButton": "Envoyer l’invitation",
     "@shareInviteOptionButton": {
         "description": "Confirm button on the invite-link option"
     },
-    "shareInviteText": "Play \"{name}\" with me! Open it in the app:\n{link}",
+    "shareInviteText": "Joue à « {name} » avec moi ! Ouvre-le dans l’app :\n{link}",
     "@shareInviteText": {
         "description": "Body text passed to the system share sheet alongside the invite link",
         "placeholders": {
@@ -548,31 +548,31 @@
             }
         }
     },
-    "close": "Close",
+    "close": "Fermer",
     "@close": {
         "description": "Generic close button"
     },
-    "shareSubject": "Bingo Card",
+    "shareSubject": "Carte de bingo",
     "@shareSubject": {
         "description": "Subject/title used by the system share sheet"
     },
-    "importTitle": "A friend shared a bingo card with you",
+    "importTitle": "Un ami vous a partagé une carte de bingo",
     "@importTitle": {
         "description": "Title of the import-card screen shown to the receiver"
     },
-    "importBody": "Add it to your cards so you can play along?",
+    "importBody": "L’ajouter à vos cartes pour jouer avec lui ?",
     "@importBody": {
         "description": "Body of the import-card screen"
     },
-    "importConfirm": "Add to my cards",
+    "importConfirm": "Ajouter à mes cartes",
     "@importConfirm": {
         "description": "Confirm button on the import-card screen"
     },
-    "importCancel": "Not now",
+    "importCancel": "Pas maintenant",
     "@importCancel": {
         "description": "Cancel button on the import-card screen"
     },
-    "importCollisionToast": "You already had a card with this name, so I added it as \"{newName}\".",
+    "importCollisionToast": "Vous aviez déjà une carte avec ce nom, je l’ai donc ajoutée sous « {newName} ».",
     "@importCollisionToast": {
         "description": "Toast shown after silently renaming an imported card to avoid a collision",
         "placeholders": {
@@ -582,31 +582,31 @@
             }
         }
     },
-    "importBadLinkToast": "Sorry, this invite couldn't be opened. Ask your friend to send it again.",
+    "importBadLinkToast": "Désolé, cette invitation n’a pas pu être ouverte. Demandez à votre ami de la renvoyer.",
     "@importBadLinkToast": {
         "description": "Toast shown when an invite link is malformed"
     },
-    "importOutdatedAppToast": "Update the app to open this invite.",
+    "importOutdatedAppToast": "Mettez l’app à jour pour ouvrir cette invitation.",
     "@importOutdatedAppToast": {
         "description": "Toast shown when an invite payload uses a newer schema"
     },
-    "toastInfo": "Info",
+    "toastInfo": "Information",
     "@toastInfo": {
         "description": "Title of an informational toast"
     },
-    "toastSuccess": "Success",
+    "toastSuccess": "Succès",
     "@toastSuccess": {
         "description": "Title of a success toast"
     },
-    "toastError": "Error",
+    "toastError": "Erreur",
     "@toastError": {
         "description": "Title of an error toast"
     },
-    "lastChangeNever": "Last change: Never",
+    "lastChangeNever": "Dernière modification : jamais",
     "@lastChangeNever": {
         "description": "Footer line shown when a card has never been edited"
     },
-    "lastChange": "Last change: {date} {time}",
+    "lastChange": "Dernière modification : {date} {time}",
     "@lastChange": {
         "description": "Footer line showing when the card was last edited",
         "placeholders": {
@@ -620,55 +620,55 @@
             }
         }
     },
-    "screenshotCaptionPlaying": "Just a simple app to create bingo board.\n\nNo signup, no ads, fully free to use.",
+    "screenshotCaptionPlaying": "Une app toute simple pour créer une grille de bingo.\n\nSans inscription, sans pub, entièrement gratuite.",
     "@screenshotCaptionPlaying": {
         "description": "Promotional caption for the screenshot showing a played bingo board"
     },
-    "screenshotCaptionCreate": "Literally just 2 screens to create a bingo grid.",
+    "screenshotCaptionCreate": "Seulement deux écrans pour créer une grille de bingo.",
     "@screenshotCaptionCreate": {
         "description": "Promotional caption for the screenshot showing the new-board screen"
     },
-    "screenshotCaptionLocked": "That's it.",
+    "screenshotCaptionLocked": "C’est tout.",
     "@screenshotCaptionLocked": {
         "description": "Promotional caption for the screenshot showing the locked board"
     },
-    "screenshotBoardName": "David's Wedding",
+    "screenshotBoardName": "Mariage de David",
     "@screenshotBoardName": {
         "description": "Sample bingo board name used in generated screenshots"
     },
-    "screenshotTilePhoneDuringVows": "Phone during vows",
+    "screenshotTilePhoneDuringVows": "Téléphone pendant les vœux",
     "@screenshotTilePhoneDuringVows": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileChampagneSpilled": "Champagne spilled",
+    "screenshotTileChampagneSpilled": "Champagne renversé",
     "@screenshotTileChampagneSpilled": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileSpeechTears": "Speech tears",
+    "screenshotTileSpeechTears": "Larmes pendant le discours",
     "@screenshotTileSpeechTears": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileDramaticEntrance": "Dramatic entrance",
+    "screenshotTileDramaticEntrance": "Entrée théâtrale",
     "@screenshotTileDramaticEntrance": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileKidsDanceFloor": "Kids take the dance floor",
+    "screenshotTileKidsDanceFloor": "Les enfants envahissent la piste",
     "@screenshotTileKidsDanceFloor": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileGuestToast": "Guest gives a toast",
+    "screenshotTileGuestToast": "Un invité porte un toast",
     "@screenshotTileGuestToast": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileCrowdClapsEarly": "Crowd claps early",
+    "screenshotTileCrowdClapsEarly": "Applaudissements trop tôt",
     "@screenshotTileCrowdClapsEarly": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileDjClassic": "DJ plays a classic",
+    "screenshotTileDjClassic": "Le DJ met un classique",
     "@screenshotTileDjClassic": {
         "description": "Sample bingo tile text used in generated screenshots"
     },
-    "screenshotTileGroupPhotoChaos": "Group photo chaos",
+    "screenshotTileGroupPhotoChaos": "Chaos pour la photo de groupe",
     "@screenshotTileGroupPhotoChaos": {
         "description": "Sample bingo tile text used in generated screenshots"
     }

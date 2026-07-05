@@ -6,6 +6,7 @@ import 'package:custom_bingo/app/view/app_router.dart';
 import 'package:custom_bingo/app/view/custom_theme.dart';
 import 'package:custom_bingo/common/services/premium_service.dart';
 import 'package:custom_bingo/features/bingo_card/share_link.dart';
+import 'package:custom_bingo/features/settings/app_locale_settings.dart';
 import 'package:custom_bingo/features/settings/theme_settings.dart';
 import 'package:custom_bingo/l10n/arb/app_localizations.dart';
 import 'package:custom_bingo/util/logger.dart';
@@ -20,7 +21,7 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with WidgetsBindingObserver {
   late final AppLinks _appLinks;
   late final GoRouter _router;
   StreamSubscription<Uri>? _linkSub;
@@ -29,6 +30,8 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    setPhoneLocale(WidgetsBinding.instance.platformDispatcher.locale);
     _router = createAppRouter();
     _appLinks = AppLinks();
     logI(
@@ -52,9 +55,15 @@ class _AppState extends State<App> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _linkSub?.cancel();
     _router.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    if (locales != null && locales.isNotEmpty) setPhoneLocale(locales.first);
   }
 
   void _handleIncomingLink(Uri uri, {required String source}) {
@@ -95,6 +104,8 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final themeMode = appThemeModeBeacon.watch(context);
     final palette = appThemePaletteBeacon.watch(context);
+    final localeOverride = appLocaleOverrideBeacon.watch(context);
+    phoneLocaleBeacon.watch(context);
     final isPremiumUser = isPremiumUserBeacon.watch(context);
     final effectivePalette = availableAppThemePalette(
       palette,
@@ -105,6 +116,7 @@ class _AppState extends State<App> {
       theme: getThemeData(palette: effectivePalette),
       darkTheme: getThemeData(isDarkMode: true, palette: effectivePalette),
       themeMode: themeMode,
+      locale: localeOverride,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
