@@ -382,6 +382,8 @@ class _LanguageSelector extends StatelessWidget {
         return PopupMenu(
           padding: EdgeInsets.zero,
           useCard: false,
+          flipVerticallyToFit: true,
+          preferredMenuHeight: 420,
           targetAnchor: Alignment.bottomLeft,
           followerAnchor: Alignment.topLeft,
           offset: const Offset(0, 8),
